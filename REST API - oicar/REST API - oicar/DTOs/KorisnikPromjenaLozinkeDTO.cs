@@ -2,7 +2,7 @@
 
 namespace REST_API___oicar.DTOs
 {
-    public class KorisnikPromjenaLozinke
+    public class KorisnikPromjenaLozinkeDTO
     {
         [Required(ErrorMessage = "Email je obavezan.")]
         [EmailAddress(ErrorMessage = "Neispravan email format.")]

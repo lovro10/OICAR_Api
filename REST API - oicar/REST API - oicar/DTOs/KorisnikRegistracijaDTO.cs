@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace REST_API___oicar.DTOs
 {
-    public class KorisnikRegistracija
+    public class KorisnikRegistracijaDTO
     {
         [Required(ErrorMessage = "Ime je obavezno.")]
         public string Ime { get; set; } = string.Empty;

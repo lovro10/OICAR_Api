@@ -2,7 +2,7 @@
 
 namespace REST_API___oicar.DTOs
 {
-    public class KorisnikLogin
+    public class KorisnikLoginDTO
     {
         [Required(ErrorMessage = "Username is required.")]
         public string Username { get; set; } = string.Empty;

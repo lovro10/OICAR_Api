@@ -58,7 +58,7 @@ namespace REST_API___oicar.Controllers
 
 
         [HttpPost("registracija")]
-        public async Task<IActionResult> Registracija([FromBody] KorisnikRegistracija registracija)
+        public async Task<IActionResult> Registracija([FromBody] KorisnikRegistracijaDTO registracija)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -94,7 +94,7 @@ namespace REST_API___oicar.Controllers
 
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] KorisnikLogin loginDto)
+        public async Task<IActionResult> Login([FromBody] KorisnikLoginDTO loginDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -179,7 +179,7 @@ namespace REST_API___oicar.Controllers
 
 
         [HttpPut("promjenalozinke")]
-        public async Task<IActionResult> PromjenaLozinke([FromBody] KorisnikPromjenaLozinke dto)
+        public async Task<IActionResult> PromjenaLozinke([FromBody] KorisnikPromjenaLozinkeDTO dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
