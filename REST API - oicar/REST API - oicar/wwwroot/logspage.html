@@ -1,103 +1,11 @@
 ﻿<!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8" />
-    <title>LOGS</title>
-    <style>
-        #logTable {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-            #logTable th, #logTable td {
-                border: 1px solid black;
-                padding: 8px;
-                text-align: left;
-            }
-
-            #logTable th {
-                background-color: #f2f2f2;
-            }
-        .logout-button {
-            padding: 10px 20px;
-            background-color: #ff4c4c;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        #logCountContainer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-    </style>
-</head>
 <body>
-    <h1>Logs Page</h1>
+    <h1>Logout page</h1>
     <div id="logCountContainer">
-        <div>
-            <label for="logCount">Number of logs to display:</label>
-            <select id="logCount">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-            </select>
-            <button id="showLogs">Show Logs</button>
-        </div>
         <button class="logout-button" onclick="Logout()">Logout</button>
     </div>
-    <table id="logTable">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>TimeStamp</th>
-                <th>Message</th>
-                <th>Type</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script>
-        $(document).ready(function () {
-            $('#showLogs').click(function () {
-                let logCount = $('#logCount').val();
-                let url = `http://localhost:5010/api/logs/get/${logCount}`;
-
-                $.ajax({
-                    url: url,
-                    method: 'GET',
-                })
-                    .done(function (data) {
-
-
-                        let logs = data.$values;
-
-                        let tableBody = $('#logTable tbody');
-                        tableBody.empty();
-
-                        logs.forEach(function (log) {
-                            let row = `<tr>
-                                        <td>${log.logId}</td>
-                                        <td>${log.timeStamp}</td>
-                                        <td>${log.message}</td>
-                                        <td>${log.level}</td>
-                                    </tr>`;
-                            tableBody.append(row);
-                        });
-                    })
-                    .fail(function (xhr, status, error) {
-                        console.error(':', error);
-                    });
-            });
-        });
-    </script>
+    
     <script src="logout.js"></script>
 </body>
 </html>
