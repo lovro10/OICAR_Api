@@ -1,21 +1,29 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Bartol\\Desktop\\OICAR projekt\\OICAR_Api\\REST API - oicar\\",
+  "WorkspaceRootPath": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\bartol\\desktop\\oicar projekt\\oicar_api\\rest api - oicar\\rest api - oicar\\wwwroot\\login.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\korisnikcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\controllers\\korisnikcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\korisnikdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\korisnikdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\wwwroot\\login.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\wwwroot\\login.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\bartol\\desktop\\oicar projekt\\oicar_api\\rest api - oicar\\rest api - oicar\\wwwroot\\logout.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\wwwroot\\logout.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\wwwroot\\logout.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\bartol\\desktop\\oicar projekt\\oicar_api\\rest api - oicar\\rest api - oicar\\wwwroot\\loginpage.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\wwwroot\\loginpage.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\wwwroot\\loginpage.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\bartol\\desktop\\oicar projekt\\oicar_api\\rest api - oicar\\rest api - oicar\\wwwroot\\logspage.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\wwwroot\\logspage.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\wwwroot\\logspage.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
@@ -26,66 +34,77 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 0,
           "Children": [
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{de1fc918-f32e-4dd7-a915-1792a051f26b}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
-            },
-            {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "logspage.html",
-              "DocumentMoniker": "C:\\Users\\Bartol\\Desktop\\OICAR projekt\\OICAR_Api\\REST API - oicar\\REST API - oicar\\wwwroot\\logspage.html",
-              "RelativeDocumentMoniker": "REST API - oicar\\wwwroot\\logspage.html",
-              "ToolTip": "C:\\Users\\Bartol\\Desktop\\OICAR projekt\\OICAR_Api\\REST API - oicar\\REST API - oicar\\wwwroot\\logspage.html",
-              "RelativeToolTip": "REST API - oicar\\wwwroot\\logspage.html",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-04-03T19:33:14.168Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "loginpage.html",
-              "DocumentMoniker": "C:\\Users\\Bartol\\Desktop\\OICAR projekt\\OICAR_Api\\REST API - oicar\\REST API - oicar\\wwwroot\\loginpage.html",
-              "RelativeDocumentMoniker": "REST API - oicar\\wwwroot\\loginpage.html",
-              "ToolTip": "C:\\Users\\Bartol\\Desktop\\OICAR projekt\\OICAR_Api\\REST API - oicar\\REST API - oicar\\wwwroot\\loginpage.html",
-              "RelativeToolTip": "REST API - oicar\\wwwroot\\loginpage.html",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD8AAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-04-03T19:31:36.527Z",
+              "DocumentIndex": 0,
+              "Title": "KorisnikController.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\KorisnikController.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\Controllers\\KorisnikController.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\KorisnikController.cs",
+              "RelativeToolTip": "REST API - oicar\\Controllers\\KorisnikController.cs",
+              "ViewState": "AgIAAI0AAAAAAAAAAAAqwJYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-14T21:06:48.181Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "logout.js",
-              "DocumentMoniker": "C:\\Users\\Bartol\\Desktop\\OICAR projekt\\OICAR_Api\\REST API - oicar\\REST API - oicar\\wwwroot\\logout.js",
-              "RelativeDocumentMoniker": "REST API - oicar\\wwwroot\\logout.js",
-              "ToolTip": "C:\\Users\\Bartol\\Desktop\\OICAR projekt\\OICAR_Api\\REST API - oicar\\REST API - oicar\\wwwroot\\logout.js",
-              "RelativeToolTip": "REST API - oicar\\wwwroot\\logout.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-04-03T19:29:06.546Z",
+              "Title": "KorisnikDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\KorisnikDTO.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\KorisnikDTO.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\KorisnikDTO.cs",
+              "RelativeToolTip": "REST API - oicar\\DTOs\\KorisnikDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-14T21:06:21.558Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 5,
+              "Title": "logspage.html",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\wwwroot\\logspage.html",
+              "RelativeDocumentMoniker": "REST API - oicar\\wwwroot\\logspage.html",
+              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\wwwroot\\logspage.html",
+              "RelativeToolTip": "REST API - oicar\\wwwroot\\logspage.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-04-03T19:33:14.168Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "loginpage.html",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\wwwroot\\loginpage.html",
+              "RelativeDocumentMoniker": "REST API - oicar\\wwwroot\\loginpage.html",
+              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\wwwroot\\loginpage.html",
+              "RelativeToolTip": "REST API - oicar\\wwwroot\\loginpage.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD8AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-04-03T19:31:36.527Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "logout.js",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\wwwroot\\logout.js",
+              "RelativeDocumentMoniker": "REST API - oicar\\wwwroot\\logout.js",
+              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\wwwroot\\logout.js",
+              "RelativeToolTip": "REST API - oicar\\wwwroot\\logout.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-04-03T19:29:06.546Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "login.js",
-              "DocumentMoniker": "C:\\Users\\Bartol\\Desktop\\OICAR projekt\\OICAR_Api\\REST API - oicar\\REST API - oicar\\wwwroot\\login.js",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\wwwroot\\login.js",
               "RelativeDocumentMoniker": "REST API - oicar\\wwwroot\\login.js",
-              "ToolTip": "C:\\Users\\Bartol\\Desktop\\OICAR projekt\\OICAR_Api\\REST API - oicar\\REST API - oicar\\wwwroot\\login.js",
+              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\wwwroot\\login.js",
               "RelativeToolTip": "REST API - oicar\\wwwroot\\login.js",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",

@@ -142,25 +142,39 @@ namespace REST_API___oicar.Controllers
 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] Korisnik korisnik)
+        public async Task<IActionResult> Update(int id, [FromBody] KorisnikDTO korisnikDto)
         {
-            if (id != korisnik.Idkorisnik)
-                return BadRequest("ID se ne podudaraju.");
-
-            _context.Entry(korisnik).State = EntityState.Modified;
-
-            try
+            if (!ModelState.IsValid)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await _context.Korisniks.AnyAsync(e => e.Idkorisnik == id))
-                    return NotFound();
-                throw;
+                return BadRequest(ModelState);
             }
 
-            return NoContent();
+            var existingKorisnik = _context.Korisniks.FirstOrDefault(k => k.Idkorisnik == id);
+            if (existingKorisnik == null)
+            {
+                return NotFound($"Korisnik(id={id}) was not found.");
+            }
+          
+            existingKorisnik.Ime = korisnikDto.Ime;
+            existingKorisnik.Prezime = korisnikDto.Prezime;
+            existingKorisnik.Email = korisnikDto.Email;
+            existingKorisnik.Username = korisnikDto.Username;
+;            existingKorisnik.Telefon = korisnikDto.Telefon;
+            existingKorisnik.Datumrodjenja = korisnikDto.DatumRodjenja;
+            _context.SaveChanges();
+          
+
+            return Ok(new KorisnikDTO
+            {
+              
+                Ime = korisnikDto.Ime,
+                Prezime = korisnikDto.Prezime,
+                Email = korisnikDto.Email,  
+                Username = korisnikDto.Username,    
+                Telefon = korisnikDto.Telefon,
+                DatumRodjenja = korisnikDto.DatumRodjenja,
+               
+            });
         }
 
 
