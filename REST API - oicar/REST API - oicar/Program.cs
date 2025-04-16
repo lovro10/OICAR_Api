@@ -1,89 +1,90 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using REST_API___oicar.Models;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<CarshareContext>(options =>
+builder.Services.AddSwaggerGen(option =>
 {
-    options.UseNpgsql("name=ConnectionStrings:CarshareConnStr");
+    option.SwaggerDoc("v1",
+        new OpenApiInfo { Title = "Carshare API", Version = "v1" });
+
+    option.AddSecurityDefinition("Bearer",
+        new OpenApiSecurityScheme
+        {
+            In = ParameterLocation.Header,
+            Description = "Please enter valid JWT",
+            Name = "Authorization",
+            Type = SecuritySchemeType.Http,
+            BearerFormat = "JWT",
+            Scheme = "Bearer"
+        });
+
+    option.AddSecurityRequirement(
+        new OpenApiSecurityRequirement
+        {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new List<string>()
+                }
+        });
 });
 
-// Add JWT Authentication configuration
-builder.Services.AddAuthentication(options =>
+builder.Services.AddControllers().AddJsonOptions(x =>
+    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
+);
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-        ValidateIssuer = false,
-        ValidateAudience = false
-    };
+    options.SuppressModelStateInvalidFilter = true;
 });
 
-// Configure Swagger with security definition
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "My API",
-        Version = "v1"
+var secureKey = builder.Configuration["JWT:SecureKey"];
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(o => {
+        var Key = Encoding.UTF8.GetBytes(secureKey);
+        o.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            IssuerSigningKey = new SymmetricSecurityKey(Key)
+        };
     });
 
-    var securityScheme = new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "Enter 'Bearer' [space] and then your valid JWT token."
-    };
-
-    options.AddSecurityDefinition("Bearer", securityScheme);
-
-    var securityRequirement = new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            new string[] {}
-        }
-    };
-    options.AddSecurityRequirement(securityRequirement);
+builder.Services.AddDbContext<CarshareContext>(options => {
+    options.UseNpgsql("Name=ConnectionStrings:CarshareConnStr");
 });
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+app.UseStaticFiles();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.UseStaticFiles();
 
 app.Run();

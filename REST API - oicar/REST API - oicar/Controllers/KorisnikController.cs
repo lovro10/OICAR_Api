@@ -1,18 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CARSHARE_WEBAPP.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using REST_API___oicar.Models;
 using REST_API___oicar.DTOs;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
+using REST_API___oicar.Models;
 using System.Collections;
+using System.Security.Claims;
 
 namespace REST_API___oicar.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class KorisnikController : ControllerBase
     {
         private readonly CarshareContext _context;
@@ -23,8 +20,41 @@ namespace REST_API___oicar.Controllers
             _context = context;
             _configuration = configuration;
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] KorisnikDTO korisnikDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var existingKorisnik = _context.Korisniks.FirstOrDefault(k => k.Idkorisnik == id);
+            if (existingKorisnik == null)
+            {
+                return NotFound($"Korisnik(id={id}) was not found.");
+            }
+
+            existingKorisnik.Ime = korisnikDto.Ime;
+            existingKorisnik.Prezime = korisnikDto.Prezime;
+            existingKorisnik.Email = korisnikDto.Email;
+            existingKorisnik.Username = korisnikDto.Username;
+            existingKorisnik.Telefon = korisnikDto.Telefon;
+            existingKorisnik.Datumrodjenja = korisnikDto.DatumRodjenja;
+            _context.SaveChanges();
 
 
+            return Ok(new KorisnikDTO
+            {
+
+                Ime = korisnikDto.Ime,
+                Prezime = korisnikDto.Prezime,
+                Email = korisnikDto.Email,
+                Username = korisnikDto.Username,
+                Telefon = korisnikDto.Telefon,
+                DatumRodjenja = korisnikDto.DatumRodjenja,
+
+            });
+        }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Korisnik>>> GetAll()
         {
@@ -56,180 +86,195 @@ namespace REST_API___oicar.Controllers
             return korisnik;
         }
 
-
-        [HttpPost("registracija")]
-        public async Task<IActionResult> Registracija([FromBody] KorisnikRegistracijaDTO registracija)
+        [HttpGet("[action]")]
+        public ActionResult GenerirajToken()
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            if (await _context.Korisniks.AnyAsync(k => k.Username == registracija.Username || k.Email == registracija.Email))
-                return BadRequest("Korisnik s tim korisničkim imenom ili emailom već postoji.");
-
-            using var hmac = new HMACSHA512();
-            byte[] salt = hmac.Key;
-            byte[] hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registracija.Password));
-            string hashString = Convert.ToBase64String(hash);
-            string saltString = Convert.ToBase64String(salt);
-
-            var noviKorisnik = new Korisnik
-            {
-                Ime = registracija.Ime,
-                Prezime = registracija.Prezime,
-                Datumrodjenja = registracija.Datumrodjenja,
-                Email = registracija.Email,
-                Username = registracija.Username,
-                Pwdhash = hashString,
-                Pwdsalt = saltString,
-                Telefon = registracija.Telefon,
-                Isconfirmed = new BitArray(new bool[] { false }),
-                Ulogaid = registracija.Uloga
-            };
-
-            _context.Korisniks.Add(noviKorisnik);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { poruka = "Registracija uspješna." });
-        }
-
-
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] KorisnikLoginDTO loginDto)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var korisnik = await _context.Korisniks
-                .FirstOrDefaultAsync(u => u.Username == loginDto.Username);
-
-            if (korisnik == null)
-                return Unauthorized("Neispravni podaci za prijavu.");
-
-            byte[] salt = Convert.FromBase64String(korisnik.Pwdsalt);
-            using var hmac = new HMACSHA512(salt);
-            byte[] computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
-            string computedHashString = Convert.ToBase64String(computedHash);
-
-            if (computedHashString != korisnik.Pwdhash)
-                return Unauthorized("Neispravni podaci za prijavu.");
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var keyString = _configuration["Jwt:Key"];
-            if (string.IsNullOrEmpty(keyString))
-                throw new ArgumentNullException(nameof(keyString), "JWT key not found in configuration.");
-
-            var key = Encoding.UTF8.GetBytes(keyString);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.NameIdentifier, korisnik.Idkorisnik.ToString()),
-                    new Claim(ClaimTypes.Name, korisnik.Username),
-                    new Claim("Uloga", korisnik.Ulogaid?.ToString() ?? "1")
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(
-                    new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha512Signature
-                )
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
-
-            return Ok(new { token = tokenString });
-        }
-
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] KorisnikDTO korisnikDto)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var existingKorisnik = _context.Korisniks.FirstOrDefault(k => k.Idkorisnik == id);
-            if (existingKorisnik == null)
-            {
-                return NotFound($"Korisnik(id={id}) was not found.");
-            }
-          
-            existingKorisnik.Ime = korisnikDto.Ime;
-            existingKorisnik.Prezime = korisnikDto.Prezime;
-            existingKorisnik.Email = korisnikDto.Email;
-            existingKorisnik.Username = korisnikDto.Username;
-;            existingKorisnik.Telefon = korisnikDto.Telefon;
-            existingKorisnik.Datumrodjenja = korisnikDto.DatumRodjenja;
-            _context.SaveChanges();
-          
-
-            return Ok(new KorisnikDTO
-            {
-              
-                Ime = korisnikDto.Ime,
-                Prezime = korisnikDto.Prezime,
-                Email = korisnikDto.Email,  
-                Username = korisnikDto.Username,    
-                Telefon = korisnikDto.Telefon,
-                DatumRodjenja = korisnikDto.DatumRodjenja,
-               
-            });
-        }
-
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var korisnik = await _context.Korisniks.FindAsync(id);
-            if (korisnik == null)
-                return NotFound();
-
-            _context.Korisniks.Remove(korisnik);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-
-        [HttpPut("promjenalozinke")]
-        public async Task<IActionResult> PromjenaLozinke([FromBody] KorisnikPromjenaLozinkeDTO dto)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var korisnik = await _context.Korisniks.FirstOrDefaultAsync(k => k.Email == dto.Email);
-            if (korisnik == null)
-                return NotFound("Korisnik ne postoji.");
-
-            byte[] salt = Convert.FromBase64String(korisnik.Pwdsalt);
-            using var hmac = new HMACSHA512(salt);
-            byte[] computedOldHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(dto.OldPassword));
-            string computedOldHashString = Convert.ToBase64String(computedOldHash);
-
-            if (computedOldHashString != korisnik.Pwdhash)
-                return Unauthorized("Stara lozinka je netočna.");
-
-            using var hmacNew = new HMACSHA512();
-            byte[] newSalt = hmacNew.Key;
-            byte[] newHash = hmacNew.ComputeHash(Encoding.UTF8.GetBytes(dto.NewPassword));
-            string newHashString = Convert.ToBase64String(newHash);
-            string newSaltString = Convert.ToBase64String(newSalt);
-
-            korisnik.Pwdhash = newHashString;
-            korisnik.Pwdsalt = newSaltString;
-            _context.Korisniks.Update(korisnik);
-
             try
             {
-                await _context.SaveChangesAsync();
+                var secureKey = _configuration["JWT:SecureKey"];
+                var serializedToken = JwtTokenProvider.CreateToken(secureKey, 10);
+
+                return Ok(serializedToken);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Dogodila se greška prilikom promjene lozinke: {ex.Message}");
+                return StatusCode(500, ex.Message);
             }
+        }
 
-            return Ok(new { poruka = "Lozinka uspješno promijenjena." });
+        [HttpPost("[action]")]
+        public async Task<ActionResult<RegistracijaVozacDTO>> RegistracijaVozac([FromBody] RegistracijaVozacDTO registracijaVozacDTO)
+        {
+            try
+            {
+                var trimmedUsername = registracijaVozacDTO.Username.Trim();
+                if (_context.Korisniks.Any(x => x.Username.Equals(trimmedUsername)))
+                    return BadRequest($"Username {trimmedUsername} already exists");
+
+                var b64salt = PasswordHashProvider.GetSalt();
+                var b64hash = PasswordHashProvider.GetHash(registracijaVozacDTO.Password, b64salt);
+
+                var user = new Korisnik
+                {
+                    Username = registracijaVozacDTO.Username,
+                    Pwdhash = b64hash,
+                    Pwdsalt = b64salt,
+                    Ime = registracijaVozacDTO.Ime,
+                    Prezime = registracijaVozacDTO.Prezime,
+                    Email = registracijaVozacDTO.Email,
+                    Telefon = registracijaVozacDTO.Telefon,
+                    Datumrodjenja = registracijaVozacDTO.Datumrodjenja,
+                    Isconfirmed = new BitArray(new bool[] { false })
+                };
+
+                user.Imagevozacka = await SaveImageFromBase64Async(registracijaVozacDTO.Vozacka, "Vozacka");
+                user.Imageosobna = await SaveImageFromBase64Async(registracijaVozacDTO.Osobna, "Osobna");
+                user.Imagelice = await SaveImageFromBase64Async(registracijaVozacDTO.Selfie, "Selfie");
+
+                _context.Korisniks.Add(user);
+                await _context.SaveChangesAsync();
+
+                registracijaVozacDTO.Id = user.Idkorisnik;
+
+                return Ok(registracijaVozacDTO);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        private async Task<Image> SaveImageFromBase64Async(string base64Image, string name)
+        {
+            if (string.IsNullOrEmpty(base64Image))
+                return null;
+
+            byte[] imageData = Convert.FromBase64String(base64Image);
+
+            var image = new Image
+            {
+                Name = name,
+                Content = imageData
+            };
+
+            _context.Images.Add(image);
+            await _context.SaveChangesAsync();
+
+            return image;
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult<RegistracijaPutnikDTO>> RegistracijaPutnik([FromBody] RegistracijaPutnikDTO registracijaPutnikDTO)
+        {
+            try
+            {
+                var trimmedUsername = registracijaPutnikDTO.Username.Trim();
+                if (_context.Korisniks.Any(x => x.Username.Equals(trimmedUsername)))
+                    return BadRequest($"Username {trimmedUsername} already exists");
+
+                var b64salt = PasswordHashProvider.GetSalt();
+                var b64hash = PasswordHashProvider.GetHash(registracijaPutnikDTO.Password, b64salt);
+
+                var user = new Korisnik
+                {
+                    Username = registracijaPutnikDTO.Username,
+                    Pwdhash = b64hash,
+                    Pwdsalt = b64salt,
+                    Ime = registracijaPutnikDTO.Ime,
+                    Prezime = registracijaPutnikDTO.Prezime,
+                    Email = registracijaPutnikDTO.Email,
+                    Telefon = registracijaPutnikDTO.Telefon,
+                    Datumrodjenja = registracijaPutnikDTO.Datumrodjenja,
+                    Ulogaid = 1,
+                    Isconfirmed = new BitArray(new bool[] { false })
+                };
+
+                user.Imageosobna = await SaveImageFromBase64Async(registracijaPutnikDTO.Osobna, "Osobna");
+                user.Imagelice = await SaveImageFromBase64Async(registracijaPutnikDTO.Selfie, "Selfie");
+
+                _context.Korisniks.Add(user);
+                await _context.SaveChangesAsync();
+
+                registracijaPutnikDTO.Id = user.Idkorisnik;
+
+                return Ok(registracijaPutnikDTO);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost("[action]")]
+        public ActionResult Login(KorisnikLoginDTO korisnikLoginDTO)
+        {
+            try
+            {
+                var genericLoginFail = "Incorrect username or password";
+
+                var existingUser = _context.Korisniks.FirstOrDefault(x => x.Username == korisnikLoginDTO.Username);
+                if (existingUser == null)
+                    return BadRequest(genericLoginFail);
+
+                var b64hash = PasswordHashProvider.GetHash(korisnikLoginDTO.Password, existingUser.Pwdsalt);
+                if (b64hash != existingUser.Pwdhash)
+                    return BadRequest(genericLoginFail);
+
+                var secureKey = _configuration["JWT:SecureKey"];
+                var serializedToken = JwtTokenProvider.CreateToken(secureKey, 120, korisnikLoginDTO.Username);
+           
+
+                return Ok(serializedToken);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost("[action]")]
+        public ActionResult ChangePassword(KorisnikPromjenaLozinkeDTO changePasswordDto)
+        {
+            try
+            {
+
+                if (string.IsNullOrWhiteSpace(changePasswordDto.Username) ||
+                    string.IsNullOrWhiteSpace(changePasswordDto.OldPassword) ||
+                    string.IsNullOrWhiteSpace(changePasswordDto.NewPassword))
+                {
+                    return BadRequest("There is no input");
+                }
+
+
+                var existingUser = _context.Korisniks
+                    .FirstOrDefault(x => x.Username == changePasswordDto.Username);
+                if (existingUser == null)
+                {
+                    return BadRequest("User does not exist");
+                }
+
+                var currentHash = PasswordHashProvider
+                    .GetHash(changePasswordDto.OldPassword, existingUser.Pwdsalt);
+                if (currentHash != existingUser.Pwdhash)
+                {
+                    return BadRequest("Old password is incorrect");
+                }
+
+                var newSalt = PasswordHashProvider.GetSalt();
+                var newHash = PasswordHashProvider.GetHash(changePasswordDto.NewPassword, newSalt);
+
+                existingUser.Pwdhash = newHash;
+                existingUser.Pwdsalt = newSalt;
+
+                _context.Update(existingUser);
+                _context.SaveChanges();
+
+                return Ok("Password was changed successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
 

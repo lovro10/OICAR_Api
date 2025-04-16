@@ -19,145 +19,97 @@ namespace REST_API___oicar.Controllers
             _context = context;
         }
 
-        // GET: api/Image
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Image>>> GetUserImages()
+        public async Task<ActionResult<IEnumerable<ImageUploadDTO>>> GetImages()
         {
-            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdString))
-                return Unauthorized();
-            int userId = int.Parse(userIdString);
+            var images = await _context.Images.ToListAsync();
 
-            var images = await _context.Images
-                .Where(i => i.KorisnikImagelices.Any(u => u.Idkorisnik == userId))
-                .ToListAsync();
-            return Ok(images);
+            var imageDtos = images.Select(img => new ImageUploadDTO
+            {
+                Name = img.Name,
+                Base64Content = Convert.ToBase64String(img.Content)
+            }).ToList();
+
+            return Ok(imageDtos);
         }
 
         // GET: api/Image/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Image>> GetImage(int id)
+        public async Task<ActionResult<ImageUploadDTO>> GetImageById(int id)
         {
-            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdString))
-                return Unauthorized();
-            int userId = int.Parse(userIdString);
-
-            var image = await _context.Images
-                .Include(i => i.KorisnikImagelices)
-                .FirstOrDefaultAsync(i => i.Idimage == id);
+            var image = await _context.Images.FindAsync(id);
             if (image == null)
                 return NotFound();
 
-            if (!image.KorisnikImagelices.Any(u => u.Idkorisnik == userId))
-                return Forbid();
+            var dto = new ImageUploadDTO
+            {
+                Name = image.Name,
+                Base64Content = Convert.ToBase64String(image.Content)
+            };
 
-            return Ok(image);
+            return Ok(dto);
         }
 
         // POST: api/Image
         [HttpPost]
         public async Task<IActionResult> UploadImage([FromBody] ImageUploadDTO dto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            if (string.IsNullOrWhiteSpace(dto.Base64Content))
+                return BadRequest("Base64 content is required.");
 
-            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdString))
-                return Unauthorized();
-            int userId = int.Parse(userIdString);
-
-            byte[] content;
             try
             {
-                content = Convert.FromBase64String(dto.Base64Content);
+                var image = new Image
+                {
+                    Name = dto.Name,
+                    Content = Convert.FromBase64String(dto.Base64Content)
+                };
+
+                _context.Images.Add(image);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction(nameof(GetImageById), new { id = image.Idimage }, dto);
             }
-            catch (Exception)
+            catch (FormatException)
             {
-                return BadRequest("Invalid Base64 content.");
+                return BadRequest("Invalid Base64 string.");
             }
-
-            var image = new Image
-            {
-                Name = dto.Name,
-                Content = content
-            };
-
-            _context.Images.Add(image);
-            await _context.SaveChangesAsync();
-
-            // Retrieve the current user
-            var user = await _context.Korisniks.FirstOrDefaultAsync(u => u.Idkorisnik == userId);
-            if (user == null)
-                return Unauthorized();
-
-            user.Imagelice = image;  //  user.Imagevozacka = image;  user.Imageosobna = image;
-            _context.Korisniks.Update(user);
-            await _context.SaveChangesAsync();
-
-
-            return Ok(new { message = "Image uploaded successfully", imageId = image.Idimage });
         }
 
         // PUT: api/Image/5
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateImage(int id, [FromBody] ImageUploadDTO dto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdString))
-                return Unauthorized();
-            int userId = int.Parse(userIdString);
-
-            var image = await _context.Images
-                .Include(i => i.KorisnikImagelices)
-                .FirstOrDefaultAsync(i => i.Idimage == id);
+            var image = await _context.Images.FindAsync(id);
             if (image == null)
                 return NotFound();
 
-            if (!image.KorisnikImagelices.Any(u => u.Idkorisnik == userId))
-                return Forbid();
-
-            image.Name = dto.Name;
             try
             {
+                image.Name = dto.Name;
                 image.Content = Convert.FromBase64String(dto.Base64Content);
+
+                await _context.SaveChangesAsync();
+                return NoContent();
             }
-            catch (Exception)
+            catch (FormatException)
             {
-                return BadRequest("Invalid Base64 content.");
+                return BadRequest("Invalid Base64 string.");
             }
-
-            _context.Entry(image).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Image updated successfully" });
         }
 
         // DELETE: api/Image/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteImage(int id)
         {
-            var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdString))
-                return Unauthorized();
-            int userId = int.Parse(userIdString);
-
-            var image = await _context.Images
-                .Include(i => i.KorisnikImagelices)
-                .FirstOrDefaultAsync(i => i.Idimage == id);
+            var image = await _context.Images.FindAsync(id);
             if (image == null)
                 return NotFound();
-
-            if (!image.KorisnikImagelices.Any(u => u.Idkorisnik == userId))
-                return Forbid();
 
             _context.Images.Remove(image);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Image deleted successfully" });
+            return NoContent();
         }
     }
 }
