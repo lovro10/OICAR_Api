@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using REST_API___oicar.DTOs;
 using System.Collections;
 using REST_API___oicar.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace REST_API___oicar.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class VoziloController : ControllerBase
