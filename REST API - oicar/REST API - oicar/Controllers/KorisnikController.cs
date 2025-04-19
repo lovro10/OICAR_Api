@@ -1,6 +1,7 @@
 ﻿using CARSHARE_WEBAPP.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using REST_API___oicar.DTOs;
 using REST_API___oicar.Models;
 using System.Collections;
@@ -124,8 +125,50 @@ namespace REST_API___oicar.Controllers
                     Email = registracijaVozacDTO.Email,
                     Telefon = registracijaVozacDTO.Telefon,
                     Datumrodjenja = registracijaVozacDTO.Datumrodjenja,
-                    Isconfirmed = new BitArray(new bool[] { false })
+                    Isconfirmed = true,
+
                 };
+
+               
+
+                _context.Korisniks.Add(user);
+                await _context.SaveChangesAsync();
+
+                registracijaVozacDTO.Id = user.Idkorisnik;
+
+                return Ok(registracijaVozacDTO);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult<RegistracijaVozacDTO>> Registracija([FromBody] RegistracijaVozacDTO registracijaVozacDTO)
+        {
+            try
+            {
+                var trimmedUsername = registracijaVozacDTO.Username.Trim();
+                if (_context.Korisniks.Any(x => x.Username.Equals(trimmedUsername)))
+                    return BadRequest($"Username {trimmedUsername} already exists");
+
+                var b64salt = PasswordHashProvider.GetSalt();
+                var b64hash = PasswordHashProvider.GetHash(registracijaVozacDTO.Password, b64salt);
+
+                var user = new Korisnik
+                {
+                    Username = registracijaVozacDTO.Username,
+                    Pwdhash = b64hash,
+                    Pwdsalt = b64salt,
+                    Ime = registracijaVozacDTO.Ime,
+                    Prezime = registracijaVozacDTO.Prezime,
+                    Email = registracijaVozacDTO.Email,
+                    Telefon = registracijaVozacDTO.Telefon,
+                    Datumrodjenja = registracijaVozacDTO.Datumrodjenja,
+                
+                };
+
 
                 user.Imagevozacka = await SaveImageFromBase64Async(registracijaVozacDTO.Vozacka, "Vozacka");
                 user.Imageosobna = await SaveImageFromBase64Async(registracijaVozacDTO.Osobna, "Osobna");
@@ -143,7 +186,6 @@ namespace REST_API___oicar.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
-
         private async Task<Image> SaveImageFromBase64Async(string base64Image, string name)
         {
             if (string.IsNullOrEmpty(base64Image))
@@ -186,7 +228,7 @@ namespace REST_API___oicar.Controllers
                     Telefon = registracijaPutnikDTO.Telefon,
                     Datumrodjenja = registracijaPutnikDTO.Datumrodjenja,
                     Ulogaid = 1,
-                    Isconfirmed = new BitArray(new bool[] { false })
+                    Isconfirmed = true,
                 };
 
                 user.Imageosobna = await SaveImageFromBase64Async(registracijaPutnikDTO.Osobna, "Osobna");
@@ -208,23 +250,54 @@ namespace REST_API___oicar.Controllers
         [HttpPost("[action]")]
         public ActionResult Login(KorisnikLoginDTO korisnikLoginDTO)
         {
+            //try
+            //{
+            //    var genericLoginFail = "Incorrect username or password";
+
+            //    var existingUser = _context.Korisniks.FirstOrDefault(x => x.Username == korisnikLoginDTO.Username);
+            //    if (existingUser == null)
+            //        return BadRequest(genericLoginFail);
+
+            //    var b64hash = PasswordHashProvider.GetHash(korisnikLoginDTO.Password, existingUser.Pwdsalt);
+            //    if (b64hash != existingUser.Pwdhash)
+            //        return BadRequest(genericLoginFail);
+
+            //    var secureKey = _configuration["JWT:SecureKey"];
+            //    var serializedToken = JwtTokenProvider.CreateToken(secureKey, 120, korisnikLoginDTO.Username);
+
+
+            //    return Ok(serializedToken);
+            //}
+            //catch (Exception ex)
+            //{
+            //    return StatusCode(500, ex.Message);
+            //}
             try
             {
-                var genericLoginFail = "Incorrect username or password";
+                var genericLoginFail = JsonConvert.SerializeObject("Incorrect username or password");
 
                 var existingUser = _context.Korisniks.FirstOrDefault(x => x.Username == korisnikLoginDTO.Username);
                 if (existingUser == null)
-                    return BadRequest(genericLoginFail);
+                {
+                    return Unauthorized(genericLoginFail);
+                }
 
                 var b64hash = PasswordHashProvider.GetHash(korisnikLoginDTO.Password, existingUser.Pwdsalt);
+
                 if (b64hash != existingUser.Pwdhash)
-                    return BadRequest(genericLoginFail);
+                {
+                    return Unauthorized(genericLoginFail);
+                }
 
                 var secureKey = _configuration["JWT:SecureKey"];
-                var serializedToken = JwtTokenProvider.CreateToken(secureKey, 120, korisnikLoginDTO.Username);
-           
 
-                return Ok(serializedToken);
+                var serializedToken =
+                    JwtTokenProvider.CreateToken(
+                        secureKey,
+                        120,
+                        korisnikLoginDTO.Username);
+
+                return Ok(JsonConvert.SerializeObject(serializedToken));
             }
             catch (Exception ex)
             {

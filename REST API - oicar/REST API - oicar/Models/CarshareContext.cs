@@ -33,6 +33,8 @@ public partial class CarshareContext : DbContext
 
     public virtual DbSet<Statusvoznje> Statusvoznjes { get; set; }
 
+    public virtual DbSet<Temp> Temps { get; set; }
+
     public virtual DbSet<Troskovi> Troskovis { get; set; }
 
     public virtual DbSet<Uloga> Ulogas { get; set; }
@@ -40,7 +42,8 @@ public partial class CarshareContext : DbContext
     public virtual DbSet<Vozilo> Vozilos { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseNpgsql("name=ConnectionStrings:CarshareConnStr");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseNpgsql("Host=strongly-efficient-echidna.data-1.use1.tembo.io;TrustServerCertificate=False;Port=5432;Username=postgres;Password=86WSYOqZEcLvfAWi;Database=carshare");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -81,9 +84,7 @@ public partial class CarshareContext : DbContext
             entity.Property(e => e.Ime)
                 .HasMaxLength(255)
                 .HasColumnName("ime");
-            entity.Property(e => e.Isconfirmed)
-                .HasColumnType("bit(1)")
-                .HasColumnName("isconfirmed");
+            entity.Property(e => e.Isconfirmed).HasColumnName("isconfirmed");
             entity.Property(e => e.Prezime)
                 .HasMaxLength(255)
                 .HasColumnName("prezime");
@@ -273,6 +274,19 @@ public partial class CarshareContext : DbContext
             entity.Property(e => e.Naziv)
                 .HasMaxLength(50)
                 .HasColumnName("naziv");
+        });
+
+        modelBuilder.Entity<Temp>(entity =>
+        {
+            entity.HasKey(e => e.Idkorisnik).HasName("temp_pkey");
+
+            entity.ToTable("temp");
+
+            entity.Property(e => e.Idkorisnik).HasColumnName("idkorisnik");
+            entity.Property(e => e.Ime)
+                .HasMaxLength(255)
+                .HasColumnName("ime");
+            entity.Property(e => e.Isconfirmed).HasColumnName("isconfirmed");
         });
 
         modelBuilder.Entity<Troskovi>(entity =>

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace REST_API___oicar.Models;
@@ -24,8 +23,6 @@ public partial class Korisnik
 
     public string? Telefon { get; set; }
 
-    public BitArray? Isconfirmed { get; set; }
-
     public int? Ulogaid { get; set; }
 
     public int? Imagevozackaid { get; set; }
@@ -35,6 +32,8 @@ public partial class Korisnik
     public int? Imageliceid { get; set; }
 
     public DateTime? Deletedat { get; set; }
+
+    public bool? Isconfirmed { get; set; }
 
     public virtual Image? Imagelice { get; set; }
 

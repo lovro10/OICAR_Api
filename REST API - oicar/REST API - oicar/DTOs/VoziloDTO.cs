@@ -4,15 +4,14 @@ namespace REST_API___oicar.DTOs
 {
     public class VoziloDTO
     {
-        [Required(ErrorMessage = "Marka je obavezna.")]
-        public string Marka { get; set; } = string.Empty;
+        public int Id { get; set; }
 
-        [Required(ErrorMessage = "Model je obavezan.")]
-        public string Model { get; set; } = string.Empty;
+        public string? Marka { get; set; }
 
-        [Required(ErrorMessage = "Registracija je obavezna.")]
-        public string Registracija { get; set; } = string.Empty;
+        public string? Model { get; set; }
 
-        public int Imageprometnaid { get; set; } = 0;
+        public string? Registracija { get; set; }
+
+        public string? Prometna { get; set; }
     }
 }
