@@ -57,21 +57,23 @@ namespace REST_API___oicar.Controllers
             });
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Korisnik>>> GetAll()
+        public async Task<ActionResult<IEnumerable<KorisnikDTO>>> GetAll()
         {
             return await _context.Korisniks
-                .Select(k => new Korisnik
+                .Include(x => x.Uloga)
+                .Select(k => new KorisnikDTO
                 {
-                    Idkorisnik = k.Idkorisnik,
+                    IDKorisnik = k.Idkorisnik,
                     Ime = k.Ime,
                     Prezime = k.Prezime,
-                    Datumrodjenja = k.Datumrodjenja,
+                    DatumRodjenja = k.Datumrodjenja,
                     Email = k.Email,
                     Username = k.Username,
                     Pwdhash = k.Pwdhash,
                     Pwdsalt = k.Pwdsalt,
                     Telefon = k.Telefon,
-                    Ulogaid = k.Ulogaid
+                    UlogaId = k.Ulogaid,
+                    Uloga = k.Uloga
                 })
                 .ToListAsync();
         }

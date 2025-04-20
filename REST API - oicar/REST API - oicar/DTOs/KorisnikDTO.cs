@@ -1,4 +1,6 @@
-﻿namespace REST_API___oicar.DTOs
+﻿using REST_API___oicar.Models;
+
+namespace REST_API___oicar.DTOs
 {
     public class KorisnikDTO
     {
@@ -15,5 +17,9 @@
         public string Telefon { get; set; }
 
         public DateOnly DatumRodjenja { get; set; }
+        public virtual Uloga? Uloga { get; set; }
+        public string Pwdhash { get; internal set; }
+        public string Pwdsalt { get; internal set; }
+        public int? UlogaId { get; internal set; }
     }
 }
