@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using REST_API___oicar.DTOs;
 using REST_API___oicar.Models;
+using System;
 using System.Collections;
 using System.Security.Claims;
 
@@ -22,39 +23,31 @@ namespace REST_API___oicar.Controllers
             _configuration = configuration;
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] KorisnikDTO korisnikDto)
+        public async Task<ActionResult<KorisnikUpdateDTO>> Update(int id, [FromBody] KorisnikUpdateDTO   korisnikDto)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                var korisnik = await _context.Korisniks.FindAsync(id);
+
+                if (korisnik == null)
+                    return NotFound($"Korisnik sa ID-jem {id} nije pronađen.");
+
+                korisnik.Ime = korisnikDto.Ime;
+                korisnik.Prezime = korisnikDto.Prezime;
+                korisnik.Email = korisnikDto.Email;
+                korisnik.Telefon = korisnikDto.Telefon;
+                korisnik.Datumrodjenja = korisnikDto.DatumRodjenja;
+                korisnik.Username = korisnikDto.Username;
+
+                _context.Korisniks.Update(korisnik);
+                await _context.SaveChangesAsync();
+
+                return Ok(korisnikDto);
             }
-
-            var existingKorisnik = _context.Korisniks.FirstOrDefault(k => k.Idkorisnik == id);
-            if (existingKorisnik == null)
+            catch (Exception ex)
             {
-                return NotFound($"Korisnik(id={id}) was not found.");
+                return StatusCode(500, ex.Message);
             }
-
-            existingKorisnik.Ime = korisnikDto.Ime;
-            existingKorisnik.Prezime = korisnikDto.Prezime;
-            existingKorisnik.Email = korisnikDto.Email;
-            existingKorisnik.Username = korisnikDto.Username;
-            existingKorisnik.Telefon = korisnikDto.Telefon;
-            existingKorisnik.Datumrodjenja = korisnikDto.DatumRodjenja;
-            _context.SaveChanges();
-
-
-            return Ok(new KorisnikDTO
-            {
-
-                Ime = korisnikDto.Ime,
-                Prezime = korisnikDto.Prezime,
-                Email = korisnikDto.Email,
-                Username = korisnikDto.Username,
-                Telefon = korisnikDto.Telefon,
-                DatumRodjenja = korisnikDto.DatumRodjenja,
-
-            });
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<KorisnikDTO>>> GetAll()
