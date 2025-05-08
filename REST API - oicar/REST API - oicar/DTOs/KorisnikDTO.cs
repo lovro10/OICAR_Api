@@ -21,5 +21,7 @@ namespace REST_API___oicar.DTOs
         public string Pwdhash { get; internal set; }
         public string Pwdsalt { get; internal set; }
         public int? UlogaId { get; internal set; }
+
+        public bool? Isconfirmed { get; set; }
     }
 }

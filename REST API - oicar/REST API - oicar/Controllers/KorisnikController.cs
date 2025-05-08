@@ -66,7 +66,8 @@ namespace REST_API___oicar.Controllers
                     Pwdsalt = k.Pwdsalt,
                     Telefon = k.Telefon,
                     UlogaId = k.Ulogaid,
-                    Uloga = k.Uloga
+                    Uloga = k.Uloga,
+                    Isconfirmed = k.Isconfirmed,
                 })
                 .ToListAsync();
         }
@@ -300,6 +301,28 @@ namespace REST_API___oicar.Controllers
             }
         }
 
+        [HttpPut("potvrdi")]
+        public async Task<IActionResult> PotvrdiIliOdbijKorisnika([FromBody] PotvrdaKorisnikDTO potvrdaKorisnikDTO)
+        {
+
+           
+            var korisnik = await _context.Korisniks.FindAsync(potvrdaKorisnikDTO.Id);
+
+         
+            if (korisnik == null)
+                return NotFound("Korisnik nije pronađen.");
+
+           
+            korisnik.Isconfirmed = potvrdaKorisnikDTO.IsConfirmed;
+
+        
+            _context.Entry(korisnik).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+          
+            var status = (bool)korisnik.Isconfirmed ? "potvrđen" : "odbijen";
+            return Ok($"Korisnik je uspješno {status}.");
+        }
         [HttpPost("[action]")]
         public ActionResult ChangePassword(KorisnikPromjenaLozinkeDTO changePasswordDto)
         {
