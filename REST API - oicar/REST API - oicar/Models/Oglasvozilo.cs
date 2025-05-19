@@ -13,9 +13,5 @@ public partial class Oglasvozilo
 
     public DateTime DatumZavrsetkaRezervacije { get; set; }
 
-    public int? Korisnikid { get; set; }
-
-    public virtual Korisnik? Korisnik { get; set; }
-
     public virtual Vozilo? Vozilo { get; set; }
 }

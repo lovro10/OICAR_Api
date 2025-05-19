@@ -1,66 +1,142 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\",
+  "WorkspaceRootPath": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\korisnikcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\korisnikcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\controllers\\korisnikcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\korisnikdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\korisnikdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\imagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\controllers\\imagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\korisnikregistracijadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\korisnikregistracijadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\korisnikupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\korisnikupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\models\\korisnik.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\models\\korisnik.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\korisnikvoznjacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\korisnikvoznjacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\controllers\\korisnikvoznjacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\potvrdakorisnikdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\potvrdakorisnikdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\korisnikvoznjadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\korisnikvoznjadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\models\\image.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\models\\image.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\models\\korisnikvoznja.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\models\\korisnikvoznja.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\imgeuploaddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\imgeuploaddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\oglasvoaznjacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\controllers\\oglasvoaznjacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\vozilocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\voznjahistorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\voznjahistorydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\voznjadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\voznjadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\models\\oglasvoznja.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\models\\oglasvoznja.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\oglasvozilocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\controllers\\oglasvozilocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\models\\lokacija.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\models\\lokacija.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\porukacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\controllers\\porukacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\porukagetdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\porukagetdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\imagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\controllers\\imagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\porukasenddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\porukasenddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\models\\poruka.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\models\\poruka.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\vozilocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\controllers\\vozilocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\models\\carsharecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\models\\carsharecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\models\\vozilo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\models\\vozilo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\vozilodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\models\\korisnikimage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\models\\korisnikimage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\models\\imagetype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\models\\imagetype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\models\\image.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\models\\image.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\imagedisplaydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\imagedisplaydto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\imagedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\imagedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\oglasvozilodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\oglasvozilodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\vozilodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\vozilodto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\onedrive - algebra\\radna povr\u0161ina\\oicar_api\\rest api - oicar\\rest api - oicar\\models\\vozilo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\models\\vozilo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\vehiclereservationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\vehiclereservationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\vehicledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\vehicledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\security\\jwttokenprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\security\\jwttokenprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\models\\jwttokenprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\models\\jwttokenprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\korisnikdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\korisnikdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\korisnikregistracijadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\korisnikregistracijadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\korisnikupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\korisnikupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\models\\korisnik.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\models\\korisnik.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\models\\carsharecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\models\\carsharecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -70,106 +146,133 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 11,
           "Children": [
             {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ImageController.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\ImageController.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\Controllers\\ImageController.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\ImageController.cs",
-              "RelativeToolTip": "REST API - oicar\\Controllers\\ImageController.cs",
-              "ViewState": "AgIAAEUAAAAAAAAAAAAwwFYAAAAPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-06T20:09:22.14Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "KorisnikRegistracijaDTO.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\KorisnikRegistracijaDTO.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\KorisnikRegistracijaDTO.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\KorisnikRegistracijaDTO.cs",
-              "RelativeToolTip": "REST API - oicar\\DTOs\\KorisnikRegistracijaDTO.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAxwA4AAAAPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-20T20:07:47.075Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "KorisnikUpdateDTO.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\KorisnikUpdateDTO.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\KorisnikUpdateDTO.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\KorisnikUpdateDTO.cs",
-              "RelativeToolTip": "REST API - oicar\\DTOs\\KorisnikUpdateDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-20T20:07:01.348Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "VoziloDTO.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\VoziloDTO.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\VoziloDTO.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\VoziloDTO.cs",
-              "RelativeToolTip": "REST API - oicar\\DTOs\\VoziloDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-20T19:59:18.026Z"
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "Korisnik.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Korisnik.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\Models\\Korisnik.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Korisnik.cs",
-              "RelativeToolTip": "REST API - oicar\\Models\\Korisnik.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAIwCMAAAADAAAAAAAAAA==",
+              "Title": "VoznjaHistoryDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\VoznjaHistoryDTO.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\VoznjaHistoryDTO.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\VoznjaHistoryDTO.cs",
+              "RelativeToolTip": "REST API - oicar\\DTOs\\VoznjaHistoryDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-20T19:55:45.256Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-17T21:05:06.123Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "VoznjaDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\VoznjaDTO.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\VoznjaDTO.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\VoznjaDTO.cs",
+              "RelativeToolTip": "REST API - oicar\\DTOs\\VoznjaDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T21:04:31.215Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Oglasvoznja.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Oglasvoznja.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\Models\\Oglasvoznja.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Oglasvoznja.cs",
+              "RelativeToolTip": "REST API - oicar\\Models\\Oglasvoznja.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T21:03:10.996Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Lokacija.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Lokacija.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\Models\\Lokacija.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Lokacija.cs",
+              "RelativeToolTip": "REST API - oicar\\Models\\Lokacija.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T20:53:00.347Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "KorisnikVoznjaDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\KorisnikVoznjaDTO.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\KorisnikVoznjaDTO.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\KorisnikVoznjaDTO.cs",
+              "RelativeToolTip": "REST API - oicar\\DTOs\\KorisnikVoznjaDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T20:46:12.197Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Korisnikvoznja.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Korisnikvoznja.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\Models\\Korisnikvoznja.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Korisnikvoznja.cs",
+              "RelativeToolTip": "REST API - oicar\\Models\\Korisnikvoznja.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T20:44:39.916Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "PorukaSendDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\PorukaSendDTO.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\PorukaSendDTO.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\PorukaSendDTO.cs",
+              "RelativeToolTip": "REST API - oicar\\DTOs\\PorukaSendDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T20:30:32.32Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "PorukaGetDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\PorukaGetDTO.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\PorukaGetDTO.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\PorukaGetDTO.cs",
+              "RelativeToolTip": "REST API - oicar\\DTOs\\PorukaGetDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-17T20:30:11.346Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 14,
-              "Title": "Vozilo.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Vozilo.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\Models\\Vozilo.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Vozilo.cs",
-              "RelativeToolTip": "REST API - oicar\\Models\\Vozilo.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
+              "Title": "Poruka.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Poruka.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\Models\\Poruka.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Poruka.cs",
+              "RelativeToolTip": "REST API - oicar\\Models\\Poruka.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-20T19:55:38.613Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "KorisnikDTO.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\KorisnikDTO.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\KorisnikDTO.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\KorisnikDTO.cs",
-              "RelativeToolTip": "REST API - oicar\\DTOs\\KorisnikDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-20T19:55:10.334Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-17T20:19:59.404Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "KorisnikController.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\KorisnikController.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\KorisnikController.cs",
               "RelativeDocumentMoniker": "REST API - oicar\\Controllers\\KorisnikController.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\KorisnikController.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\KorisnikController.cs",
               "RelativeToolTip": "REST API - oicar\\Controllers\\KorisnikController.cs",
-              "ViewState": "AgIAACkBAAAAAAAAAAAkwDoBAAALAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-20T19:39:42.67Z",
               "EditorCaption": ""
@@ -177,10 +280,70 @@
             {
               "$type": "Document",
               "DocumentIndex": 12,
+              "Title": "ImageController.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\ImageController.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\Controllers\\ImageController.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\ImageController.cs",
+              "RelativeToolTip": "REST API - oicar\\Controllers\\ImageController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-06T20:09:22.14Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "PorukaController.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\PorukaController.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\Controllers\\PorukaController.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\PorukaController.cs",
+              "RelativeToolTip": "REST API - oicar\\Controllers\\PorukaController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-10T10:33:35.211Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "KorisnikVoznjaController.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\KorisnikVoznjaController.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\Controllers\\KorisnikVoznjaController.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\KorisnikVoznjaController.cs",
+              "RelativeToolTip": "REST API - oicar\\Controllers\\KorisnikVoznjaController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-20T19:39:42.134Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "OglasVoaznjaController.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\OglasVoaznjaController.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\Controllers\\OglasVoaznjaController.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\OglasVoaznjaController.cs",
+              "RelativeToolTip": "REST API - oicar\\Controllers\\OglasVoaznjaController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-13T16:16:49.225Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "VoziloController.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\VoziloController.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\Controllers\\VoziloController.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\VoziloController.cs",
+              "RelativeToolTip": "REST API - oicar\\Controllers\\VoziloController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-20T19:49:02.909Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
               "Title": "CarshareContext.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\CarshareContext.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\CarshareContext.cs",
               "RelativeDocumentMoniker": "REST API - oicar\\Models\\CarshareContext.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\CarshareContext.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\CarshareContext.cs",
               "RelativeToolTip": "REST API - oicar\\Models\\CarshareContext.cs",
               "ViewState": "AgIAABIAAAAAAAAAAAAcwCwAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -188,79 +351,219 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "ImgeUploadDTO.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\ImgeUploadDTO.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\ImgeUploadDTO.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\ImgeUploadDTO.cs",
-              "RelativeToolTip": "REST API - oicar\\DTOs\\ImgeUploadDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 29,
+              "Title": "KorisnikDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\KorisnikDTO.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\KorisnikDTO.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\KorisnikDTO.cs",
+              "RelativeToolTip": "REST API - oicar\\DTOs\\KorisnikDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-06T20:15:06.354Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Program.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\Program.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Program.cs",
-              "RelativeToolTip": "REST API - oicar\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACoAAAAWAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-06T20:15:45.061Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Image.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Image.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\Models\\Image.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Image.cs",
-              "RelativeToolTip": "REST API - oicar\\Models\\Image.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAABhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-06T20:27:20.128Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-20T19:55:10.334Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 8,
-              "Title": "PotvrdaKorisnikDTO.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\PotvrdaKorisnikDTO.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\PotvrdaKorisnikDTO.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\PotvrdaKorisnikDTO.cs",
-              "RelativeToolTip": "REST API - oicar\\DTOs\\PotvrdaKorisnikDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-08T15:06:21.75Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "VoziloController.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\VoziloController.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\Controllers\\VoziloController.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\VoziloController.cs",
-              "RelativeToolTip": "REST API - oicar\\Controllers\\VoziloController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADEAAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-20T19:49:02.909Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "KorisnikVoznjaController.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\KorisnikVoznjaController.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\Controllers\\KorisnikVoznjaController.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\OneDrive - Algebra\\Radna povr\u0161ina\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\KorisnikVoznjaController.cs",
-              "RelativeToolTip": "REST API - oicar\\Controllers\\KorisnikVoznjaController.cs",
+              "Title": "OglasVoziloController.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\OglasVoziloController.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\Controllers\\OglasVoziloController.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\OglasVoziloController.cs",
+              "RelativeToolTip": "REST API - oicar\\Controllers\\OglasVoziloController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-20T19:39:42.134Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-09T14:19:43.769Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Vozilo.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Vozilo.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\Models\\Vozilo.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Vozilo.cs",
+              "RelativeToolTip": "REST API - oicar\\Models\\Vozilo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-20T19:55:38.613Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "Korisnik.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Korisnik.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\Models\\Korisnik.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Korisnik.cs",
+              "RelativeToolTip": "REST API - oicar\\Models\\Korisnik.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAIwCMAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-20T19:55:45.256Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "VoziloDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\VoziloDTO.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\VoziloDTO.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\VoziloDTO.cs",
+              "RelativeToolTip": "REST API - oicar\\DTOs\\VoziloDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-20T19:59:18.026Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "KorisnikUpdateDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\KorisnikUpdateDTO.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\KorisnikUpdateDTO.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\KorisnikUpdateDTO.cs",
+              "RelativeToolTip": "REST API - oicar\\DTOs\\KorisnikUpdateDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-20T20:07:01.348Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "KorisnikRegistracijaDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\KorisnikRegistracijaDTO.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\KorisnikRegistracijaDTO.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\KorisnikRegistracijaDTO.cs",
+              "RelativeToolTip": "REST API - oicar\\DTOs\\KorisnikRegistracijaDTO.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAxwA4AAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-20T20:07:47.075Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\appsettings.json",
+              "RelativeDocumentMoniker": "REST API - oicar\\appsettings.json",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\appsettings.json",
+              "RelativeToolTip": "REST API - oicar\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-05-09T14:17:32.597Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Image.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Image.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\Models\\Image.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Image.cs",
+              "RelativeToolTip": "REST API - oicar\\Models\\Image.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-16T13:42:34.607Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "ImageDisplayDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\ImageDisplayDTO.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\ImageDisplayDTO.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\ImageDisplayDTO.cs",
+              "RelativeToolTip": "REST API - oicar\\DTOs\\ImageDisplayDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-16T13:53:19.871Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "ImageDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\ImageDTO.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\ImageDTO.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\ImageDTO.cs",
+              "RelativeToolTip": "REST API - oicar\\DTOs\\ImageDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-16T13:53:29.948Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Imagetype.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Imagetype.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\Models\\Imagetype.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Imagetype.cs",
+              "RelativeToolTip": "REST API - oicar\\Models\\Imagetype.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-16T14:18:32.463Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Korisnikimage.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Korisnikimage.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\Models\\Korisnikimage.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\Korisnikimage.cs",
+              "RelativeToolTip": "REST API - oicar\\Models\\Korisnikimage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-16T14:23:26.562Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "VehicleReservationDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\VehicleReservationDTO.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\VehicleReservationDTO.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\VehicleReservationDTO.cs",
+              "RelativeToolTip": "REST API - oicar\\DTOs\\VehicleReservationDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-15T13:42:31.875Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "VehicleDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\VehicleDTO.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\VehicleDTO.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\VehicleDTO.cs",
+              "RelativeToolTip": "REST API - oicar\\DTOs\\VehicleDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-15T13:42:48.155Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "OglasVoziloDTO.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\OglasVoziloDTO.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\OglasVoziloDTO.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\OglasVoziloDTO.cs",
+              "RelativeToolTip": "REST API - oicar\\DTOs\\OglasVoziloDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-15T14:08:53.514Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "JwtTokenProvider.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Security\\JwtTokenProvider.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\Security\\JwtTokenProvider.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Security\\JwtTokenProvider.cs",
+              "RelativeToolTip": "REST API - oicar\\Security\\JwtTokenProvider.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-09T16:42:28.255Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "JwtTokenProvider.cs",
+              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\JwtTokenProvider.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\Models\\JwtTokenProvider.cs",
+              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Models\\JwtTokenProvider.cs",
+              "RelativeToolTip": "REST API - oicar\\Models\\JwtTokenProvider.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-09T17:13:31.565Z"
             }
           ]
         }

@@ -15,8 +15,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSwaggerGen(option =>
 {
-    option.SwaggerDoc("v1",
-        new OpenApiInfo { Title = "Carshare API", Version = "v1" });
+    option.SwaggerDoc("v1", new OpenApiInfo { Title = "Carshare API", Version = "v1" });
 
     option.AddSecurityDefinition("Bearer",
         new OpenApiSecurityScheme
@@ -32,35 +31,34 @@ builder.Services.AddSwaggerGen(option =>
     option.AddSecurityRequirement(
         new OpenApiSecurityRequirement
         {
+            {
+                new OpenApiSecurityScheme
                 {
-                    new OpenApiSecurityScheme
+                    Reference = new OpenApiReference
                     {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    new List<string>()
-                }
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                new List<string>()
+            }
         });
 });
 
 builder.Services.AddControllers().AddJsonOptions(x =>
     x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
 );
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
         policy.WithOrigins("http://localhost:5242") 
-              .AllowAnyHeader()
-              .AllowAnyMethod()
+              .AllowAnyHeader() 
+              .AllowAnyMethod() 
               .AllowCredentials(); 
     });
 });
-
-
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
@@ -81,7 +79,7 @@ builder.Services
     });
 
 builder.Services.AddDbContext<CarshareContext>(options => {
-    options.UseNpgsql("Name=ConnectionStrings:CarshareConnStr");
+    options.UseNpgsql("Name=ConnectionStrings:CarshareConnStr"); 
 });
 
 var app = builder.Build();
@@ -93,8 +91,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseStaticFiles();
-app.UseCors();
-
+app.UseCors(); 
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

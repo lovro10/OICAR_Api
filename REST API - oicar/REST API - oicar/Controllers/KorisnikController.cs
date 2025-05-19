@@ -6,7 +6,7 @@ using REST_API___oicar.DTOs;
 using REST_API___oicar.Models;
 using System;
 using System.Collections;
-using System.Security.Claims;
+using System.Security.Claims; 
 
 namespace REST_API___oicar.Controllers
 {
@@ -23,7 +23,7 @@ namespace REST_API___oicar.Controllers
             _configuration = configuration;
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult<KorisnikUpdateDTO>> Update(int id, [FromBody] KorisnikUpdateDTO   korisnikDto)
+        public async Task<ActionResult<KorisnikUpdateDTO>> Update(int id, [FromBody] KorisnikUpdateDTO korisnikDto)
         {
             try
             {
@@ -49,6 +49,7 @@ namespace REST_API___oicar.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<KorisnikDTO>>> GetAll()
         {
@@ -83,22 +84,6 @@ namespace REST_API___oicar.Controllers
             return korisnik;
         }
 
-        [HttpGet("[action]")]
-        public ActionResult GenerirajToken()
-        {
-            try
-            {
-                var secureKey = _configuration["JWT:SecureKey"];
-                var serializedToken = JwtTokenProvider.CreateToken(secureKey, 10);
-
-                return Ok(serializedToken);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
-
         [HttpPost("[action]")]
         public async Task<ActionResult<RegistracijaVozacDTO>> RegistracijaVozac([FromBody] RegistracijaVozacDTO registracijaVozacDTO)
         {
@@ -124,8 +109,6 @@ namespace REST_API___oicar.Controllers
                     Isconfirmed = true,
 
                 };
-
-               
 
                 _context.Korisniks.Add(user);
                 await _context.SaveChangesAsync();
@@ -165,7 +148,6 @@ namespace REST_API___oicar.Controllers
                 
                 };
 
-
                 user.Imagevozacka = await SaveImageFromBase64Async(registracijaVozacDTO.Vozacka, "Vozacka");
                 user.Imageosobna = await SaveImageFromBase64Async(registracijaVozacDTO.Osobna, "Osobna");
                 user.Imagelice = await SaveImageFromBase64Async(registracijaVozacDTO.Selfie, "Selfie");
@@ -182,6 +164,7 @@ namespace REST_API___oicar.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
         private async Task<Image> SaveImageFromBase64Async(string base64Image, string name)
         {
             if (string.IsNullOrEmpty(base64Image))
@@ -246,28 +229,6 @@ namespace REST_API___oicar.Controllers
         [HttpPost("[action]")]
         public ActionResult Login(KorisnikLoginDTO korisnikLoginDTO)
         {
-            //try
-            //{
-            //    var genericLoginFail = "Incorrect username or password";
-
-            //    var existingUser = _context.Korisniks.FirstOrDefault(x => x.Username == korisnikLoginDTO.Username);
-            //    if (existingUser == null)
-            //        return BadRequest(genericLoginFail);
-
-            //    var b64hash = PasswordHashProvider.GetHash(korisnikLoginDTO.Password, existingUser.Pwdsalt);
-            //    if (b64hash != existingUser.Pwdhash)
-            //        return BadRequest(genericLoginFail);
-
-            //    var secureKey = _configuration["JWT:SecureKey"];
-            //    var serializedToken = JwtTokenProvider.CreateToken(secureKey, 120, korisnikLoginDTO.Username);
-
-
-            //    return Ok(serializedToken);
-            //}
-            //catch (Exception ex)
-            //{
-            //    return StatusCode(500, ex.Message);
-            //}
             try
             {
                 var genericLoginFail = JsonConvert.SerializeObject("Incorrect username or password");
@@ -304,38 +265,31 @@ namespace REST_API___oicar.Controllers
         [HttpPut("potvrdi")]
         public async Task<IActionResult> PotvrdiIliOdbijKorisnika([FromBody] PotvrdaKorisnikDTO potvrdaKorisnikDTO)
         {
-
-           
             var korisnik = await _context.Korisniks.FindAsync(potvrdaKorisnikDTO.Id);
 
-         
             if (korisnik == null)
                 return NotFound("Korisnik nije pronađen.");
 
-           
-            korisnik.Isconfirmed = potvrdaKorisnikDTO.IsConfirmed;
+            korisnik.Isconfirmed = potvrdaKorisnikDTO.IsConfirmed; 
 
-        
             _context.Entry(korisnik).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-
-          
+            
             var status = (bool)korisnik.Isconfirmed ? "potvrđen" : "odbijen";
             return Ok($"Korisnik je uspješno {status}.");
         }
+
         [HttpPost("[action]")]
         public ActionResult ChangePassword(KorisnikPromjenaLozinkeDTO changePasswordDto)
         {
             try
             {
-
                 if (string.IsNullOrWhiteSpace(changePasswordDto.Username) ||
                     string.IsNullOrWhiteSpace(changePasswordDto.OldPassword) ||
                     string.IsNullOrWhiteSpace(changePasswordDto.NewPassword))
                 {
                     return BadRequest("There is no input");
                 }
-
 
                 var existingUser = _context.Korisniks
                     .FirstOrDefault(x => x.Username == changePasswordDto.Username);
@@ -367,7 +321,5 @@ namespace REST_API___oicar.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
-
-
     }
 }

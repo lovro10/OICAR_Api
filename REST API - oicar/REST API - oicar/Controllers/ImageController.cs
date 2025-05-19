@@ -1,15 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using REST_API___oicar.DTOs;
 using REST_API___oicar.Models;
-using System.Security.Claims;
 
 namespace REST_API___oicar.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] 
     public class ImageController : ControllerBase
     {
         private readonly CarshareContext _context;
@@ -19,7 +16,74 @@ namespace REST_API___oicar.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet("[action]")] 
+        public async Task<ActionResult<ImageDisplayDTO>> DisplayImage(int id)
+        { 
+            var image = await _context.Images
+                .Include(x => x.Imagetype)
+                .FirstOrDefaultAsync(x => x.Idimage == id); 
+
+            if (image == null)
+                return NotFound();
+
+            var base64 = Convert.ToBase64String(image.Content);
+
+            var imageDisplayDTO = new ImageDisplayDTO 
+            { 
+                Name = image.Name,
+                Content = base64, 
+                Type = image.Imagetype?.Name
+            }; 
+
+            return Ok(imageDisplayDTO);
+        }
+
+        [HttpGet("[action]")] 
+        public async Task<ActionResult<IEnumerable<ImageDisplayDTO>>> GetImagesForUser(int userId)
+        { 
+            var images = await _context.Korisnikimages
+                .Where(x => x.Korisnikid == userId)
+                .Include(x => x.Image)
+                .ThenInclude(x => x.Imagetype)
+                .Select(x => new ImageDisplayDTO
+                { 
+                    Name = x.Image.Name,
+                    Content = Convert.ToBase64String(x.Image.Content),
+                    Type = x.Image.Imagetype.Name 
+                })
+                .ToListAsync();
+
+            return Ok(images);
+        }
+
+        [HttpGet("[action]")] 
+        public async Task<ActionResult<IEnumerable<ImageDisplayDTO>>> GetImagesForVehicle(int vehicleId)
+        {
+            var vehicle = await _context.Vozilos
+                .FirstOrDefaultAsync(v => v.Idvozilo == vehicleId);
+
+            if (vehicle == null)
+                return NotFound();
+
+            var registration = vehicle.Registracija.ToLower(); 
+
+            var images = await _context.Images 
+                .Where(x => 
+                    x.Name.ToLower().StartsWith("Prednja") &&
+                    x.Name.ToLower().EndsWith(registration))
+                .Include(x => x.Imagetype)
+                .Select(x => new ImageDisplayDTO
+                { 
+                    Name = x.Name,
+                    Content = Convert.ToBase64String(x.Content),
+                    Type = x.Imagetype.Name  
+                })
+                .ToListAsync();
+
+            return Ok(images);
+        }
+
+        [HttpGet("[action]")]
         public async Task<ActionResult<IEnumerable<ImageUploadDTO>>> GetImages()
         {
             var images = await _context.Images.ToListAsync();
@@ -33,8 +97,7 @@ namespace REST_API___oicar.Controllers
             return Ok(imageDtos);
         }
 
-        // GET: api/Image/5
-        [HttpGet("{id}")]
+        [HttpGet("[action]")]
         public async Task<ActionResult<ImageUploadDTO>> GetImageById(int id)
         {
             var image = await _context.Images.FindAsync(id);
@@ -50,7 +113,6 @@ namespace REST_API___oicar.Controllers
             return Ok(dto);
         }
 
-        // POST: api/Image
         [HttpPost]
         public async Task<IActionResult> UploadImage([FromBody] ImageUploadDTO dto)
         {
@@ -68,7 +130,7 @@ namespace REST_API___oicar.Controllers
                 _context.Images.Add(image);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction(nameof(GetImageById), new { id = image.Idimage }, dto);
+                return Ok(dto);
             }
             catch (FormatException)
             {
@@ -76,7 +138,6 @@ namespace REST_API___oicar.Controllers
             }
         }
 
-        // PUT: api/Image/5
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateImage(int id, [FromBody] ImageUploadDTO dto)
         {
@@ -90,7 +151,7 @@ namespace REST_API___oicar.Controllers
                 image.Content = Convert.FromBase64String(dto.Base64Content);
 
                 await _context.SaveChangesAsync();
-                return NoContent();
+                return Ok(dto);
             }
             catch (FormatException)
             {
@@ -98,7 +159,6 @@ namespace REST_API___oicar.Controllers
             }
         }
 
-        // DELETE: api/Image/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteImage(int id)
         {

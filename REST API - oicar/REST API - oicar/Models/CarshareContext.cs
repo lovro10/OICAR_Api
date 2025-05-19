@@ -17,7 +17,11 @@ public partial class CarshareContext : DbContext
 
     public virtual DbSet<Image> Images { get; set; }
 
+    public virtual DbSet<Imagetype> Imagetypes { get; set; }
+
     public virtual DbSet<Korisnik> Korisniks { get; set; }
+
+    public virtual DbSet<Korisnikimage> Korisnikimages { get; set; }
 
     public virtual DbSet<Korisnikvozilo> Korisnikvozilos { get; set; }
 
@@ -43,7 +47,7 @@ public partial class CarshareContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=strongly-efficient-echidna.data-1.use1.tembo.io;TrustServerCertificate=False;Port=5432;Username=postgres;Password=86WSYOqZEcLvfAWi;Database=carshare");
+        => optionsBuilder.UseNpgsql("Host=strongly-efficient-echidna.data-1.use1.tembo.io;TrustServerCertificate=True;Port=5432;Username=postgres;Password=86WSYOqZEcLvfAWi;Database=carshare");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -57,6 +61,22 @@ public partial class CarshareContext : DbContext
 
             entity.Property(e => e.Idimage).HasColumnName("idimage");
             entity.Property(e => e.Content).HasColumnName("content");
+            entity.Property(e => e.Imagetypeid).HasColumnName("imagetypeid");
+            entity.Property(e => e.Name).HasColumnName("name");
+
+            entity.HasOne(d => d.Imagetype).WithMany(p => p.Images)
+                .HasForeignKey(d => d.Imagetypeid)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("image_imagetypeid_fkey");
+        });
+
+        modelBuilder.Entity<Imagetype>(entity =>
+        {
+            entity.HasKey(e => e.Idimagetype).HasName("imagetype_pkey");
+
+            entity.ToTable("imagetype");
+
+            entity.Property(e => e.Idimagetype).HasColumnName("idimagetype");
             entity.Property(e => e.Name).HasColumnName("name");
         });
 
@@ -119,6 +139,27 @@ public partial class CarshareContext : DbContext
             entity.HasOne(d => d.Uloga).WithMany(p => p.Korisniks)
                 .HasForeignKey(d => d.Ulogaid)
                 .HasConstraintName("korisnik_ulogaid_fkey");
+        });
+
+        modelBuilder.Entity<Korisnikimage>(entity =>
+        {
+            entity.HasKey(e => e.Idkorisnikimage).HasName("korisnikimage_pkey");
+
+            entity.ToTable("korisnikimage");
+
+            entity.Property(e => e.Idkorisnikimage).HasColumnName("idkorisnikimage");
+            entity.Property(e => e.Imageid).HasColumnName("imageid");
+            entity.Property(e => e.Korisnikid).HasColumnName("korisnikid");
+
+            entity.HasOne(d => d.Image).WithMany(p => p.Korisnikimages)
+                .HasForeignKey(d => d.Imageid)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("korisnikimage_imageid_fkey");
+
+            entity.HasOne(d => d.Korisnik).WithMany(p => p.Korisnikimages)
+                .HasForeignKey(d => d.Korisnikid)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("korisnikimage_korisnikid_fkey");
         });
 
         modelBuilder.Entity<Korisnikvozilo>(entity =>
@@ -191,12 +232,7 @@ public partial class CarshareContext : DbContext
             entity.Property(e => e.DatumZavrsetkaRezervacije)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("datum_zavrsetka_rezervacije");
-            entity.Property(e => e.Korisnikid).HasColumnName("korisnikid");
             entity.Property(e => e.Voziloid).HasColumnName("voziloid");
-
-            entity.HasOne(d => d.Korisnik).WithMany(p => p.Oglasvozilos)
-                .HasForeignKey(d => d.Korisnikid)
-                .HasConstraintName("oglasvozilo_korisnikid_fkey");
 
             entity.HasOne(d => d.Vozilo).WithMany(p => p.Oglasvozilos)
                 .HasForeignKey(d => d.Voziloid)
@@ -326,20 +362,29 @@ public partial class CarshareContext : DbContext
 
             entity.Property(e => e.Idvozilo).HasColumnName("idvozilo");
             entity.Property(e => e.Imageprometnaid).HasColumnName("imageprometnaid");
+            entity.Property(e => e.Isconfirmed).HasColumnName("isconfirmed");
             entity.Property(e => e.Marka)
                 .HasMaxLength(50)
                 .HasColumnName("marka");
             entity.Property(e => e.Model)
                 .HasMaxLength(50)
                 .HasColumnName("model");
+            entity.Property(e => e.Naziv)
+                .HasMaxLength(50)
+                .HasColumnName("naziv");
             entity.Property(e => e.Registracija)
                 .HasMaxLength(20)
                 .HasColumnName("registracija");
+            entity.Property(e => e.Vozacid).HasColumnName("vozacid");
 
             entity.HasOne(d => d.Imageprometna).WithMany(p => p.Vozilos)
                 .HasForeignKey(d => d.Imageprometnaid)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("vozilo_imageprometnaid_fkey");
+
+            entity.HasOne(d => d.Vozac).WithMany(p => p.Vozilos)
+                .HasForeignKey(d => d.Vozacid)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("vozilo_vozacid_fkey");
         });
 
         OnModelCreatingPartial(modelBuilder);

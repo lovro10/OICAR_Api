@@ -41,15 +41,17 @@ public partial class Korisnik
 
     public virtual Image? Imagevozacka { get; set; }
 
+    public virtual ICollection<Korisnikimage> Korisnikimages { get; set; } = new List<Korisnikimage>();
+
     public virtual ICollection<Korisnikvozilo> Korisnikvozilos { get; set; } = new List<Korisnikvozilo>();
 
     public virtual ICollection<Korisnikvoznja> Korisnikvoznjas { get; set; } = new List<Korisnikvoznja>();
-
-    public virtual ICollection<Oglasvozilo> Oglasvozilos { get; set; } = new List<Oglasvozilo>();
 
     public virtual ICollection<Poruka> PorukaPutniks { get; set; } = new List<Poruka>();
 
     public virtual ICollection<Poruka> PorukaVozacs { get; set; } = new List<Poruka>();
 
     public virtual Uloga? Uloga { get; set; }
+
+    public virtual ICollection<Vozilo> Vozilos { get; set; } = new List<Vozilo>();
 }

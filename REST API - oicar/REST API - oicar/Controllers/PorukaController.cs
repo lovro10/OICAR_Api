@@ -16,61 +16,51 @@ namespace REST_API___oicar.Controllers
             _context = context;
         }
 
-        [HttpGet("[action]/{korisnikVoznjaId}")]
-        public async Task<IActionResult> DohvatiPoruke(int korisnikVoznjaId)
+        [HttpGet("[action]")] 
+        public async Task<ActionResult<IEnumerable<PorukaGetDTO>>> GetMessagesForRide(int korisnikVoznjaId)
         {
-            var poruke = await _context.Porukas
-                .Where(p => p.Korisnikvoznjaid == korisnikVoznjaId)
-                .Include(p => p.Putnik)
-                .Include(p => p.Vozac)
+            var messages = await _context.Porukas
+                .Where(x => x.Korisnikvoznjaid == korisnikVoznjaId)
+                .OrderBy(x => x.Idporuka)
+                .Select(x => new PorukaGetDTO
+                { 
+                    Idporuka = x.Idporuka,
+                    Content = x.Content,
+                    KorisnikVoznjaId = x.Korisnikvoznjaid ?? 0,
+                    PutnikId = x.Putnikid,
+                    VozacId = x.Vozacid,
+                    SenderName = x.Putnik != null ? x.Putnik.Username :
+                                 x.Vozac != null ? x.Vozac.Username : "Unknown user"
+                })
                 .ToListAsync();
 
-            if (poruke == null || !poruke.Any())
-                return NotFound("Nema poruka za ovu vožnju.");
+            return Ok(messages);
+        }
 
-            var porukeDTO = poruke.Select(p => new
-            {
-                p.Idporuka,
-                p.Content,
-                p.Putnikid,
-                p.Vozacid,
-                PutnikIme = p.Putnik.Ime,
-                VozacIme = p.Vozac.Ime 
-            }).ToList(); 
+        [HttpPost("[action]")] 
+        public async Task<ActionResult> SendMessageForRide([FromBody] PorukaSendDTO porukaSendDTO) 
+        { 
+            if (porukaSendDTO.KorisnikVoznjaId == 0 || string.IsNullOrWhiteSpace(porukaSendDTO.Content))
+                return BadRequest("KorisnikVoznjaId i sadržaj poruke su obavezni.");
 
-            return Ok(porukeDTO);
-        } 
+            if (porukaSendDTO.PutnikId == null && porukaSendDTO.VozacId == null)
+                return BadRequest("Pošiljatelj mora biti definiran (putnikId ili vozacId).");
 
-        [HttpPost("[action]")]
-        public async Task<IActionResult> PosaljitePoruku([FromBody] PorukaDTO porukaDTO)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            if (porukaSendDTO.PutnikId != null && porukaSendDTO.VozacId != null)
+                return BadRequest("Poruku može poslati samo jedan korisnik (putnik ILI vozač, ne oba).");
 
-            var korisnikVoznja = await _context.Korisnikvoznjas
-                .FirstOrDefaultAsync(kv => kv.Idkorisnikvoznja == porukaDTO.KorisnikVoznjaId);
-
-            if (korisnikVoznja == null)
-                return NotFound("Korisnička vožnja nije pronađena.");
-
-            var korisnik = await _context.Korisniks 
-                .FirstOrDefaultAsync(k => k.Idkorisnik == porukaDTO.PutnikId || k.Idkorisnik == porukaDTO.VozacId);
-
-            if (korisnik == null)
-                return NotFound("Korisnik nije pronađen.");
-
-            var novaPoruka = new Poruka
-            {
-                Korisnikvoznjaid = porukaDTO.KorisnikVoznjaId,
-                Putnikid = porukaDTO.PutnikId,
-                Vozacid = porukaDTO.VozacId,
-                Content = porukaDTO.Content,
+            var newMessage = new Poruka 
+            {  
+                Korisnikvoznjaid = porukaSendDTO.KorisnikVoznjaId,
+                Putnikid = porukaSendDTO.PutnikId,
+                Vozacid = porukaSendDTO.VozacId,
+                Content = porukaSendDTO.Content
             };
 
-            _context.Porukas.Add(novaPoruka);
-            await _context.SaveChangesAsync();
+            _context.Porukas.Add(newMessage); 
+            await _context.SaveChangesAsync(); 
 
-            return Ok(new { message = "Poruka uspješno poslana." });
+            return Ok(new { message = "Message sent" });
         }
     }
 }
