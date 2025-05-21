@@ -4,9 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using REST_API___oicar.DTOs;
 using REST_API___oicar.Models;
-using System;
-using System.Collections;
-using System.Security.Claims; 
 
 namespace REST_API___oicar.Controllers
 {
@@ -233,28 +230,31 @@ namespace REST_API___oicar.Controllers
             {
                 var genericLoginFail = JsonConvert.SerializeObject("Incorrect username or password");
 
-                var existingUser = _context.Korisniks.FirstOrDefault(x => x.Username == korisnikLoginDTO.Username);
+                var existingUser = _context.Korisniks
+                    .Include(x => x.Uloga)
+                    .FirstOrDefault(x => x.Username == korisnikLoginDTO.Username);
                 if (existingUser == null)
                 {
                     return Unauthorized(genericLoginFail);
                 }
 
                 var b64hash = PasswordHashProvider.GetHash(korisnikLoginDTO.Password, existingUser.Pwdsalt);
-
                 if (b64hash != existingUser.Pwdhash)
                 {
                     return Unauthorized(genericLoginFail);
                 }
 
-                var secureKey = _configuration["JWT:SecureKey"];
+                var secureKey = _configuration["Jwt:SecureKey"];
 
-                var serializedToken =
-                    JwtTokenProvider.CreateToken(
-                        secureKey,
-                        120,
-                        korisnikLoginDTO.Username);
+                var token = JwtTokenProvider.CreateToken(
+                    secureKey,
+                    120,
+                    existingUser.Idkorisnik,
+                    existingUser.Uloga.Naziv, 
+                    existingUser.Username 
+                    ); 
 
-                return Ok(JsonConvert.SerializeObject(serializedToken));
+                return Ok(JsonConvert.SerializeObject(token));
             }
             catch (Exception ex)
             {

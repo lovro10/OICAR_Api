@@ -238,7 +238,7 @@ namespace REST_API___oicar.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteVehicle(int id)
         {
             var vozilo = await _context.Vozilos.FindAsync(id);
             if (vozilo == null)
@@ -248,6 +248,23 @@ namespace REST_API___oicar.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(vozilo);
+        }
+
+        [HttpPut("[action]")] 
+        public async Task<IActionResult> AcceptOrDenyVehicle([FromBody] PotvrdaVoziloDTO potvrdaVoziloDTO)   
+        { 
+            var vozilo = await _context.Vozilos.FindAsync(potvrdaVoziloDTO.Id); 
+
+            if (vozilo == null)
+                return NotFound("Vehicle was not found");
+
+            vozilo.Isconfirmed = potvrdaVoziloDTO.IsConfirmed; 
+
+            _context.Entry(vozilo).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            var status = (bool)vozilo.Isconfirmed ? "confirmed" : "denied"; 
+            return Ok($"Vehicle was successfully {status}"); 
         }
     }
 }
