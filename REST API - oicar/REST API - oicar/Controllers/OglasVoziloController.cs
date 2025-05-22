@@ -128,7 +128,7 @@ namespace REST_API___oicar.Controllers
         } 
 
         [HttpGet("[action]/{id}")]
-        public async Task<ActionResult<OglasVoznjaDTO>> DetaljiOglasaVoznje(int id)
+        public async Task<ActionResult<OglasVoznjaDTO>> DetaljiOglasaVozila(int id)
         {
             var oglasVozilo = await _context.Oglasvozilos
             .Include(o => o.Vozilo)

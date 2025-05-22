@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using REST_API___oicar.DTOs;
-using System.Security.Claims;
 using REST_API___oicar.Models;
 
 namespace REST_API___oicar.Controllers
@@ -16,18 +15,21 @@ namespace REST_API___oicar.Controllers
         {
             _context = context;
         }
-
         [HttpGet("[action]")]
         public async Task<ActionResult<IEnumerable<OglasVoznjaDTO>>> GetAll()
         {
             var oglasiVoznje = await _context.Oglasvoznjas
                 .Include(o => o.Troskovi)
                 .Include(o => o.Lokacija)
+                .Include(o => o.Vozilo)
                 .Include(o => o.Statusvoznje)
                 .Select(o => new OglasVoznjaDTO
                 {
                     IdOglasVoznja = o.Idoglasvoznja,
                     VoziloId = o.Voziloid,
+                    Marka = o.Vozilo.Marka,
+                    Model = o.Vozilo.Model,
+                    Registracija = o.Vozilo.Registracija,
                     DatumIVrijemePolaska = o.DatumIVrijemePolaska,
                     DatumIVrijemeDolaska = o.DatumIVrijemeDolaska,
                     BrojPutnika = o.BrojPutnika,
@@ -44,7 +46,7 @@ namespace REST_API___oicar.Controllers
 
             return Ok(oglasiVoznje);
         }
-
+        
         [HttpGet("[action]/{id}")]
         public async Task<ActionResult<OglasVoznjaDTO>> GetById(int id)
         {

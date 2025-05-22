@@ -82,10 +82,12 @@ namespace REST_API___oicar.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult<RegistracijaVozacDTO>> RegistracijaVozac([FromBody] RegistracijaVozacDTO registracijaVozacDTO)
+        public async Task<ActionResult<RegistracijaVozacDTO>> RegistracijaVozac([FromBody] String jsonRegistracijaVozacDTO)
         {
             try
             {
+                var registracijaVozacDTO = JsonConvert.DeserializeObject<RegistracijaVozacDTO>(jsonRegistracijaVozacDTO);
+
                 var trimmedUsername = registracijaVozacDTO.Username.Trim();
                 if (_context.Korisniks.Any(x => x.Username.Equals(trimmedUsername)))
                     return BadRequest($"Username {trimmedUsername} already exists");
@@ -104,15 +106,17 @@ namespace REST_API___oicar.Controllers
                     Telefon = registracijaVozacDTO.Telefon,
                     Datumrodjenja = registracijaVozacDTO.Datumrodjenja,
                     Isconfirmed = true,
-
+                    Ulogaid = 1
                 };
+
+
 
                 _context.Korisniks.Add(user);
                 await _context.SaveChangesAsync();
 
                 registracijaVozacDTO.Id = user.Idkorisnik;
 
-                return Ok(registracijaVozacDTO);
+                return Ok(registracijaVozacDTO.Id);
             }
             catch (Exception ex)
             {
@@ -142,8 +146,9 @@ namespace REST_API___oicar.Controllers
                     Email = registracijaVozacDTO.Email,
                     Telefon = registracijaVozacDTO.Telefon,
                     Datumrodjenja = registracijaVozacDTO.Datumrodjenja,
-                
+
                 };
+
 
                 user.Imagevozacka = await SaveImageFromBase64Async(registracijaVozacDTO.Vozacka, "Vozacka");
                 user.Imageosobna = await SaveImageFromBase64Async(registracijaVozacDTO.Osobna, "Osobna");
@@ -154,14 +159,13 @@ namespace REST_API___oicar.Controllers
 
                 registracijaVozacDTO.Id = user.Idkorisnik;
 
-                return Ok(registracijaVozacDTO);
+                return Ok(registracijaVozacDTO.Id);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
         }
-
         private async Task<Image> SaveImageFromBase64Async(string base64Image, string name)
         {
             if (string.IsNullOrEmpty(base64Image))
