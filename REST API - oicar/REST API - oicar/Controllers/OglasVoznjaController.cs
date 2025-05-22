@@ -15,6 +15,7 @@ namespace REST_API___oicar.Controllers
         {
             _context = context;
         }
+
         [HttpGet("[action]")]
         public async Task<ActionResult<IEnumerable<OglasVoznjaDTO>>> GetAll()
         {
@@ -23,6 +24,7 @@ namespace REST_API___oicar.Controllers
                 .Include(o => o.Lokacija)
                 .Include(o => o.Vozilo)
                 .Include(o => o.Statusvoznje)
+                .OrderByDescending(o => o.Idoglasvoznja)
                 .Select(o => new OglasVoznjaDTO
                 {
                     IdOglasVoznja = o.Idoglasvoznja,
@@ -30,6 +32,9 @@ namespace REST_API___oicar.Controllers
                     Marka = o.Vozilo.Marka,
                     Model = o.Vozilo.Model,
                     Registracija = o.Vozilo.Registracija,
+                    Username = o.Vozilo.Vozac.Username, 
+                    Ime = o.Vozilo.Vozac.Ime, 
+                    Prezime = o.Vozilo.Vozac.Prezime,
                     DatumIVrijemePolaska = o.DatumIVrijemePolaska,
                     DatumIVrijemeDolaska = o.DatumIVrijemeDolaska,
                     BrojPutnika = o.BrojPutnika,
@@ -40,13 +45,16 @@ namespace REST_API___oicar.Controllers
                     Gorivo = o.Troskovi.Gorivo,
                     Polaziste = o.Lokacija.Polaziste,
                     Odrediste = o.Lokacija.Odrediste,
-                    StatusVoznjeNaziv = o.Statusvoznje.Naziv
-                })
+                    StatusVoznjeNaziv = o.Statusvoznje.Naziv,
+                    CijenaPoPutniku = o.BrojPutnika > 0
+                        ? (o.Troskovi.Cestarina + o.Troskovi.Gorivo) / o.BrojPutnika
+                        : 0 
+                }) 
                 .ToListAsync();
 
             return Ok(oglasiVoznje);
-        }
-        
+        } 
+
         [HttpGet("[action]/{id}")]
         public async Task<ActionResult<OglasVoznjaDTO>> GetById(int id)
         {
@@ -59,6 +67,9 @@ namespace REST_API___oicar.Controllers
                 {
                     IdOglasVoznja = o.Idoglasvoznja,
                     VoziloId = o.Voziloid,
+                    Marka = o.Vozilo.Marka,
+                    Model = o.Vozilo.Model,
+                    Registracija = o.Vozilo.Registracija,
                     DatumIVrijemePolaska = o.DatumIVrijemePolaska,
                     DatumIVrijemeDolaska = o.DatumIVrijemeDolaska,
                     BrojPutnika = o.BrojPutnika,
@@ -91,6 +102,9 @@ namespace REST_API___oicar.Controllers
                 {
                     IdOglasVoznja = o.Idoglasvoznja,
                     VoziloId = o.Voziloid,
+                    Marka = o.Vozilo.Marka,
+                    Model = o.Vozilo.Model,
+                    Registracija = o.Vozilo.Registracija,
                     DatumIVrijemePolaska = o.DatumIVrijemePolaska,
                     DatumIVrijemeDolaska = o.DatumIVrijemeDolaska,
                     BrojPutnika = o.BrojPutnika,
@@ -119,12 +133,9 @@ namespace REST_API___oicar.Controllers
 
             var noviTroskovi = new Troskovi
             {
-                Cestarina = oglasVoznjaDTO.Cestarina ?? 0,
-                Gorivo = oglasVoznjaDTO.Gorivo ?? 0
-            };
-
-            noviTroskovi.Cestarina /= oglasVoznjaDTO.BrojPutnika;
-            noviTroskovi.Gorivo /= oglasVoznjaDTO.BrojPutnika;
+                Cestarina = oglasVoznjaDTO.Cestarina,  
+                Gorivo = oglasVoznjaDTO.Gorivo 
+            }; 
 
             _context.Troskovis.Add(noviTroskovi);
             await _context.SaveChangesAsync();
@@ -134,6 +145,7 @@ namespace REST_API___oicar.Controllers
                 Polaziste = oglasVoznjaDTO.Polaziste,
                 Odrediste = oglasVoznjaDTO.Odrediste
             };
+
             _context.Lokacijas.Add(novaLokacija);
             await _context.SaveChangesAsync();
 
@@ -141,6 +153,7 @@ namespace REST_API___oicar.Controllers
             {
                 Naziv = "Uskoro"
             };
+
             _context.Statusvoznjes.Add(noviStatus);
             await _context.SaveChangesAsync();
 

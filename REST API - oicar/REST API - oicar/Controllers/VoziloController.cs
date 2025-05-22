@@ -121,9 +121,35 @@ namespace REST_API___oicar.Controllers
 
             return Ok(vozila);
         }
+        [HttpPost("[action]")]
+        public async Task<ActionResult<VoziloDTO>> KrerirajVozilo([FromBody] VoziloDTO voziloDTO)
+        {
+            try
+            {
+                var vozilo = new Vozilo
+                {
+                    Naziv = voziloDTO.Naziv,
+                    Marka = voziloDTO.Marka,
+                    Model = voziloDTO.Model,
+                    Registracija = voziloDTO.Registracija,
+                    Vozacid = voziloDTO.VozacId
+                };
+
+                _context.Vozilos.Add(vozilo);
+                await _context.SaveChangesAsync();
+
+                voziloDTO.Idvozilo = vozilo.Idvozilo;
+
+                return Ok(voziloDTO);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        } 
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> KreirajVozilo([FromBody] VoziloDTO voziloDTO)
+        public async Task<IActionResult> CreateVehicle([FromBody] VoziloDTO voziloDTO)
         {
             try
             {

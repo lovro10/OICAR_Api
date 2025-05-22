@@ -12,6 +12,10 @@ namespace REST_API___oicar.DTOs
         public string? Model { get; set; }
         public string? Registracija { get; set; }
 
+        public string? Username { get; set; }
+        public string? Ime { get; set; }
+        public string? Prezime { get; set; }
+
         public DateTime DatumIVrijemePolaska { get; set; }
         public DateTime DatumIVrijemeDolaska { get; set; }
 
@@ -19,8 +23,7 @@ namespace REST_API___oicar.DTOs
         public decimal? Cestarina { get; set; }
         public decimal? Gorivo { get; set; }
 
-        public decimal? CestarinaPoPutniku { get; set; }
-        public decimal? GorivoPoPutniku { get; set; }
+        public decimal? CijenaPoPutniku { get; set; }
 
         public int BrojPutnika { get; set; }
 

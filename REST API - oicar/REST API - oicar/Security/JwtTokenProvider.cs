@@ -7,9 +7,11 @@ namespace REST_API___oicar.Security
 {
     public class JwtTokenProvider
     {
-        public static string CreateToken(string secureKey, int expiration, string username, int korisnikId, string uloga)
+        public static string CreateToken(string secureKey, int expiration, int korisnikId, string uloga, string subject = null)
         {
+
             var tokenKey = Encoding.UTF8.GetBytes(secureKey);
+
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -19,11 +21,11 @@ namespace REST_API___oicar.Security
                     SecurityAlgorithms.HmacSha256Signature)
             };
 
-            if (!string.IsNullOrEmpty(username))
+            if (!string.IsNullOrEmpty(subject))
             {
-                tokenDescriptor.Subject = new ClaimsIdentity(new System.Security.Claims.Claim[]
+                tokenDescriptor.Subject = new ClaimsIdentity(new Claim[]
                 {
-                new Claim(ClaimTypes.Name, username),
+                new Claim(ClaimTypes.Name, subject),
                 new Claim(JwtRegisteredClaimNames.Sub, korisnikId.ToString()),
                 new Claim(ClaimTypes.Role, uloga)
                 });

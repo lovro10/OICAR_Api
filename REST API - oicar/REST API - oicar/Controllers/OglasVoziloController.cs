@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using REST_API___oicar.DTOs;
 using REST_API___oicar.Models;
@@ -73,8 +74,8 @@ namespace REST_API___oicar.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<ActionResult<IEnumerable<OglasVoznjaDTO>>> GetAll()
-        {
+        public async Task<ActionResult<IEnumerable<OglasVoziloDTO>>> GetAll()
+        { 
             var oglasiVozila = await _context.Oglasvozilos
                 .Include(o => o.Vozilo)
                 .OrderByDescending(o => o.Idoglasvozilo) 
@@ -99,7 +100,7 @@ namespace REST_API___oicar.Controllers
         }
 
         [HttpGet("[action]/{id}")]
-        public async Task<ActionResult<OglasVoznjaDTO>> GetById(int id)
+        public async Task<ActionResult<OglasVoziloDTO>> GetById(int id)
         {
             var oglasVozilo = await _context.Oglasvozilos
             .Include(o => o.Vozilo)
@@ -160,7 +161,15 @@ namespace REST_API___oicar.Controllers
         { 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            
+
+            var existingAd = await _context.Oglasvozilos
+                .AnyAsync(o => o.Voziloid == oglasVoziloDTO.VoziloId);
+
+            if (existingAd)
+            {
+                return BadRequest($"An ad already exists for the selected vehicle (ID: {oglasVoziloDTO.VoziloId}).");
+            }
+
             var noviOglasVozilo = new Oglasvozilo
             {
                 Voziloid = oglasVoziloDTO.VoziloId,

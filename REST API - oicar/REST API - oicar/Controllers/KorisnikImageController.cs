@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using REST_API___oicar.DTOs;
 using REST_API___oicar.Models;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace REST_API___oicar.Controllers
 {
@@ -16,21 +15,18 @@ namespace REST_API___oicar.Controllers
             _context = context;
         }
 
-        // GET: api/<KorisnikImage>
         [HttpGet]
         public ActionResult<KorisnikImageDTO> Get()
         {
             return Ok();
         }
 
-        // GET api/<KorisnikImage>/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/<KorisnikImage>
         [HttpPost("[action]")]
         public ActionResult<KorisnikImageDTO> CreateKorisnikImage([FromBody] KorisnikImageDTO korisnikImageDto)
         {
@@ -46,13 +42,11 @@ namespace REST_API___oicar.Controllers
             return Ok();
         }
 
-        // PUT api/<KorisnikImage>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/<KorisnikImage>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

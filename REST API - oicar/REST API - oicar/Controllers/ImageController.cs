@@ -114,29 +114,31 @@ namespace REST_API___oicar.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadImage([FromBody] ImageUploadDTO dto)
+        public async Task<ActionResult<ImageUploadDTO>> UploadImage([FromBody] ImageUploadDTO imageDto)
         {
-            if (string.IsNullOrWhiteSpace(dto.Base64Content))
+
+            if (string.IsNullOrWhiteSpace(imageDto.Base64Content))
                 return BadRequest("Base64 content is required.");
 
             try
             {
                 var image = new Image
                 {
-                    Name = dto.Name,
-                    Content = Convert.FromBase64String(dto.Base64Content)
+                    Name = imageDto.Name,
+                    Content = Convert.FromBase64String(imageDto.Base64Content),
+                    Imagetypeid = imageDto.ImageTypeId
                 };
 
                 _context.Images.Add(image);
                 await _context.SaveChangesAsync();
 
-                return Ok(dto);
+                return Ok(image.Idimage);
             }
             catch (FormatException)
             {
                 return BadRequest("Invalid Base64 string.");
             }
-        }
+        } 
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateImage(int id, [FromBody] ImageUploadDTO dto)
