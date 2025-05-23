@@ -72,6 +72,28 @@ namespace REST_API___oicar.Controllers
             return Ok(korisnikVoznjaDTO); 
         }
 
+        [HttpGet("[action]")] 
+        public async Task<IActionResult> UserJoinedRide(int userId, int oglasVoznjaId)
+        { 
+            if (userId <= 0 || oglasVoznjaId <= 0)
+                return BadRequest(false);
+
+            bool isPassenger = await _context.Korisnikvoznjas
+                .AnyAsync(kv => kv.Korisnikid == userId && kv.Oglasvoznjaid == oglasVoznjaId);
+
+            if (isPassenger)
+                return Ok(true);
+
+            var ride = await _context.Oglasvoznjas
+                .Include(o => o.Vozilo)
+                .FirstOrDefaultAsync(o => o.Idoglasvoznja == oglasVoznjaId);
+
+            if (ride != null && ride.Vozilo != null && ride.Vozilo.Vozacid == userId)
+                return Ok(true);
+
+            return Ok(false);
+        }
+
         [HttpPost("[action]")]
         public async Task<IActionResult> LeaveRide([FromBody] KorisnikVoznjaDTO korisnikVoznjaDTO)
         {

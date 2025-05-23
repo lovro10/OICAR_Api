@@ -12,6 +12,7 @@ namespace REST_API___oicar.DTOs
         public string? Model { get; set; }
         public string? Registracija { get; set; }
 
+        public int? KorisnikId { get; set; }
         public string? Username { get; set; }
         public string? Ime { get; set; }
         public string? Prezime { get; set; }
@@ -33,5 +34,7 @@ namespace REST_API___oicar.DTOs
         public int? LokacijaId { get; set; }
         public string? Polaziste { get; set; }
         public string? Odrediste { get; set; }
+
+        public int? KorisnikVoznjaId { get; set; }
     }
 }

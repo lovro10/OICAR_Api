@@ -74,6 +74,33 @@ namespace REST_API___oicar.Controllers
         }
 
         [HttpGet("[action]")]
+        public async Task<ActionResult<IEnumerable<OglasVoziloDTO>>> GetAllByUser(int userId) 
+        { 
+            var oglasiVozila = await _context.Oglasvozilos
+                .Where(x => x.Vozilo!.Vozacid == userId)
+                .Include(o => o.Vozilo)
+                .OrderByDescending(o => o.Idoglasvozilo)
+                .Select(o => new OglasVoziloDTO
+                {
+                    IdOglasVozilo = o.Idoglasvozilo,
+                    VoziloId = o.Voziloid,
+                    Marka = o.Vozilo!.Marka,
+                    Model = o.Vozilo.Model,
+                    Registracija = o.Vozilo.Registracija,
+                    DatumPocetkaRezervacije = o.DatumPocetkaRezervacije,
+                    DatumZavrsetkaRezervacije = o.DatumZavrsetkaRezervacije,
+                    KorisnikId = o.Vozilo.Vozacid,
+                    Username = o.Vozilo.Vozac.Username,
+                    Ime = o.Vozilo.Vozac.Ime,
+                    Prezime = o.Vozilo.Vozac.Prezime,
+                    Email = o.Vozilo.Vozac.Email
+                })
+                .ToListAsync();
+
+            return Ok(oglasiVozila);
+        }
+
+        [HttpGet("[action]")]
         public async Task<ActionResult<IEnumerable<OglasVoziloDTO>>> GetAll()
         { 
             var oglasiVozila = await _context.Oglasvozilos
@@ -100,7 +127,7 @@ namespace REST_API___oicar.Controllers
         }
 
         [HttpGet("[action]/{id}")]
-        public async Task<ActionResult<OglasVoziloDTO>> GetById(int id)
+        public async Task<ActionResult<OglasVoziloDTO>> GetOglasVoziloById(int id)
         {
             var oglasVozilo = await _context.Oglasvozilos
             .Include(o => o.Vozilo)
@@ -211,7 +238,7 @@ namespace REST_API___oicar.Controllers
         } 
 
         [HttpDelete("[action]/{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> ObrisiOglasVozilo(int id)
         { 
             var oglasVozilo = await _context.Oglasvozilos 
                 .Include(o => o.Vozilo) 
