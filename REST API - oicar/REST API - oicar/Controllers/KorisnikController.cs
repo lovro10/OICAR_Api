@@ -13,7 +13,20 @@ namespace REST_API___oicar.Controllers
     {
         private readonly CarshareContext _context;
         private readonly IConfiguration _configuration;
+        private IConfiguration CreateConfiguration()
+        {
+            // These names must match exactly what JwtTokenProvider expects (e.g. "Jwt:SecureKey", "Jwt:Issuer", etc.)
+            var inMemorySettings = new Dictionary<string, string>
+    {
+        { "Jwt:SecureKey",  "ThisIsAReallyLongSecretKeyForTests123!" },
+        { "Jwt:Issuer",     "MyTestIssuer" },
+        { "Jwt:Audience",   "MyTestAudience" }
+    };
 
+            return new ConfigurationBuilder()
+                      .AddInMemoryCollection(inMemorySettings)
+                      .Build();
+        }
         public KorisnikController(CarshareContext context, IConfiguration configuration)
         {
             _context = context;
