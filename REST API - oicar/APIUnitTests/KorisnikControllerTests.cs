@@ -14,7 +14,7 @@ using REST_API___oicar.Models;
 using REST_API___oicar.Security;
 using Xunit;
 
-namespace MyApi.Tests.Controllers
+namespace APIUnitTests
 {
     public class KorisnikControllerTests
     {

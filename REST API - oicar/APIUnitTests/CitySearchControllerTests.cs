@@ -8,7 +8,7 @@ using REST_API___oicar.Controllers;
 /*
  * provjeravamo rad metode GetAllCroatianCities u kontroleru koji cita popis gradova iz datoteke
  */
-namespace MyApi.Tests.Controllers
+namespace APIUnitTests
 {
     public class CitySearchControllerTests
     {

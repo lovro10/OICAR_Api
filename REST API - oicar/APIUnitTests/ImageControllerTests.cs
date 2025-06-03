@@ -21,7 +21,7 @@ using Xunit;
  * ne zelimo pristupati pravoj bazi i drugim providerima, izbjegavanje sukoba, brze testiranje
  * 
  */
-namespace MyApi.Tests.Controllers
+namespace APIUnitTests
 {
     public class ImageControllerTests
     {
