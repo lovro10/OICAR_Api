@@ -35,6 +35,8 @@ public partial class CarshareContext : DbContext
 
     public virtual DbSet<Poruka> Porukas { get; set; }
 
+    public virtual DbSet<Porukavozilo> Porukavozilos { get; set; }
+
     public virtual DbSet<Statusvoznje> Statusvoznjes { get; set; }
 
     public virtual DbSet<Temp> Temps { get; set; }
@@ -47,12 +49,10 @@ public partial class CarshareContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=strongly-efficient-echidna.data-1.use1.tembo.io;TrustServerCertificate=False;Port=5432;Username=postgres;Password=86WSYOqZEcLvfAWi;Database=carshare");
+        => optionsBuilder.UseNpgsql("Host=ep-dry-salad-a246tblg-pooler.eu-central-1.aws.neon.tech;Database=carshare;Username=neondb_owner;Password=npg_duyKV4vmnf0p;SSL Mode=Require;Trust Server Certificate=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.HasPostgresExtension("pg_stat_statements");
-
         modelBuilder.Entity<Image>(entity =>
         {
             entity.HasKey(e => e.Idimage).HasName("image_pkey");
@@ -300,6 +300,33 @@ public partial class CarshareContext : DbContext
                 .HasConstraintName("poruka_vozacid_fkey");
         });
 
+        modelBuilder.Entity<Porukavozilo>(entity =>
+        {
+            entity.HasKey(e => e.Idporuka).HasName("porukavozilo_pkey");
+
+            entity.ToTable("porukavozilo");
+
+            entity.Property(e => e.Idporuka)
+                .ValueGeneratedNever()
+                .HasColumnName("idporuka");
+            entity.Property(e => e.Content).HasColumnName("content");
+            entity.Property(e => e.Korisnikvoziloid).HasColumnName("korisnikvoziloid");
+            entity.Property(e => e.Putnikid).HasColumnName("putnikid");
+            entity.Property(e => e.Vozacid).HasColumnName("vozacid");
+
+            entity.HasOne(d => d.Korisnikvozilo).WithMany(p => p.Porukavozilos)
+                .HasForeignKey(d => d.Korisnikvoziloid)
+                .HasConstraintName("poruka_korisnikvoziloid_fkey");
+
+            entity.HasOne(d => d.Putnik).WithMany(p => p.PorukavoziloPutniks)
+                .HasForeignKey(d => d.Putnikid)
+                .HasConstraintName("poruka_putnikid_fkey");
+
+            entity.HasOne(d => d.Vozac).WithMany(p => p.PorukavoziloVozacs)
+                .HasForeignKey(d => d.Vozacid)
+                .HasConstraintName("poruka_vozacid_fkey");
+        });
+
         modelBuilder.Entity<Statusvoznje>(entity =>
         {
             entity.HasKey(e => e.Idstatusvoznje).HasName("statusvoznje_pkey");
@@ -386,6 +413,21 @@ public partial class CarshareContext : DbContext
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("vozilo_vozacid_fkey");
         });
+        modelBuilder.HasSequence<int>("image_idimage_seq");
+        modelBuilder.HasSequence<int>("imagetype_idimagetype_seq");
+        modelBuilder.HasSequence<int>("korisnik_idkorisnik_seq");
+        modelBuilder.HasSequence<int>("korisnikimage_idkorisnikimage_seq");
+        modelBuilder.HasSequence<int>("korisnikvozilo_idkorisnikvozilo_seq");
+        modelBuilder.HasSequence<int>("korisnikvoznja_idkorisnikvoznja_seq");
+        modelBuilder.HasSequence<int>("lokacija_idlokacija_seq");
+        modelBuilder.HasSequence<int>("oglasvozilo_idoglasvozilo_seq");
+        modelBuilder.HasSequence<int>("oglasvoznja_idoglasvoznja_seq");
+        modelBuilder.HasSequence<int>("poruka_idporuka_seq");
+        modelBuilder.HasSequence<int>("statusvoznje_idstatusvoznje_seq");
+        modelBuilder.HasSequence<int>("temp_idkorisnik_seq");
+        modelBuilder.HasSequence<int>("troskovi_idtroskovi_seq");
+        modelBuilder.HasSequence<int>("uloga_iduloga_seq");
+        modelBuilder.HasSequence<int>("vozilo_idvozilo_seq");
 
         OnModelCreatingPartial(modelBuilder);
     }

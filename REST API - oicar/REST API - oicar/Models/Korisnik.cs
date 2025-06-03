@@ -51,6 +51,10 @@ public partial class Korisnik
 
     public virtual ICollection<Poruka> PorukaVozacs { get; set; } = new List<Poruka>();
 
+    public virtual ICollection<Porukavozilo> PorukavoziloPutniks { get; set; } = new List<Porukavozilo>();
+
+    public virtual ICollection<Porukavozilo> PorukavoziloVozacs { get; set; } = new List<Porukavozilo>();
+
     public virtual Uloga? Uloga { get; set; }
 
     public virtual ICollection<Vozilo> Vozilos { get; set; } = new List<Vozilo>();

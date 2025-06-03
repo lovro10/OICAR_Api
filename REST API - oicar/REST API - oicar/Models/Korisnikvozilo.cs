@@ -18,4 +18,6 @@ public partial class Korisnikvozilo
     public virtual Korisnik? Korisnik { get; set; }
 
     public virtual Oglasvozilo? Oglasvozilo { get; set; }
+
+    public virtual ICollection<Porukavozilo> Porukavozilos { get; set; } = new List<Porukavozilo>();
 }
