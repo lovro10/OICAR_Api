@@ -30,7 +30,11 @@ namespace REST_API___oicar.Controllers
                     v.Model,
                     v.Registracija,
                     v.Naziv, 
-                    v.Isconfirmed
+                    v.Isconfirmed,
+                    v.Vozac.Idkorisnik,
+                    v.Vozac.Ime,
+                    v.Vozac.Prezime,
+                    v.Vozac.Username
                 })
                 .ToListAsync();
 
@@ -48,14 +52,11 @@ namespace REST_API___oicar.Controllers
                     v.Marka,
                     v.Model,
                     v.Registracija,
-                    v.Isconfirmed, 
-                    Vozac = new
-                    {
-                        v.Vozac.Idkorisnik, 
-                        v.Vozac.Ime,      
-                        v.Vozac.Prezime, 
-                        v.Vozac.Username 
-                    } 
+                    v.Isconfirmed,
+                    v.Vozac.Idkorisnik,
+                    v.Vozac.Ime,
+                    v.Vozac.Prezime,
+                    v.Vozac.Username
                 }) 
                 .FirstOrDefaultAsync();
 
@@ -63,15 +64,17 @@ namespace REST_API___oicar.Controllers
                 return NotFound();
 
             return Ok(vozilo);
-        } 
-        
+        }
+
         [HttpGet("[action]/{id}")]
         public async Task<ActionResult<VoziloDTO>> Details(int id)
         {
             try
             {
                 var vozilo = await _context.Vozilos
-                    .Include(v => v.Imageprometna) 
+                    .Include(v => v.Vozac)
+                        .ThenInclude(k => k.Korisnikimages)
+                            .ThenInclude(ki => ki.Image)
                     .FirstOrDefaultAsync(v => v.Idvozilo == id);
 
                 if (vozilo == null)
@@ -79,12 +82,34 @@ namespace REST_API___oicar.Controllers
                     return NotFound($"Vozilo sa ID-jem {id} nije pronađeno.");
                 }
 
+                var vozacImages = vozilo.Vozac?.Korisnikimages
+                    .Where(ki => ki.Image != null && ki.Image.Imagetypeid == 4) 
+                    .Select(ki => new ImageDTO
+                    {
+                        Idimage = ki.Image.Idimage,
+                        Name = ki.Image.Name,
+                        ContentBase64 = Convert.ToBase64String(ki.Image.Content),
+                        ImageTypeId = ki.Image.Imagetypeid,
+                        ImageTypeName = ki.Image.Imagetype?.Name
+                    })
+                    .ToList() ?? new List<ImageDTO>();
+
                 var voziloDTO = new VoziloDTO
                 {
                     Idvozilo = vozilo.Idvozilo,
                     Marka = vozilo.Marka,
                     Model = vozilo.Model,
-                    Registracija = vozilo.Registracija 
+                    Registracija = vozilo.Registracija,
+                    Isconfirmed = vozilo.Isconfirmed,
+
+                    Vozac = new VozacDTO
+                    {
+                        Idkorisnik = vozilo.Vozac?.Idkorisnik ?? 0,
+                        Ime = vozilo.Vozac?.Ime,
+                        Prezime = vozilo.Vozac?.Prezime,
+                        Username = vozilo.Vozac?.Username,
+                        Images = vozacImages
+                    }
                 };
 
                 return Ok(voziloDTO);

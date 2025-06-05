@@ -53,7 +53,7 @@ namespace REST_API___oicar.Controllers
             if (jeVecPrijavljen)
                 return BadRequest("Korisnik je već prijavljen na ovu vožnju.");
 
-            if (voznja.Korisnikvoznjas.Count >= voznja.BrojPutnika)
+            if (voznja.Korisnikvoznjas.Count >= voznja.BrojPutnika + 1)
                 return BadRequest("Nema slobodnih mjesta u ovoj vožnji.");
 
             var novaPrijava = new Korisnikvoznja

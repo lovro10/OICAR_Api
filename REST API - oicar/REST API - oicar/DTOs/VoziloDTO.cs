@@ -20,6 +20,8 @@
         public string? BackImageBase64 { get; set; } 
 
         public string? FrontImageName { get; set; } 
-        public string? BackImageName { get; set; } 
+        public string? BackImageName { get; set; }
+
+        public VozacDTO? Vozac { get; set; }
     }
 }

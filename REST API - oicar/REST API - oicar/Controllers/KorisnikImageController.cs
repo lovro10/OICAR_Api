@@ -33,14 +33,14 @@ namespace REST_API___oicar.Controllers
             var korisnikImage = new Korisnikimage
             {
                 Korisnikid = korisnikImageDto.KorisnikId,
-                Imageid = korisnikImageDto.ImageId
-            };
+                Imageid = korisnikImageDto.ImageId 
+            }; 
 
             _context.Korisnikimages.Add(korisnikImage);
             _context.SaveChanges();
 
             return Ok();
-        }
+        } 
 
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)

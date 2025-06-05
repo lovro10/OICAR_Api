@@ -19,6 +19,7 @@ namespace REST_API___oicar.Controllers
             _context = context;
             _configuration = configuration;
         }
+
         [HttpPut("{id}")]
         public async Task<ActionResult<KorisnikUpdateDTO>> Update(int id, [FromBody] KorisnikUpdateDTO korisnikDto)
         {
@@ -105,11 +106,9 @@ namespace REST_API___oicar.Controllers
                     Email = registracijaVozacDTO.Email,
                     Telefon = registracijaVozacDTO.Telefon,
                     Datumrodjenja = registracijaVozacDTO.Datumrodjenja,
-                    Isconfirmed = true,
-                    Ulogaid = 1
+                    Ulogaid = 2,
+                    Isconfirmed = true 
                 };
-
-
 
                 _context.Korisniks.Add(user);
                 await _context.SaveChangesAsync();
@@ -122,50 +121,46 @@ namespace REST_API___oicar.Controllers
             {
                 return StatusCode(500, ex.Message);
             }
-        }
+        } 
 
         [HttpPost("[action]")]
-        public async Task<ActionResult<RegistracijaVozacDTO>> Registracija([FromBody] RegistracijaVozacDTO registracijaVozacDTO)
-        {
+        public async Task<ActionResult<KorisnikRegistracijaDTO>> Registracija([FromBody] KorisnikRegistracijaDTO registracijaKorisnikDTO) 
+        { 
             try
             {
-                var trimmedUsername = registracijaVozacDTO.Username.Trim();
+                var trimmedUsername = registracijaKorisnikDTO.Username.Trim();
                 if (_context.Korisniks.Any(x => x.Username.Equals(trimmedUsername)))
                     return BadRequest($"Username {trimmedUsername} already exists");
 
-                var b64salt = PasswordHashProvider.GetSalt();
-                var b64hash = PasswordHashProvider.GetHash(registracijaVozacDTO.Password, b64salt);
+                var b64salt = PasswordHashProvider.GetSalt(); 
+                var b64hash = PasswordHashProvider.GetHash(registracijaKorisnikDTO.Password, b64salt);
 
-                var user = new Korisnik
-                {
-                    Username = registracijaVozacDTO.Username,
+                var user = new Korisnik 
+                { 
+                    Username = registracijaKorisnikDTO.Username,
                     Pwdhash = b64hash,
                     Pwdsalt = b64salt,
-                    Ime = registracijaVozacDTO.Ime,
-                    Prezime = registracijaVozacDTO.Prezime,
-                    Email = registracijaVozacDTO.Email,
-                    Telefon = registracijaVozacDTO.Telefon,
-                    Datumrodjenja = registracijaVozacDTO.Datumrodjenja,
-
-                };
-
-
-                user.Imagevozacka = await SaveImageFromBase64Async(registracijaVozacDTO.Vozacka, "Vozacka");
-                user.Imageosobna = await SaveImageFromBase64Async(registracijaVozacDTO.Osobna, "Osobna");
-                user.Imagelice = await SaveImageFromBase64Async(registracijaVozacDTO.Selfie, "Selfie");
-
+                    Ime = registracijaKorisnikDTO.Ime,
+                    Prezime = registracijaKorisnikDTO.Prezime,
+                    Email = registracijaKorisnikDTO.Email,
+                    Telefon = registracijaKorisnikDTO.Telefon,
+                    Datumrodjenja = registracijaKorisnikDTO.Datumrodjenja,
+                    Ulogaid = 3 
+                }; 
+                
                 _context.Korisniks.Add(user);
                 await _context.SaveChangesAsync();
 
-                registracijaVozacDTO.Id = user.Idkorisnik;
+                registracijaKorisnikDTO.Id = user.Idkorisnik;
 
-                return Ok(registracijaVozacDTO.Id);
-            }
+                return Ok(registracijaKorisnikDTO);
+            } 
             catch (Exception ex)
-            {
+            { 
                 return StatusCode(500, ex.Message);
-            }
-        }
+            } 
+        } 
+
         private async Task<Image> SaveImageFromBase64Async(string base64Image, string name)
         {
             if (string.IsNullOrEmpty(base64Image))
@@ -208,7 +203,7 @@ namespace REST_API___oicar.Controllers
                     Telefon = registracijaPutnikDTO.Telefon,
                     Datumrodjenja = registracijaPutnikDTO.Datumrodjenja,
                     Ulogaid = 1,
-                    Isconfirmed = true,
+                    Isconfirmed = false 
                 };
 
                 user.Imageosobna = await SaveImageFromBase64Async(registracijaPutnikDTO.Osobna, "Osobna");
