@@ -48,6 +48,38 @@ namespace REST_API___oicar.Controllers
             }
         }
 
+        [HttpPut("Clear/{id}")]
+        public async Task<ActionResult> ClearUserInfo(int id)
+        {
+            try
+            {
+                var korisnik = await _context.Korisniks.FindAsync(id);
+
+                if (korisnik == null)
+                    return NotFound($"Korisnik sa ID-jem {id} nije pronađen.");
+
+                korisnik.Username = $"deleted_username_{id}";
+                korisnik.Ime = ""; 
+                korisnik.Prezime = "";
+                korisnik.Email = $"deleted_email_{id}";
+                korisnik.Telefon = "";
+                korisnik.Datumrodjenja = default;
+                korisnik.Pwdhash = "";
+                korisnik.Pwdsalt = "";
+                korisnik.Isconfirmed = null;
+                korisnik.Ulogaid = 4;
+
+                _context.Korisniks.Update(korisnik);
+                await _context.SaveChangesAsync();
+
+                return Ok($"Svi podaci korisnika sa ID-jem {id} su obrisani.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<KorisnikDTO>>> GetAll()
         {
@@ -82,6 +114,85 @@ namespace REST_API___oicar.Controllers
             return korisnik;
         }
 
+        [HttpGet("[action]")]
+        public async Task<ActionResult<KorisnikDTO>> Details(int id)
+        {
+            try
+            {
+                var korisnik = await _context.Korisniks
+                    .Include(x => x.Korisnikimages)
+                        .ThenInclude(x => x.Image)
+                    .Include(x => x.Uloga) 
+                    .FirstOrDefaultAsync(x => x.Idkorisnik == id);
+
+                if (korisnik == null)
+                {
+                    return NotFound($"Korisnik sa ID-jem {id} nije pronađen.");
+                }
+
+                var imagesType1 = korisnik.Korisnikimages
+                    .Where(x => x.Image != null && x.Image.Imagetypeid == 1)
+                    .Select(x => new ImageDTO
+                    {
+                        Idimage = x.Image.Idimage,
+                        Name = x.Image.Name,
+                        ContentBase64 = Convert.ToBase64String(x.Image.Content),
+                        ImageTypeId = x.Image.Imagetypeid,
+                        ImageTypeName = x.Image.Imagetype?.Name
+                    })
+                    .ToList();
+
+                var imagesType2 = korisnik.Korisnikimages
+                    .Where(x => x.Image != null && x.Image.Imagetypeid == 2)
+                    .Select(x => new ImageDTO
+                    {
+                        Idimage = x.Image.Idimage,
+                        Name = x.Image.Name,
+                        ContentBase64 = Convert.ToBase64String(x.Image.Content),
+                        ImageTypeId = x.Image.Imagetypeid,
+                        ImageTypeName = x.Image.Imagetype?.Name
+                    })
+                    .ToList();
+
+                var imagesType3 = korisnik.Korisnikimages
+                    .Where(x => x.Image != null && x.Image.Imagetypeid == 3)
+                    .Select(x => new ImageDTO
+                    {
+                        Idimage = x.Image.Idimage,
+                        Name = x.Image.Name,
+                        ContentBase64 = Convert.ToBase64String(x.Image.Content),
+                        ImageTypeId = x.Image.Imagetypeid,
+                        ImageTypeName = x.Image.Imagetype?.Name
+                    })
+                    .ToList();
+
+                var korisnikDTO = new KorisnikDTO
+                {
+                    IDKorisnik = korisnik.Idkorisnik,
+                    Ime = korisnik.Ime,
+                    Prezime = korisnik.Prezime,
+                    Email = korisnik.Email,
+                    Username = korisnik.Username,
+                    Telefon = korisnik.Telefon ?? "",
+                    DatumRodjenja = korisnik.Datumrodjenja,
+                    Uloga = korisnik.Uloga,
+                    Pwdhash = korisnik.Pwdhash,
+                    Pwdsalt = korisnik.Pwdsalt,
+                    UlogaId = korisnik.Ulogaid,
+                    Isconfirmed = korisnik.Isconfirmed,
+                    ImagesType1 = imagesType1,
+                    ImagesType2 = imagesType2,
+                    ImagesType3 = imagesType3
+                };
+
+                return Ok(korisnikDTO);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpPost("[action]")]
         public async Task<ActionResult<RegistracijaVozacDTO>> RegistracijaVozac([FromBody] String jsonRegistracijaVozacDTO)
         {
@@ -107,7 +218,7 @@ namespace REST_API___oicar.Controllers
                     Telefon = registracijaVozacDTO.Telefon,
                     Datumrodjenja = registracijaVozacDTO.Datumrodjenja,
                     Ulogaid = 2,
-                    Isconfirmed = true 
+                    Isconfirmed = false  
                 };
 
                 _context.Korisniks.Add(user);

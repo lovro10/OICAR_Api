@@ -26,10 +26,10 @@ namespace REST_API___oicar.Controllers
                 .Select(v => new 
                 { 
                     v.Idvozilo,
+                    v.Naziv,
                     v.Marka,
                     v.Model,
                     v.Registracija,
-                    v.Naziv, 
                     v.Isconfirmed,
                     v.Vozac.Idkorisnik,
                     v.Vozac.Ime,
@@ -49,6 +49,7 @@ namespace REST_API___oicar.Controllers
                 .Select(v => new 
                 { 
                     v.Idvozilo,
+                    v.Naziv,
                     v.Marka,
                     v.Model,
                     v.Registracija,
@@ -66,16 +67,16 @@ namespace REST_API___oicar.Controllers
             return Ok(vozilo);
         }
 
-        [HttpGet("[action]/{id}")]
+        [HttpGet("[action]")]
         public async Task<ActionResult<VoziloDTO>> Details(int id)
         {
             try
             {
                 var vozilo = await _context.Vozilos
-                    .Include(v => v.Vozac)
-                        .ThenInclude(k => k.Korisnikimages)
-                            .ThenInclude(ki => ki.Image)
-                    .FirstOrDefaultAsync(v => v.Idvozilo == id);
+                    .Include(x => x.Vozac)
+                        .ThenInclude(x => x.Korisnikimages)
+                            .ThenInclude(x => x.Image)
+                    .FirstOrDefaultAsync(x => x.Idvozilo == id);
 
                 if (vozilo == null)
                 {
@@ -83,14 +84,14 @@ namespace REST_API___oicar.Controllers
                 }
 
                 var vozacImages = vozilo.Vozac?.Korisnikimages
-                    .Where(ki => ki.Image != null && ki.Image.Imagetypeid == 4) 
-                    .Select(ki => new ImageDTO
-                    {
-                        Idimage = ki.Image.Idimage,
-                        Name = ki.Image.Name,
-                        ContentBase64 = Convert.ToBase64String(ki.Image.Content),
-                        ImageTypeId = ki.Image.Imagetypeid,
-                        ImageTypeName = ki.Image.Imagetype?.Name
+                    .Where(x => x.Image != null && x.Image.Imagetypeid == 4) 
+                    .Select(x => new ImageDTO
+                    { 
+                        Idimage = x.Image.Idimage,
+                        Name = x.Image.Name,
+                        ContentBase64 = Convert.ToBase64String(x.Image.Content),
+                        ImageTypeId = x.Image.Imagetypeid,
+                        ImageTypeName = x.Image.Imagetype?.Name
                     })
                     .ToList() ?? new List<ImageDTO>();
 
@@ -146,6 +147,7 @@ namespace REST_API___oicar.Controllers
 
             return Ok(vozila);
         }
+
         [HttpPost("[action]")]
         public async Task<ActionResult<VoziloDTO>> KrerirajVozilo([FromBody] VoziloDTO voziloDTO)
         {
@@ -157,7 +159,8 @@ namespace REST_API___oicar.Controllers
                     Marka = voziloDTO.Marka,
                     Model = voziloDTO.Model,
                     Registracija = voziloDTO.Registracija,
-                    Vozacid = voziloDTO.VozacId
+                    Vozacid = voziloDTO.VozacId, 
+                    Isconfirmed = false 
                 };
 
                 _context.Vozilos.Add(vozilo);

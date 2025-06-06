@@ -111,6 +111,9 @@ namespace REST_API___oicar.Controllers
                     Marka = o.Vozilo.Marka,
                     Model = o.Vozilo.Model,
                     Registracija = o.Vozilo.Registracija,
+                    Username = o.Vozilo.Vozac.Username,
+                    Ime = o.Vozilo.Vozac.Ime,
+                    Prezime = o.Vozilo.Vozac.Prezime,
                     DatumIVrijemePolaska = o.DatumIVrijemePolaska,
                     DatumIVrijemeDolaska = o.DatumIVrijemeDolaska,
                     BrojPutnika = o.BrojPutnika,
@@ -121,7 +124,52 @@ namespace REST_API___oicar.Controllers
                     Gorivo = o.Troskovi.Gorivo,
                     Polaziste = o.Lokacija.Polaziste,
                     Odrediste = o.Lokacija.Odrediste,
-                    StatusVoznjeNaziv = o.Statusvoznje.Naziv
+                    StatusVoznjeNaziv = o.Statusvoznje.Naziv,
+                    CijenaPoPutniku = o.BrojPutnika > 0
+                        ? (o.Troskovi.Cestarina + o.Troskovi.Gorivo) / o.BrojPutnika
+                        : 0
+                })
+                .FirstOrDefaultAsync();
+
+            if (oglasVoznja == null)
+                return NotFound();
+
+            return Ok(oglasVoznja);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<OglasVoznjaDTO>> GetDataForAd(int id)
+        { 
+            var oglasVoznja = await _context.Oglasvoznjas
+                .Include(o => o.Vozilo)
+                    .ThenInclude(v => v.Vozac) 
+                .Include(o => o.Troskovi) 
+                .Include(o => o.Lokacija) 
+                .Include(o => o.Statusvoznje)
+                .Where(o => o.Idoglasvoznja == id)
+                .Select(o => new OglasVoznjaDTO
+                {  
+                    IdOglasVoznja = o.Idoglasvoznja,
+                    VoziloId = o.Voziloid,
+                    Marka = o.Vozilo.Marka,
+                    Model = o.Vozilo.Model,
+                    Registracija = o.Vozilo.Registracija,
+                    KorisnikId = o.Vozilo.Vozacid,  
+                    Username = o.Vozilo.Vozac.Username, 
+                    Ime = o.Vozilo.Vozac.Ime,
+                    Prezime = o.Vozilo.Vozac.Prezime,
+                    DatumIVrijemePolaska = o.DatumIVrijemePolaska,
+                    DatumIVrijemeDolaska = o.DatumIVrijemeDolaska,
+                    BrojPutnika = o.BrojPutnika,
+                    TroskoviId = o.Troskoviid,
+                    LokacijaId = o.Lokacijaid,
+                    Cestarina = o.Troskovi.Cestarina,
+                    Gorivo = o.Troskovi.Gorivo,
+                    Polaziste = o.Lokacija.Polaziste,
+                    Odrediste = o.Lokacija.Odrediste,
+                    CijenaPoPutniku = o.BrojPutnika > 0
+                        ? (o.Troskovi.Cestarina + o.Troskovi.Gorivo) / o.BrojPutnika
+                        : 0
                 })
                 .FirstOrDefaultAsync();
 
@@ -190,14 +238,6 @@ namespace REST_API___oicar.Controllers
             _context.Lokacijas.Add(novaLokacija);
             await _context.SaveChangesAsync();
 
-            var noviStatus = new Statusvoznje
-            {
-                Naziv = "Uskoro"
-            };
-
-            _context.Statusvoznjes.Add(noviStatus);
-            await _context.SaveChangesAsync();
-
             var novaVoznja = new Oglasvoznja
             {
                 Voziloid = oglasVoznjaDTO.VoziloId,
@@ -206,7 +246,7 @@ namespace REST_API___oicar.Controllers
                 Troskoviid = noviTroskovi.Idtroskovi,
                 Lokacijaid = novaLokacija.Idlokacija,
                 BrojPutnika = oglasVoznjaDTO.BrojPutnika,
-                Statusvoznjeid = noviStatus.Idstatusvoznje
+                Statusvoznjeid = 1 
             };
 
             _context.Oglasvoznjas.Add(novaVoznja);
@@ -215,8 +255,7 @@ namespace REST_API___oicar.Controllers
             oglasVoznjaDTO.IdOglasVoznja = novaVoznja.Idoglasvoznja;
             oglasVoznjaDTO.TroskoviId = noviTroskovi.Idtroskovi;
             oglasVoznjaDTO.LokacijaId = novaLokacija.Idlokacija;
-            oglasVoznjaDTO.StatusVoznjeId = noviStatus.Idstatusvoznje;
-
+            
             var korisnikVoznja = new Korisnikvoznja
             {
                 Korisnikid = oglasVoznjaDTO.KorisnikId,
@@ -229,7 +268,7 @@ namespace REST_API___oicar.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(oglasVoznjaDTO);
-        }
+        } 
         
         [HttpPut("[action]/{id}")]
         public async Task<IActionResult> AzurirajOglasVoznje(int id, [FromBody] OglasVoznjaDTO oglasVoznjaDTO)

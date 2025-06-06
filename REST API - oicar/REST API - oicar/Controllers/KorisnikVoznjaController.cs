@@ -94,26 +94,6 @@ namespace REST_API___oicar.Controllers
             return Ok(false);
         }
 
-        [HttpPost("[action]")]
-        public async Task<IActionResult> LeaveRide([FromBody] KorisnikVoznjaDTO korisnikVoznjaDTO)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var ride = await _context.Korisnikvoznjas
-                .FirstOrDefaultAsync(kv =>
-                    kv.Korisnikid == korisnikVoznjaDTO.KorisnikId &&
-                    kv.Oglasvoznjaid == korisnikVoznjaDTO.OglasVoznjaId);
-
-            if (ride == null)
-                return NotFound("User did not enter");
-
-            _context.Korisnikvoznjas.Remove(ride);
-            await _context.SaveChangesAsync();
-
-            return Ok("Successfully left the ride");
-        }
-
         [HttpGet("[action]")] 
         public async Task<ActionResult<IEnumerable<VoznjaHistoryDTO>>> GetHistoryOfRides(int korisnikId)
         { 
@@ -135,6 +115,22 @@ namespace REST_API___oicar.Controllers
                 .ToListAsync();
 
             return Ok(history);
+        }
+        
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> DeleteKorisnikVoznja(int userId, int oglasVoznjaId)
+        {
+            var korisnikVoznja = await _context.Korisnikvoznjas
+                .Where(x => x.Korisnikid == userId && x.Oglasvoznjaid == oglasVoznjaId)
+                .FirstOrDefaultAsync();
+
+            if (korisnikVoznja == null)
+                return NotFound();
+
+            _context.Korisnikvoznjas.Remove(korisnikVoznja);
+            await _context.SaveChangesAsync();
+
+            return Ok(korisnikVoznja);
         }
     }
 }
