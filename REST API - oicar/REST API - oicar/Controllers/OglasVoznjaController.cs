@@ -97,6 +97,41 @@ namespace REST_API___oicar.Controllers
         }
 
         [HttpGet("[action]/{id}")]
+        public async Task<ActionResult<OglasVoznjaDTO>> GetByIdWeb(int id)
+        {
+            var oglasVoznja = await _context.Oglasvoznjas
+                .Include(o => o.Troskovi)
+                .Include(o => o.Lokacija)
+                .Include(o => o.Statusvoznje)
+                .Where(o => o.Idoglasvoznja == id)
+                .Select(o => new OglasVoznjaDTO
+                {
+                    IdOglasVoznja = o.Idoglasvoznja,
+                    VoziloId = o.Voziloid,
+                    Marka = o.Vozilo.Marka,
+                    Model = o.Vozilo.Model,
+                    Registracija = o.Vozilo.Registracija,
+                    DatumIVrijemePolaska = o.DatumIVrijemePolaska,
+                    DatumIVrijemeDolaska = o.DatumIVrijemeDolaska,
+                    BrojPutnika = o.BrojPutnika,
+                    TroskoviId = o.Troskoviid,
+                    LokacijaId = o.Lokacijaid,
+                    StatusVoznjeId = o.Statusvoznjeid,
+                    Cestarina = o.Troskovi.Cestarina,
+                    Gorivo = o.Troskovi.Gorivo,
+                    Polaziste = o.Lokacija.Polaziste,
+                    Odrediste = o.Lokacija.Odrediste,
+                    StatusVoznjeNaziv = o.Statusvoznje.Naziv
+                })
+                .FirstOrDefaultAsync();
+
+            if (oglasVoznja == null)
+                return NotFound();
+
+            return Ok(oglasVoznja);
+        }
+
+        [HttpGet("[action]/{id}")]
         public async Task<ActionResult<OglasVoznjaDTO>> GetById(int id)
         {
             var oglasVoznja = await _context.Oglasvoznjas
