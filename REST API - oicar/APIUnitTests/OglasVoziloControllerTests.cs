@@ -29,47 +29,6 @@ namespace APIUnitTests
         }
 
         [Fact]
-        public async Task GetReservedDates_ReturnsAllDatesBetweenReservations()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-
-            var reservation1 = new Korisnikvozilo
-            {
-                Idkorisnikvozilo = 1,
-                Korisnikid = 10,
-                Oglasvoziloid = 1,
-                DatumPocetkaRezervacije = new DateTime(2023, 01, 01, 08, 0, 0),
-                DatumZavrsetkaRezervacije = new DateTime(2023, 01, 03, 18, 0, 0)
-            };
-            var reservation2 = new Korisnikvozilo
-            {
-                Idkorisnikvozilo = 2,
-                Korisnikid = 11,
-                Oglasvoziloid = 1,
-                DatumPocetkaRezervacije = new DateTime(2023, 01, 05, 09, 0, 0),
-                DatumZavrsetkaRezervacije = new DateTime(2023, 01, 06, 17, 0, 0)
-            };
-
-            context.Korisnikvozilos.AddRange(reservation1, reservation2);
-            await context.SaveChangesAsync();
-
-            var controller = new OglasVoziloController(context);
-            var actionResult = await controller.GetReservedDates(1);
-            var ok = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var dates = Assert.IsAssignableFrom<List<string>>(ok.Value);
-
-            var expected = new HashSet<string>
-            {
-                "2023-01-01",
-                "2023-01-02",
-                "2023-01-03",
-                "2023-01-05",
-                "2023-01-06"
-            };
-            Assert.Equal(expected, dates.ToHashSet());
-        }
-
-        [Fact]
         public async Task CreateReservation_NoOverlap_ReturnsOkWithReservation()
         {
             var context = CreateInMemoryContext(Guid.NewGuid().ToString());

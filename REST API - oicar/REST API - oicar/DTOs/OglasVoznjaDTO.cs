@@ -28,6 +28,8 @@ namespace REST_API___oicar.DTOs
 
         public int BrojPutnika { get; set; }
 
+        public int PopunjenoMjesta { get; set; }
+
         public int? StatusVoznjeId { get; set; }
         public string? StatusVoznjeNaziv { get; set; }
 

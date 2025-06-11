@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc; 
 using Microsoft.EntityFrameworkCore;
 using REST_API___oicar.DTOs;
 using REST_API___oicar.Models;
@@ -28,12 +28,33 @@ namespace REST_API___oicar.Controllers
                     IdKorisnikVoznja = x.Idkorisnikvoznja, 
                     KorisnikId = x.Korisnikid,  
                     OglasVoznjaId = x.Oglasvoznjaid, 
-                    LokacijaPutnik = x.Lokacijaputnik, 
-                    LokacijaVozac = x.Lokacijavozac
+                    LokacijaPutnik = x.Oglasvoznja!.Lokacija!.Polaziste, 
+                    LokacijaVozac = x.Oglasvoznja.Lokacija.Odrediste  
                 }) 
                 .ToListAsync(); 
 
             return Ok(korisnikoveVoznje);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<KorisnikVoznjaDTO>> GetByUserAndRide(int userId, int oglasVoznjaId)
+        {
+            var kv = await _context.Korisnikvoznjas
+                .Where(x => x.Korisnikid == userId && x.Oglasvoznjaid == oglasVoznjaId)
+                .Select(x => new KorisnikVoznjaDTO
+                {
+                    IdKorisnikVoznja = x.Idkorisnikvoznja,
+                    KorisnikId = x.Korisnikid,
+                    OglasVoznjaId = x.Oglasvoznjaid,
+                    LokacijaPutnik = x.Lokacijaputnik,
+                    LokacijaVozac = x.Lokacijavozac
+                })
+                .FirstOrDefaultAsync();
+
+            if (kv == null)
+                return NotFound();
+
+            return Ok(kv);
         }
 
         [HttpPost("[action]")]
@@ -60,8 +81,8 @@ namespace REST_API___oicar.Controllers
             {
                 Korisnikid = korisnikVoznjaDTO.KorisnikId,
                 Oglasvoznjaid = korisnikVoznjaDTO.OglasVoznjaId,
-                Lokacijaputnik = korisnikVoznjaDTO.LokacijaPutnik,
-                Lokacijavozac = korisnikVoznjaDTO.LokacijaVozac
+                Lokacijaputnik = voznja.Lokacija!.Polaziste,   
+                Lokacijavozac = voznja.Lokacija.Odrediste 
             };
 
             _context.Korisnikvoznjas.Add(novaPrijava);

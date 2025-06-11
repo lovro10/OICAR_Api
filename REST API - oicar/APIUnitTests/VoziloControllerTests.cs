@@ -88,6 +88,7 @@ namespace APIUnitTests
                 Pwdsalt = "",
                 Pwdhash = ""
             };
+
             var vehicle = new Vozilo
             {
                 Idvozilo = 10,
@@ -98,6 +99,7 @@ namespace APIUnitTests
                 Vozacid = 5,
                 Vozac = driver
             };
+
             context.Korisniks.Add(driver);
             context.Vozilos.Add(vehicle);
             await context.SaveChangesAsync();

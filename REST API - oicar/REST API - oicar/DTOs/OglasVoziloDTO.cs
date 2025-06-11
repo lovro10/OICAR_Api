@@ -21,5 +21,6 @@ namespace REST_API___oicar.DTOs
         public string? Prezime { get; set; }
         public string? Email { get; set; }
 
+        public List<string> ReservedDates { get; set; } = new();
     }
 }

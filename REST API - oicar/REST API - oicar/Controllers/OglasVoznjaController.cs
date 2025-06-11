@@ -49,12 +49,13 @@ namespace REST_API___oicar.Controllers
                     StatusVoznjeNaziv = o.Statusvoznje.Naziv,
                     CijenaPoPutniku = o.BrojPutnika > 0
                         ? (o.Troskovi.Cestarina + o.Troskovi.Gorivo) / o.BrojPutnika
-                        : 0 
+                        : 0, 
+                    PopunjenoMjesta = o.Korisnikvoznjas.Count - 1 
                 }) 
                 .ToListAsync();
 
             return Ok(oglasiVoznje);
-        }
+        } 
 
         [HttpGet("[action]")]
         public async Task<ActionResult<IEnumerable<OglasVoznjaDTO>>> GetAllByUser(int userId) 
@@ -89,12 +90,13 @@ namespace REST_API___oicar.Controllers
                     StatusVoznjeNaziv = o.Statusvoznje.Naziv,
                     CijenaPoPutniku = o.BrojPutnika > 0
                         ? (o.Troskovi.Cestarina + o.Troskovi.Gorivo) / o.BrojPutnika
-                        : 0
-                })
+                        : 0,
+                    PopunjenoMjesta = o.Korisnikvoznjas.Count - 1 
+                }) 
                 .ToListAsync();
 
             return Ok(oglasiVoznje);
-        }
+        } 
 
         [HttpGet("[action]/{id}")]
         public async Task<ActionResult<OglasVoznjaDTO>> GetByIdWeb(int id)
@@ -162,15 +164,16 @@ namespace REST_API___oicar.Controllers
                     StatusVoznjeNaziv = o.Statusvoznje.Naziv,
                     CijenaPoPutniku = o.BrojPutnika > 0
                         ? (o.Troskovi.Cestarina + o.Troskovi.Gorivo) / o.BrojPutnika
-                        : 0
-                })
+                        : 0 ,
+                    PopunjenoMjesta = o.Korisnikvoznjas.Count - 1 
+                }) 
                 .FirstOrDefaultAsync();
 
             if (oglasVoznja == null)
                 return NotFound();
 
             return Ok(oglasVoznja);
-        }
+        } 
 
         [HttpGet("[action]")]
         public async Task<ActionResult<OglasVoznjaDTO>> GetDataForAd(int id)
@@ -204,14 +207,62 @@ namespace REST_API___oicar.Controllers
                     Odrediste = o.Lokacija.Odrediste,
                     CijenaPoPutniku = o.BrojPutnika > 0
                         ? (o.Troskovi.Cestarina + o.Troskovi.Gorivo) / o.BrojPutnika
-                        : 0
-                })
+                        : 0 ,
+                    PopunjenoMjesta = o.Korisnikvoznjas.Count - 1 
+                }) 
                 .FirstOrDefaultAsync();
 
             if (oglasVoznja == null)
                 return NotFound();
 
             return Ok(oglasVoznja);
+        } 
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<IEnumerable<OglasVoznjaDTO>>> GetJoinedRides(int userId)
+        {
+            var joinedRides = await _context.Korisnikvoznjas
+                .Where(kv => kv.Korisnikid == userId && kv.Oglasvoznja!.Vozilo!.Vozac!.Idkorisnik != userId) 
+                .Include(kv => kv.Oglasvoznja) 
+                    .ThenInclude(o => o.Troskovi)
+                .Include(kv => kv.Oglasvoznja) 
+                    .ThenInclude(o => o.Lokacija)
+                .Include(kv => kv.Oglasvoznja) 
+                    .ThenInclude(o => o.Statusvoznje)
+                .Include(kv => kv.Oglasvoznja) 
+                    .ThenInclude(o => o.Vozilo)
+                        .ThenInclude(v => v.Vozac)
+                .OrderByDescending(kv => kv.Oglasvoznja!.Idoglasvoznja)
+                .Select(kv => new OglasVoznjaDTO 
+                { 
+                    IdOglasVoznja = kv.Oglasvoznja.Idoglasvoznja,
+                    VoziloId = kv.Oglasvoznja.Voziloid,
+                    Marka = kv.Oglasvoznja.Vozilo.Marka,
+                    Model = kv.Oglasvoznja.Vozilo.Model,
+                    Registracija = kv.Oglasvoznja.Vozilo.Registracija,
+                    Username = kv.Oglasvoznja.Vozilo.Vozac.Username,
+                    Ime = kv.Oglasvoznja.Vozilo.Vozac.Ime,
+                    Prezime = kv.Oglasvoznja.Vozilo.Vozac.Prezime,
+                    DatumIVrijemePolaska = kv.Oglasvoznja.DatumIVrijemePolaska,
+                    DatumIVrijemeDolaska = kv.Oglasvoznja.DatumIVrijemeDolaska,
+                    BrojPutnika = kv.Oglasvoznja.BrojPutnika,
+                    TroskoviId = kv.Oglasvoznja.Troskoviid,
+                    LokacijaId = kv.Oglasvoznja.Lokacijaid,
+                    StatusVoznjeId = kv.Oglasvoznja.Statusvoznjeid,
+                    Cestarina = kv.Oglasvoznja.Troskovi.Cestarina,
+                    Gorivo = kv.Oglasvoznja.Troskovi.Gorivo,
+                    Polaziste = kv.Oglasvoznja.Lokacija.Polaziste,
+                    Odrediste = kv.Oglasvoznja.Lokacija.Odrediste,
+                    StatusVoznjeNaziv = kv.Oglasvoznja.Statusvoznje.Naziv,
+                    CijenaPoPutniku = kv.Oglasvoznja.BrojPutnika > 0
+                        ? (kv.Oglasvoznja.Troskovi.Cestarina + kv.Oglasvoznja.Troskovi.Gorivo) / kv.Oglasvoznja.BrojPutnika
+                        : 0 ,
+                    PopunjenoMjesta = kv.Oglasvoznja.Korisnikvoznjas.Count - 1 
+
+                })
+                .ToListAsync();
+
+            return Ok(joinedRides);
         }
 
         [HttpGet("[action]/{id}")]
@@ -389,9 +440,9 @@ namespace REST_API___oicar.Controllers
             return Ok(oglasVoznjaDTO);
         }
 
-        [HttpDelete("[action]/{id}")]
+        [HttpDelete("[action]")]
         public async Task<IActionResult> ObrisiOglasVoznje(int id)
-        {
+        { 
             var oglasVoznja = await _context.Oglasvoznjas
                 .Include(o => o.Troskovi)
                 .Include(o => o.Lokacija)
@@ -400,11 +451,6 @@ namespace REST_API___oicar.Controllers
 
             if (oglasVoznja == null)
                 return NotFound();
-
-
-            _context.Troskovis.Remove(oglasVoznja.Troskovi);
-            _context.Lokacijas.Remove(oglasVoznja.Lokacija);
-            _context.Statusvoznjes.Remove(oglasVoznja.Statusvoznje);
 
             _context.Oglasvoznjas.Remove(oglasVoznja);
             await _context.SaveChangesAsync();

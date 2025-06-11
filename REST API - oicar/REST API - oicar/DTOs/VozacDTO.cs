@@ -8,6 +8,5 @@ namespace REST_API___oicar.DTOs
         public string Ime { get; set; }
         public string Prezime { get; set; }
         public string Username { get; set; }
-        public List<ImageDTO> Images { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using REST_API___oicar.DTOs;
 using REST_API___oicar.Models;
 using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace REST_API___oicar.Controllers
 {
@@ -109,7 +110,6 @@ namespace REST_API___oicar.Controllers
                         Ime = vozilo.Vozac?.Ime,
                         Prezime = vozilo.Vozac?.Prezime,
                         Username = vozilo.Vozac?.Username,
-                        Images = vozacImages
                     }
                 };
 
@@ -118,6 +118,71 @@ namespace REST_API___oicar.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<VoziloDetaljiDTO>> DetailsVehicle(int id)
+        {
+            try
+            {
+                var vozilo = await _context.Vozilos
+                    .Include(x => x.Vozac)
+                    .FirstOrDefaultAsync(v => v.Idvozilo == id);
+
+                if (vozilo == null)
+                    return NotFound($"Vozilo sa ID-jem {id} nije pronađeno.");
+
+                var imageDTOs = new List<ImageDTO>();
+                if (vozilo.Imageprometnaid.HasValue)
+                {
+                    int frontId = vozilo.Imageprometnaid.Value;
+                    int backId = frontId + 1;
+
+                    var images = await _context.Images
+                        .Include(x => x.Imagetype)
+                        .Where(img => (img.Idimage == frontId || img.Idimage == backId) && img.Imagetypeid == 4)
+                        .ToListAsync();
+
+                    imageDTOs = images.Select(img => new ImageDTO
+                    {
+                        Idimage = img.Idimage,
+                        Name = img.Name,
+                        ContentBase64 = Convert.ToBase64String(img.Content),
+                        ImageTypeId = img.Imagetypeid,
+                        ImageTypeName = img.Imagetype?.Name
+                    }).ToList();
+                }
+
+                var voziloDTO = new VoziloDTO
+                {
+                    Idvozilo = vozilo.Idvozilo,
+                    Naziv = vozilo.Naziv,  
+                    Marka = vozilo.Marka,
+                    Model = vozilo.Model,
+                    Registracija = vozilo.Registracija,
+                    Isconfirmed = vozilo.Isconfirmed,
+
+                    Vozac = new VozacDTO
+                    {
+                        Idkorisnik = vozilo.Vozac?.Idkorisnik ?? 0,
+                        Ime = vozilo.Vozac?.Ime,
+                        Prezime = vozilo.Vozac?.Prezime,
+                        Username = vozilo.Vozac?.Username 
+                    }
+                };
+
+                var result = new VoziloDetaljiDTO 
+                {
+                    Vozilo = voziloDTO,
+                    IdentificationImages = imageDTOs
+                };
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Greška na serveru: {ex.Message}");
             }
         }
 

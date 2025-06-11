@@ -43,6 +43,62 @@ namespace REST_API___oicar.Controllers
             if (porukaSendDTO.KorisnikVoznjaId == 0 || string.IsNullOrWhiteSpace(porukaSendDTO.Content))
                 return BadRequest("KorisnikVoznjaId i sadržaj poruke su obavezni.");
 
+            bool isPutnik = porukaSendDTO.PutnikId.HasValue;
+            bool isVozac = porukaSendDTO.VozacId.HasValue;
+
+            if (isPutnik == isVozac) 
+                return BadRequest("Poruku mora poslati točno jedan korisnik (putnik ILI vozač, ne oba).");
+
+            var korisnikVoznja = await _context.Korisnikvoznjas
+                .Include(kv => kv.Korisnik)
+                .Include(kv => kv.Oglasvoznja)
+                    .ThenInclude(o => o.Vozilo)
+                .FirstOrDefaultAsync(kv => kv.Idkorisnikvoznja == porukaSendDTO.KorisnikVoznjaId);
+
+            if (korisnikVoznja == null)
+                return NotFound("Vožnja ne postoji.");
+
+            var newMessage = new Poruka
+            {
+                Korisnikvoznjaid = porukaSendDTO.KorisnikVoznjaId,
+                Putnikid = isPutnik ? porukaSendDTO.PutnikId : null,
+                Vozacid = isVozac ? porukaSendDTO.VozacId : null,
+                Content = porukaSendDTO.Content
+            };
+
+            _context.Porukas.Add(newMessage);
+            await _context.SaveChangesAsync();
+
+            return Ok(newMessage);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<IEnumerable<PorukaGetDTO>>> GetMessagesForVehicle(int korisnikVoziloId) 
+        { 
+            var messages = await _context.Porukas
+                .Where(x => x.Korisnikvoznjaid == korisnikVoziloId) 
+                .OrderBy(x => x.Idporuka) 
+                .Select(x => new PorukaGetDTO
+                { 
+                    Idporuka = x.Idporuka,
+                    Content = x.Content,
+                    KorisnikVoznjaId = x.Korisnikvoznjaid ?? 0,
+                    PutnikId = x.Putnikid,
+                    VozacId = x.Vozacid,
+                    SenderName = x.Putnik != null ? x.Putnik.Username :
+                                 x.Vozac != null ? x.Vozac.Username : "Unknown user"
+                }) 
+                .ToListAsync();
+
+            return Ok(messages);
+        } 
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult> SendMessageForVehicle([FromBody] PorukaSendDTO porukaSendDTO)
+        {
+            if (porukaSendDTO.KorisnikVoznjaId == 0 || string.IsNullOrWhiteSpace(porukaSendDTO.Content))
+                return BadRequest("KorisnikVoznjaId i sadržaj poruke su obavezni.");
+
             if (porukaSendDTO.PutnikId == null && porukaSendDTO.VozacId == null)
                 return BadRequest("Pošiljatelj mora biti definiran (putnikId ili vozacId).");
 
@@ -77,7 +133,7 @@ namespace REST_API___oicar.Controllers
             _context.Porukas.Add(newMessage);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Message sent" });
+            return Ok(newMessage);
         }
     }
 }

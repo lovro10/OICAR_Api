@@ -34,8 +34,6 @@ namespace REST_API___oicar.Controllers
                 korisnik.Prezime = korisnikDto.Prezime;
                 korisnik.Email = korisnikDto.Email;
                 korisnik.Telefon = korisnikDto.Telefon;
-                korisnik.Datumrodjenja = korisnikDto.DatumRodjenja;
-                korisnik.Username = korisnikDto.Username;
 
                 _context.Korisniks.Update(korisnik);
                 await _context.SaveChangesAsync();
@@ -56,23 +54,23 @@ namespace REST_API___oicar.Controllers
                 var korisnik = await _context.Korisniks.FindAsync(id);
 
                 if (korisnik == null)
-                    return NotFound($"Korisnik sa ID-jem {id} nije pronađen.");
+                    return NotFound($"Korisnik with ID {id} not found");
 
-                korisnik.Username = $"deleted_username_{id}";
-                korisnik.Ime = ""; 
-                korisnik.Prezime = "";
-                korisnik.Email = $"deleted_email_{id}";
-                korisnik.Telefon = "";
+                korisnik.Username = $"Anonymous_username_{id}";
+                korisnik.Ime = $"Anonymous_name_{id}";  
+                korisnik.Prezime = $"Anonymous_surname_{id}"; 
+                korisnik.Email = $"Anonymous_email_{id}";
+                korisnik.Telefon = $"Anonymous_number_{id}";
                 korisnik.Datumrodjenja = default;
-                korisnik.Pwdhash = "";
-                korisnik.Pwdsalt = "";
+                korisnik.Pwdhash = $"Anonymous_pwdhash_{id}";
+                korisnik.Pwdsalt = $"Anonymous_pwdsalt_{id}";
                 korisnik.Isconfirmed = null;
                 korisnik.Ulogaid = 4;
 
                 _context.Korisniks.Update(korisnik);
                 await _context.SaveChangesAsync();
 
-                return Ok($"Svi podaci korisnika sa ID-jem {id} su obrisani.");
+                return Ok($"All data for user with ID {id} are cleared");
             }
             catch (Exception ex)
             {
@@ -80,10 +78,58 @@ namespace REST_API___oicar.Controllers
             }
         }
 
+        [HttpPut("[action]")] 
+        public async Task<ActionResult> RequestClearInfo(int id) 
+        { 
+            try
+            {
+                var korisnik = await _context.Korisniks.FindAsync(id);
+
+                if (korisnik == null)
+                    return NotFound($"Korisnik with ID {id} not found");
+
+                korisnik.Telefon = "Request to clear data";  
+                
+                _context.Korisniks.Update(korisnik); 
+                await _context.SaveChangesAsync(); 
+
+                return Ok($"User with {id} requested clearance");
+            } 
+            catch (Exception ex) 
+            { 
+                return StatusCode(500, ex.Message);
+            } 
+        } 
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<KorisnikDTO>>> GetAll()
         {
             return await _context.Korisniks
+                .Where(x => x.Datumrodjenja != default && x.Telefon != "Request to clear data") 
+                .Include(x => x.Uloga) 
+                .Select(k => new KorisnikDTO
+                {    
+                    IDKorisnik = k.Idkorisnik,
+                    Ime = k.Ime,
+                    Prezime = k.Prezime,
+                    DatumRodjenja = k.Datumrodjenja,
+                    Email = k.Email,
+                    Username = k.Username,
+                    Pwdhash = k.Pwdhash,
+                    Pwdsalt = k.Pwdsalt,
+                    Telefon = k.Telefon,
+                    UlogaId = k.Ulogaid,
+                    Uloga = k.Uloga,
+                    Isconfirmed = k.Isconfirmed,
+                }) 
+                .ToListAsync();
+        } 
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<IEnumerable<KorisnikDTO>>> GetAllRequestClear()
+        { 
+            return await _context.Korisniks
+                .Where(x => x.Ulogaid == 4 || x.Telefon == "Request to clear data" || x.Username == "")
                 .Include(x => x.Uloga)
                 .Select(k => new KorisnikDTO
                 {
@@ -193,8 +239,42 @@ namespace REST_API___oicar.Controllers
             }
         }
 
+        [HttpGet("[action]")]
+        public async Task<ActionResult<KorisnikDTO>> Profile(int id)
+        {
+            try
+            {
+                var korisnik = await _context.Korisniks
+                    .Include(x => x.Uloga)
+                    .FirstOrDefaultAsync(x => x.Idkorisnik == id);
+
+                if (korisnik == null)
+                {
+                    return NotFound($"Korisnik sa ID-jem {id} nije pronađen.");
+                }
+
+                var korisnikDTO = new KorisnikDTO
+                {
+                    IDKorisnik = korisnik.Idkorisnik,
+                    Ime = korisnik.Ime,
+                    Prezime = korisnik.Prezime,
+                    Email = korisnik.Email,
+                    Username = korisnik.Username,
+                    Telefon = korisnik.Telefon ?? "",
+                    DatumRodjenja = korisnik.Datumrodjenja,
+                    Uloga = korisnik.Uloga 
+                };
+
+                return Ok(korisnikDTO);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+        
         [HttpPost("[action]")]
-        public async Task<ActionResult<RegistracijaVozacDTO>> RegistracijaVozac([FromBody] String jsonRegistracijaVozacDTO)
+        public async Task<ActionResult<RegistracijaVozacDTO>> RegistracijaVozac([FromBody] string jsonRegistracijaVozacDTO)
         {
             try
             {
