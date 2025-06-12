@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using REST_API___oicar.DTOs;
 using REST_API___oicar.Models;
+using REST_API___oicar.Security;
 
 namespace REST_API___oicar.Controllers
 {
@@ -11,14 +12,17 @@ namespace REST_API___oicar.Controllers
     {
         private readonly CarshareContext _context;
 
-        public OglasVoznjaController(CarshareContext context)
+        private readonly AesEncryptionService _encryptionService;
+
+        public OglasVoznjaController(CarshareContext context, AesEncryptionService encryptionService)
         {
-            _context = context;
-        }
+            _context = context; 
+            _encryptionService = encryptionService; 
+        } 
 
         [HttpGet("[action]")]
         public async Task<ActionResult<IEnumerable<OglasVoznjaDTO>>> GetAll()
-        {
+        { 
             var oglasiVoznje = await _context.Oglasvoznjas
                 .Include(o => o.Troskovi)
                 .Include(o => o.Lokacija)
@@ -33,9 +37,9 @@ namespace REST_API___oicar.Controllers
                     Marka = o.Vozilo.Marka,
                     Model = o.Vozilo.Model,
                     Registracija = o.Vozilo.Registracija,
-                    Username = o.Vozilo.Vozac.Username, 
-                    Ime = o.Vozilo.Vozac.Ime, 
-                    Prezime = o.Vozilo.Vozac.Prezime,
+                    Username = _encryptionService.Decrypt(o.Vozilo.Vozac.Username),
+                    Ime = _encryptionService.Decrypt(o.Vozilo.Vozac.Ime),
+                    Prezime = _encryptionService.Decrypt(o.Vozilo.Vozac.Prezime),
                     DatumIVrijemePolaska = o.DatumIVrijemePolaska,
                     DatumIVrijemeDolaska = o.DatumIVrijemeDolaska,
                     BrojPutnika = o.BrojPutnika,
@@ -74,9 +78,9 @@ namespace REST_API___oicar.Controllers
                     Marka = o.Vozilo.Marka,
                     Model = o.Vozilo.Model,
                     Registracija = o.Vozilo.Registracija,
-                    Username = o.Vozilo.Vozac.Username,
-                    Ime = o.Vozilo.Vozac.Ime,
-                    Prezime = o.Vozilo.Vozac.Prezime,
+                    Username = _encryptionService.Decrypt(o.Vozilo.Vozac.Username),
+                    Ime = _encryptionService.Decrypt(o.Vozilo.Vozac.Ime),
+                    Prezime = _encryptionService.Decrypt(o.Vozilo.Vozac.Prezime),
                     DatumIVrijemePolaska = o.DatumIVrijemePolaska,
                     DatumIVrijemeDolaska = o.DatumIVrijemeDolaska,
                     BrojPutnika = o.BrojPutnika,
@@ -148,9 +152,9 @@ namespace REST_API___oicar.Controllers
                     Marka = o.Vozilo.Marka,
                     Model = o.Vozilo.Model,
                     Registracija = o.Vozilo.Registracija,
-                    Username = o.Vozilo.Vozac.Username,
-                    Ime = o.Vozilo.Vozac.Ime,
-                    Prezime = o.Vozilo.Vozac.Prezime,
+                    Username = _encryptionService.Decrypt(o.Vozilo.Vozac.Username),
+                    Ime = _encryptionService.Decrypt(o.Vozilo.Vozac.Ime),
+                    Prezime = _encryptionService.Decrypt(o.Vozilo.Vozac.Prezime),
                     DatumIVrijemePolaska = o.DatumIVrijemePolaska,
                     DatumIVrijemeDolaska = o.DatumIVrijemeDolaska,
                     BrojPutnika = o.BrojPutnika,
@@ -192,10 +196,10 @@ namespace REST_API___oicar.Controllers
                     Marka = o.Vozilo.Marka,
                     Model = o.Vozilo.Model,
                     Registracija = o.Vozilo.Registracija,
-                    KorisnikId = o.Vozilo.Vozacid,  
-                    Username = o.Vozilo.Vozac.Username, 
-                    Ime = o.Vozilo.Vozac.Ime,
-                    Prezime = o.Vozilo.Vozac.Prezime,
+                    KorisnikId = o.Vozilo.Vozacid,
+                    Username = _encryptionService.Decrypt(o.Vozilo.Vozac.Username),
+                    Ime = _encryptionService.Decrypt(o.Vozilo.Vozac.Ime),
+                    Prezime = _encryptionService.Decrypt(o.Vozilo.Vozac.Prezime),
                     DatumIVrijemePolaska = o.DatumIVrijemePolaska,
                     DatumIVrijemeDolaska = o.DatumIVrijemeDolaska,
                     BrojPutnika = o.BrojPutnika,
@@ -240,9 +244,9 @@ namespace REST_API___oicar.Controllers
                     Marka = kv.Oglasvoznja.Vozilo.Marka,
                     Model = kv.Oglasvoznja.Vozilo.Model,
                     Registracija = kv.Oglasvoznja.Vozilo.Registracija,
-                    Username = kv.Oglasvoznja.Vozilo.Vozac.Username,
-                    Ime = kv.Oglasvoznja.Vozilo.Vozac.Ime,
-                    Prezime = kv.Oglasvoznja.Vozilo.Vozac.Prezime,
+                    Username = _encryptionService.Decrypt(kv.Oglasvoznja.Vozilo.Vozac.Username),
+                    Ime = _encryptionService.Decrypt(kv.Oglasvoznja.Vozilo.Vozac.Ime),
+                    Prezime = _encryptionService.Decrypt(kv.Oglasvoznja.Vozilo.Vozac.Prezime),
                     DatumIVrijemePolaska = kv.Oglasvoznja.DatumIVrijemePolaska,
                     DatumIVrijemeDolaska = kv.Oglasvoznja.DatumIVrijemeDolaska,
                     BrojPutnika = kv.Oglasvoznja.BrojPutnika,

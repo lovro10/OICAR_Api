@@ -13,11 +13,13 @@ namespace REST_API___oicar.Controllers
     {
         private readonly CarshareContext _context;
         private readonly IConfiguration _configuration;
+        private readonly AesEncryptionService _encryptionService;
 
-        public KorisnikController(CarshareContext context, IConfiguration configuration)
+        public KorisnikController(CarshareContext context, IConfiguration configuration, AesEncryptionService encryptionService)
         {
             _context = context;
             _configuration = configuration;
+            _encryptionService = encryptionService;
         }
 
         [HttpPut("{id}")]
@@ -57,8 +59,8 @@ namespace REST_API___oicar.Controllers
                     return NotFound($"Korisnik with ID {id} not found");
 
                 korisnik.Username = $"Anonymous_username_{id}";
-                korisnik.Ime = $"Anonymous_name_{id}";  
-                korisnik.Prezime = $"Anonymous_surname_{id}"; 
+                korisnik.Ime = $"Anonymous_name_{id}";
+                korisnik.Prezime = $"Anonymous_surname_{id}";
                 korisnik.Email = $"Anonymous_email_{id}";
                 korisnik.Telefon = $"Anonymous_number_{id}";
                 korisnik.Datumrodjenja = default;
@@ -78,9 +80,9 @@ namespace REST_API___oicar.Controllers
             }
         }
 
-        [HttpPut("[action]")] 
-        public async Task<ActionResult> RequestClearInfo(int id) 
-        { 
+        [HttpPut("[action]")]
+        public async Task<ActionResult> RequestClearInfo(int id)
+        {
             try
             {
                 var korisnik = await _context.Korisniks.FindAsync(id);
@@ -88,60 +90,60 @@ namespace REST_API___oicar.Controllers
                 if (korisnik == null)
                     return NotFound($"Korisnik with ID {id} not found");
 
-                korisnik.Telefon = "Request to clear data";  
-                
-                _context.Korisniks.Update(korisnik); 
-                await _context.SaveChangesAsync(); 
+                korisnik.Telefon = "Request to clear data";
+
+                _context.Korisniks.Update(korisnik);
+                await _context.SaveChangesAsync();
 
                 return Ok($"User with {id} requested clearance");
-            } 
-            catch (Exception ex) 
-            { 
+            }
+            catch (Exception ex)
+            {
                 return StatusCode(500, ex.Message);
-            } 
-        } 
+            }
+        }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<KorisnikDTO>>> GetAll()
         {
             return await _context.Korisniks
-                .Where(x => x.Datumrodjenja != default && x.Telefon != "Request to clear data") 
-                .Include(x => x.Uloga) 
+                .Where(x => x.Datumrodjenja != default && x.Telefon != "Request to clear data")
+                .Include(x => x.Uloga)
                 .Select(k => new KorisnikDTO
-                {    
+                {
                     IDKorisnik = k.Idkorisnik,
-                    Ime = k.Ime,
-                    Prezime = k.Prezime,
+                    Ime = _encryptionService.Decrypt(k.Ime),
+                    Prezime = _encryptionService.Decrypt(k.Prezime),
                     DatumRodjenja = k.Datumrodjenja,
-                    Email = k.Email,
-                    Username = k.Username,
+                    Email = _encryptionService.Decrypt(k.Email),
+                    Username = _encryptionService.Decrypt(k.Username),
                     Pwdhash = k.Pwdhash,
                     Pwdsalt = k.Pwdsalt,
-                    Telefon = k.Telefon,
+                    Telefon = _encryptionService.Decrypt(k.Telefon),
                     UlogaId = k.Ulogaid,
                     Uloga = k.Uloga,
                     Isconfirmed = k.Isconfirmed,
-                }) 
+                })
                 .ToListAsync();
-        } 
+        }
 
         [HttpGet("[action]")]
         public async Task<ActionResult<IEnumerable<KorisnikDTO>>> GetAllRequestClear()
-        { 
+        {
             return await _context.Korisniks
                 .Where(x => x.Ulogaid == 4 || x.Telefon == "Request to clear data" || x.Username == "")
                 .Include(x => x.Uloga)
                 .Select(k => new KorisnikDTO
                 {
                     IDKorisnik = k.Idkorisnik,
-                    Ime = k.Ime,
-                    Prezime = k.Prezime,
+                    Ime = _encryptionService.Decrypt(k.Ime), 
+                    Prezime = _encryptionService.Decrypt(k.Prezime),
                     DatumRodjenja = k.Datumrodjenja,
-                    Email = k.Email,
-                    Username = k.Username,
+                    Email = _encryptionService.Decrypt(k.Email),
+                    Username = _encryptionService.Decrypt(k.Username),
                     Pwdhash = k.Pwdhash,
                     Pwdsalt = k.Pwdsalt,
-                    Telefon = k.Telefon,
+                    Telefon = _encryptionService.Decrypt(k.Telefon),
                     UlogaId = k.Ulogaid,
                     Uloga = k.Uloga,
                     Isconfirmed = k.Isconfirmed,
@@ -166,15 +168,21 @@ namespace REST_API___oicar.Controllers
             try
             {
                 var korisnik = await _context.Korisniks
-                    .Include(x => x.Korisnikimages)
-                        .ThenInclude(x => x.Image)
-                    .Include(x => x.Uloga) 
+                    .Include(x => x.Korisnikimages).ThenInclude(x => x.Image)
+                    .Include(x => x.Uloga)
                     .FirstOrDefaultAsync(x => x.Idkorisnik == id);
 
                 if (korisnik == null)
                 {
                     return NotFound($"Korisnik sa ID-jem {id} nije pronađen.");
                 }
+
+                var decryptedIme = _encryptionService.Decrypt(korisnik.Ime);
+                var decryptedPrezime = _encryptionService.Decrypt(korisnik.Prezime);
+                var decryptedEmail = _encryptionService.Decrypt(korisnik.Email);
+                var decryptedTelefon = _encryptionService.Decrypt(korisnik.Telefon ?? "");
+                var decryptedUsername = _encryptionService.Decrypt(korisnik.Username);
+                var decryptedDate = _encryptionService.Decrypt(korisnik.Username);
 
                 var imagesType1 = korisnik.Korisnikimages
                     .Where(x => x.Image != null && x.Image.Imagetypeid == 1)
@@ -185,8 +193,7 @@ namespace REST_API___oicar.Controllers
                         ContentBase64 = Convert.ToBase64String(x.Image.Content),
                         ImageTypeId = x.Image.Imagetypeid,
                         ImageTypeName = x.Image.Imagetype?.Name
-                    })
-                    .ToList();
+                    }).ToList();
 
                 var imagesType2 = korisnik.Korisnikimages
                     .Where(x => x.Image != null && x.Image.Imagetypeid == 2)
@@ -197,8 +204,7 @@ namespace REST_API___oicar.Controllers
                         ContentBase64 = Convert.ToBase64String(x.Image.Content),
                         ImageTypeId = x.Image.Imagetypeid,
                         ImageTypeName = x.Image.Imagetype?.Name
-                    })
-                    .ToList();
+                    }).ToList();
 
                 var imagesType3 = korisnik.Korisnikimages
                     .Where(x => x.Image != null && x.Image.Imagetypeid == 3)
@@ -209,17 +215,16 @@ namespace REST_API___oicar.Controllers
                         ContentBase64 = Convert.ToBase64String(x.Image.Content),
                         ImageTypeId = x.Image.Imagetypeid,
                         ImageTypeName = x.Image.Imagetype?.Name
-                    })
-                    .ToList();
+                    }).ToList();
 
                 var korisnikDTO = new KorisnikDTO
                 {
                     IDKorisnik = korisnik.Idkorisnik,
-                    Ime = korisnik.Ime,
-                    Prezime = korisnik.Prezime,
-                    Email = korisnik.Email,
-                    Username = korisnik.Username,
-                    Telefon = korisnik.Telefon ?? "",
+                    Ime = decryptedIme,
+                    Prezime = decryptedPrezime,
+                    Email = decryptedEmail,
+                    Username = decryptedUsername,
+                    Telefon = decryptedTelefon,
                     DatumRodjenja = korisnik.Datumrodjenja,
                     Uloga = korisnik.Uloga,
                     Pwdhash = korisnik.Pwdhash,
@@ -253,16 +258,22 @@ namespace REST_API___oicar.Controllers
                     return NotFound($"Korisnik sa ID-jem {id} nije pronađen.");
                 }
 
+                var decryptedIme = _encryptionService.Decrypt(korisnik.Ime);
+                var decryptedPrezime = _encryptionService.Decrypt(korisnik.Prezime);
+                var decryptedEmail = _encryptionService.Decrypt(korisnik.Email);
+                var decryptedTelefon = _encryptionService.Decrypt(korisnik.Telefon ?? "");
+                var decryptedUsername = _encryptionService.Decrypt(korisnik.Username);
+                
                 var korisnikDTO = new KorisnikDTO
                 {
                     IDKorisnik = korisnik.Idkorisnik,
-                    Ime = korisnik.Ime,
-                    Prezime = korisnik.Prezime,
-                    Email = korisnik.Email,
-                    Username = korisnik.Username,
-                    Telefon = korisnik.Telefon ?? "",
+                    Ime = decryptedIme,
+                    Prezime = decryptedPrezime,
+                    Email = decryptedEmail,
+                    Username = decryptedUsername,
+                    Telefon = decryptedTelefon,
                     DatumRodjenja = korisnik.Datumrodjenja,
-                    Uloga = korisnik.Uloga 
+                    Uloga = korisnik.Uloga
                 };
 
                 return Ok(korisnikDTO);
@@ -272,7 +283,7 @@ namespace REST_API___oicar.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
-        
+
         [HttpPost("[action]")]
         public async Task<ActionResult<RegistracijaVozacDTO>> RegistracijaVozac([FromBody] string jsonRegistracijaVozacDTO)
         {
@@ -280,25 +291,31 @@ namespace REST_API___oicar.Controllers
             {
                 var registracijaVozacDTO = JsonConvert.DeserializeObject<RegistracijaVozacDTO>(jsonRegistracijaVozacDTO);
 
-                var trimmedUsername = registracijaVozacDTO.Username.Trim();
-                if (_context.Korisniks.Any(x => x.Username.Equals(trimmedUsername)))
-                    return BadRequest($"Username {trimmedUsername} already exists");
 
+                if (_context.Korisniks.Any(u => u.Username == jsonRegistracijaVozacDTO.Trim()))
+                    return BadRequest("Username exists");
+
+
+                var encryptedIme = _encryptionService.Encrypt(registracijaVozacDTO.Ime);
+                var encryptedPrezime = _encryptionService.Encrypt(registracijaVozacDTO.Prezime);
+                var encryptedEmail = _encryptionService.Encrypt(registracijaVozacDTO.Email);
+                var encryptedTelefon = _encryptionService.Encrypt(registracijaVozacDTO.Telefon);
+                var encryptedUsername = _encryptionService.Encrypt(registracijaVozacDTO.Username);
                 var b64salt = PasswordHashProvider.GetSalt();
                 var b64hash = PasswordHashProvider.GetHash(registracijaVozacDTO.Password, b64salt);
 
                 var user = new Korisnik
                 {
-                    Username = registracijaVozacDTO.Username,
+                    Username = encryptedUsername,
                     Pwdhash = b64hash,
                     Pwdsalt = b64salt,
-                    Ime = registracijaVozacDTO.Ime,
-                    Prezime = registracijaVozacDTO.Prezime,
-                    Email = registracijaVozacDTO.Email,
-                    Telefon = registracijaVozacDTO.Telefon,
+                    Ime = encryptedIme,
+                    Prezime = encryptedPrezime,
+                    Email = encryptedEmail,
+                    Telefon = encryptedTelefon,
                     Datumrodjenja = registracijaVozacDTO.Datumrodjenja,
                     Ulogaid = 2,
-                    Isconfirmed = false  
+                    Isconfirmed = false
                 };
 
                 _context.Korisniks.Add(user);
@@ -312,45 +329,82 @@ namespace REST_API___oicar.Controllers
             {
                 return StatusCode(500, ex.Message);
             }
-        } 
+        }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult<KorisnikRegistracijaDTO>> Registracija([FromBody] KorisnikRegistracijaDTO registracijaKorisnikDTO) 
-        { 
+        public async Task<ActionResult<KorisnikRegistracijaDTO>> Registracija([FromBody] KorisnikRegistracijaDTO registracijaKorisnikDTO)
+        {
+
+            if (registracijaKorisnikDTO.Username == null)
+                return BadRequest("Username is required");
+
+            var encryptedUsername = _encryptionService.Encrypt(registracijaKorisnikDTO.Username.Trim());
+
+            if (_context.Korisniks.Any(u => u.Username == encryptedUsername))
+                return BadRequest("Username exists");
+
+            var encryptedIme = _encryptionService.Encrypt(registracijaKorisnikDTO.Ime);
+            var encryptedPrezime = _encryptionService.Encrypt(registracijaKorisnikDTO.Prezime);
+            var encryptedEmail = _encryptionService.Encrypt(registracijaKorisnikDTO.Email);
+            var encryptedTelefon = _encryptionService.Encrypt(registracijaKorisnikDTO.Telefon);
+
+            var b64salt = PasswordHashProvider.GetSalt();
+            var b64hash = PasswordHashProvider.GetHash(registracijaKorisnikDTO.Password, b64salt);
+
+            var user = new Korisnik
+            {
+                Username = encryptedUsername,
+                Pwdhash = b64hash,
+                Pwdsalt = b64salt,
+                Ime = encryptedIme,
+                Prezime = encryptedPrezime,
+                Email = encryptedEmail,
+                Telefon = encryptedTelefon,
+                Datumrodjenja = registracijaKorisnikDTO.Datumrodjenja,
+                Ulogaid = 3
+            };
+
+            _context.Korisniks.Add(user);
+            await _context.SaveChangesAsync();
+
+            registracijaKorisnikDTO.Id = user.Idkorisnik;
+            return Ok(registracijaKorisnikDTO);
+        }
+
+        [HttpGet("decrypted")]
+        public async Task<ActionResult<object>> GetDecryptedUser([FromQuery] int userId)
+        {
+            var user = await _context.Korisniks.FindAsync(userId);
+            if (user == null)
+                return NotFound("User not found");
+
             try
             {
-                var trimmedUsername = registracijaKorisnikDTO.Username.Trim();
-                if (_context.Korisniks.Any(x => x.Username.Equals(trimmedUsername)))
-                    return BadRequest($"Username {trimmedUsername} already exists");
+                var decryptedIme = _encryptionService.Decrypt(user.Ime);
+                var decryptedPrezime = _encryptionService.Decrypt(user.Prezime);
+                var decryptedEmail = _encryptionService.Decrypt(user.Email);
+                var decryptedTelefon = _encryptionService.Decrypt(user.Telefon);
+                var decryptedUsername = _encryptionService.Decrypt(user.Username);
 
-                var b64salt = PasswordHashProvider.GetSalt(); 
-                var b64hash = PasswordHashProvider.GetHash(registracijaKorisnikDTO.Password, b64salt);
+                var decryptedUser = new
+                {
+                    user.Idkorisnik,
+                    Username = decryptedUsername,
+                    Ime = decryptedIme,
+                    Prezime = decryptedPrezime,
+                    Email = decryptedEmail,
+                    Telefon = decryptedTelefon,
+                    user.Datumrodjenja,
+                    user.Ulogaid
+                };
 
-                var user = new Korisnik 
-                { 
-                    Username = registracijaKorisnikDTO.Username,
-                    Pwdhash = b64hash,
-                    Pwdsalt = b64salt,
-                    Ime = registracijaKorisnikDTO.Ime,
-                    Prezime = registracijaKorisnikDTO.Prezime,
-                    Email = registracijaKorisnikDTO.Email,
-                    Telefon = registracijaKorisnikDTO.Telefon,
-                    Datumrodjenja = registracijaKorisnikDTO.Datumrodjenja,
-                    Ulogaid = 3 
-                }; 
-                
-                _context.Korisniks.Add(user);
-                await _context.SaveChangesAsync();
-
-                registracijaKorisnikDTO.Id = user.Idkorisnik;
-
-                return Ok(registracijaKorisnikDTO);
-            } 
-            catch (Exception ex)
-            { 
-                return StatusCode(500, ex.Message);
-            } 
-        } 
+                return Ok(decryptedUser);
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(500, $"Decryption failed: {ex.Message}");
+            }
+        }
 
         private async Task<Image> SaveImageFromBase64Async(string base64Image, string name)
         {
@@ -377,24 +431,30 @@ namespace REST_API___oicar.Controllers
             try
             {
                 var trimmedUsername = registracijaPutnikDTO.Username.Trim();
-                if (_context.Korisniks.Any(x => x.Username.Equals(trimmedUsername)))
+                var encryptedUsername = _encryptionService.Encrypt(trimmedUsername);
+
+                if (_context.Korisniks.Any(x => x.Username == encryptedUsername))
                     return BadRequest($"Username {trimmedUsername} already exists");
+                var encryptedIme = _encryptionService.Encrypt(registracijaPutnikDTO.Ime);
+                var encryptedPrezime = _encryptionService.Encrypt(registracijaPutnikDTO.Prezime);
+                var encryptedEmail = _encryptionService.Encrypt(registracijaPutnikDTO.Email);
+                var encryptedTelefon = _encryptionService.Encrypt(registracijaPutnikDTO.Telefon);
 
                 var b64salt = PasswordHashProvider.GetSalt();
                 var b64hash = PasswordHashProvider.GetHash(registracijaPutnikDTO.Password, b64salt);
 
                 var user = new Korisnik
                 {
-                    Username = registracijaPutnikDTO.Username,
+                    Username = encryptedUsername,
                     Pwdhash = b64hash,
                     Pwdsalt = b64salt,
-                    Ime = registracijaPutnikDTO.Ime,
-                    Prezime = registracijaPutnikDTO.Prezime,
-                    Email = registracijaPutnikDTO.Email,
-                    Telefon = registracijaPutnikDTO.Telefon,
+                    Ime = encryptedIme,
+                    Prezime = encryptedPrezime,
+                    Email = encryptedEmail,
+                    Telefon = encryptedTelefon,
                     Datumrodjenja = registracijaPutnikDTO.Datumrodjenja,
                     Ulogaid = 1,
-                    Isconfirmed = false 
+                    Isconfirmed = false
                 };
 
                 user.Imageosobna = await SaveImageFromBase64Async(registracijaPutnikDTO.Osobna, "Osobna");
@@ -420,29 +480,39 @@ namespace REST_API___oicar.Controllers
             {
                 var genericLoginFail = JsonConvert.SerializeObject("Incorrect username or password");
 
-                var existingUser = _context.Korisniks
-                    .Include(x => x.Uloga)
-                    .FirstOrDefault(x => x.Username == korisnikLoginDTO.Username);
-                if (existingUser == null)
-                {
-                    return Unauthorized(genericLoginFail);
-                }
+                var users = _context.Korisniks.Include(x => x.Uloga).ToList();
 
-                var b64hash = PasswordHashProvider.GetHash(korisnikLoginDTO.Password, existingUser.Pwdsalt);
-                if (b64hash != existingUser.Pwdhash)
+                var existingUser = users.FirstOrDefault(user =>
                 {
+                    try
+                    {
+                        var decrypted = _encryptionService.Decrypt(user.Username);
+                        return decrypted == korisnikLoginDTO.Username;
+                    }
+                    catch
+                    {
+
+                        return false;
+                    }
+                });
+
+                if (existingUser == null)
                     return Unauthorized(genericLoginFail);
-                }
+
+                var hash = PasswordHashProvider.GetHash(korisnikLoginDTO.Password, existingUser.Pwdsalt);
+                if (hash != existingUser.Pwdhash)
+                    return Unauthorized(genericLoginFail);
 
                 var secureKey = _configuration["Jwt:SecureKey"];
+                var decryptedUsername = _encryptionService.Decrypt(existingUser.Username);
 
                 var token = JwtTokenProvider.CreateToken(
                     secureKey,
                     120,
                     existingUser.Idkorisnik,
-                    existingUser.Uloga.Naziv, 
-                    existingUser.Username 
-                    ); 
+                    existingUser.Uloga.Naziv,
+                    decryptedUsername
+                );
 
                 return Ok(JsonConvert.SerializeObject(token));
             }
@@ -460,11 +530,11 @@ namespace REST_API___oicar.Controllers
             if (korisnik == null)
                 return NotFound("Korisnik nije pronađen.");
 
-            korisnik.Isconfirmed = potvrdaKorisnikDTO.IsConfirmed; 
+            korisnik.Isconfirmed = potvrdaKorisnikDTO.IsConfirmed;
 
             _context.Entry(korisnik).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            
+
             var status = (bool)korisnik.Isconfirmed ? "potvrđen" : "odbijen";
             return Ok($"Korisnik je uspješno {status}.");
         }

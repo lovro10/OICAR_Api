@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using REST_API___oicar.DTOs;
 using REST_API___oicar.Models;
+using REST_API___oicar.Security;
 using System.Security.Claims;
 
 namespace REST_API___oicar.Controllers
@@ -13,9 +14,12 @@ namespace REST_API___oicar.Controllers
     { 
         private readonly CarshareContext _context;
 
-        public OglasVoziloController(CarshareContext context)
+        private readonly AesEncryptionService _encryptionService;
+
+        public OglasVoziloController(CarshareContext context, AesEncryptionService encryptionService)
         {
             _context = context;
+            _encryptionService = encryptionService;
         }
 
         [HttpGet("[action]")]
@@ -39,8 +43,12 @@ namespace REST_API___oicar.Controllers
                     reservedDates.Add(date.ToString("yyyy-MM-dd"));
                 }
 
-                var carAd = res.Oglasvozilo; 
+                var carAd = res.Oglasvozilo;
 
+                var decryptedUsername = _encryptionService.Decrypt(carAd.Vozilo.Vozac.Ime);
+                var decryptedIme = _encryptionService.Decrypt(carAd.Vozilo.Vozac.Ime);
+                var decryptedPrezime = _encryptionService.Decrypt(carAd.Vozilo.Vozac.Prezime);
+            
                 result.Add(new OglasVoziloDTO 
                 {     
                     IdOglasVozilo = carAd.Idoglasvozilo,  
@@ -91,7 +99,7 @@ namespace REST_API___oicar.Controllers
 
         [HttpGet("[action]")]
         public async Task<ActionResult<IEnumerable<OglasVoziloDTO>>> GetAll()
-        { 
+        {
             var oglasiVozila = await _context.Oglasvozilos
                 .Include(o => o.Vozilo)
                 .OrderByDescending(o => o.Idoglasvozilo) 
@@ -105,19 +113,19 @@ namespace REST_API___oicar.Controllers
                     DatumPocetkaRezervacije = o.DatumPocetkaRezervacije,
                     DatumZavrsetkaRezervacije = o.DatumZavrsetkaRezervacije, 
                     KorisnikId = o.Vozilo.Vozacid, 
-                    Username = o.Vozilo.Vozac.Username,
-                    Ime = o.Vozilo.Vozac.Ime,
-                    Prezime = o.Vozilo.Vozac.Prezime,
-                    Email = o.Vozilo.Vozac.Email
+                    Username = _encryptionService.Decrypt(o.Vozilo.Vozac.Username),
+                    Ime = _encryptionService.Decrypt(o.Vozilo.Vozac.Ime),
+                    Prezime = _encryptionService.Decrypt(o.Vozilo.Vozac.Prezime),
+                    Email = _encryptionService.Decrypt(o.Vozilo.Vozac.Email) 
                 })
                 .ToListAsync();
 
             return Ok(oglasiVozila);
-        }
+        } 
 
         [HttpGet("[action]/{id}")]
         public async Task<ActionResult<OglasVoziloDTO>> GetOglasVoziloById(int id)
-        {
+        { 
             var oglasVozilo = await _context.Oglasvozilos
             .Include(o => o.Vozilo)
             .Where(o => o.Idoglasvozilo == id)
@@ -131,10 +139,10 @@ namespace REST_API___oicar.Controllers
                 DatumPocetkaRezervacije = o.DatumPocetkaRezervacije,
                 DatumZavrsetkaRezervacije = o.DatumZavrsetkaRezervacije,
                 KorisnikId = o.Vozilo.Vozacid,
-                Username = o.Vozilo.Vozac.Username, 
-                Ime = o.Vozilo.Vozac.Ime, 
-                Prezime = o.Vozilo.Vozac.Prezime,
-                Email = o.Vozilo.Vozac.Email
+                Username = _encryptionService.Decrypt(o.Vozilo.Vozac.Username),
+                Ime = _encryptionService.Decrypt(o.Vozilo.Vozac.Ime),
+                Prezime = _encryptionService.Decrypt(o.Vozilo.Vozac.Prezime),
+                Email = _encryptionService.Decrypt(o.Vozilo.Vozac.Email)
             }) 
             .FirstOrDefaultAsync();
 
@@ -161,19 +169,19 @@ namespace REST_API___oicar.Controllers
                     DatumPocetkaRezervacije = o.DatumPocetkaRezervacije,
                     DatumZavrsetkaRezervacije = o.DatumZavrsetkaRezervacije,
                     KorisnikId = o.Vozilo.Vozacid,
-                    Username = o.Vozilo.Vozac.Username,
-                    Ime = o.Vozilo.Vozac.Ime,
-                    Prezime = o.Vozilo.Vozac.Prezime,
-                    Email = o.Vozilo.Vozac.Email
-                })
+                    Username = _encryptionService.Decrypt(o.Vozilo.Vozac.Username),
+                    Ime = _encryptionService.Decrypt(o.Vozilo.Vozac.Ime),
+                    Prezime = _encryptionService.Decrypt(o.Vozilo.Vozac.Prezime),
+                    Email = _encryptionService.Decrypt(o.Vozilo.Vozac.Email)
+                }) 
                 .ToListAsync();
 
             return Ok(oglasiVozila);
-        }
+        } 
 
         [HttpGet("[action]")]
         public async Task<ActionResult<IEnumerable<OglasVoziloDTO>>> GetRentedCars(int userId)
-        {
+        { 
             var rentedCars = await _context.Korisnikvozilos 
                 .Where(x => x.Korisnikid == userId && x.Oglasvozilo!.Vozilo!.Vozac!.Idkorisnik != userId)
                 .Include(o => o.Oglasvozilo)
@@ -189,18 +197,18 @@ namespace REST_API___oicar.Controllers
                     DatumPocetkaRezervacije = o.DatumPocetkaRezervacije,
                     DatumZavrsetkaRezervacije = o.DatumZavrsetkaRezervacije,
                     KorisnikId = o.Oglasvozilo.Vozilo.Vozacid,
-                    Username = o.Oglasvozilo.Vozilo.Vozac.Username,
-                    Ime = o.Oglasvozilo.Vozilo.Vozac.Ime,
-                    Prezime = o.Oglasvozilo.Vozilo.Vozac.Prezime 
-                })
+                    Username = _encryptionService.Decrypt(o.Oglasvozilo.Vozilo.Vozac.Username),
+                    Ime = _encryptionService.Decrypt(o.Oglasvozilo.Vozilo.Vozac.Ime),
+                    Prezime = _encryptionService.Decrypt(o.Oglasvozilo.Vozilo.Vozac.Prezime)  
+                }) 
                 .ToListAsync();
 
             return Ok(rentedCars);
-        }
+        } 
 
         [HttpGet("[action]/{id}")]
         public async Task<ActionResult<OglasVoznjaDTO>> DetaljiOglasaVozila(int id)
-        {
+        { 
             var oglasVozilo = await _context.Oglasvozilos
             .Include(o => o.Vozilo)
             .Where(o => o.Idoglasvozilo == id)
@@ -213,10 +221,10 @@ namespace REST_API___oicar.Controllers
                 Registracija = o.Vozilo.Registracija,
                 DatumPocetkaRezervacije = o.DatumPocetkaRezervacije,
                 DatumZavrsetkaRezervacije = o.DatumZavrsetkaRezervacije,
-                Username = o.Vozilo.Vozac.Username,
-                Ime = o.Vozilo.Vozac.Ime,
-                Prezime = o.Vozilo.Vozac.Prezime,
-                Email = o.Vozilo.Vozac.Email
+                Username = _encryptionService.Decrypt(o.Vozilo.Vozac.Username),
+                Ime = _encryptionService.Decrypt(o.Vozilo.Vozac.Ime),
+                Prezime = _encryptionService.Decrypt(o.Vozilo.Vozac.Prezime),
+                Email = _encryptionService.Decrypt(o.Vozilo.Vozac.Email)
             })
             .FirstOrDefaultAsync();
 

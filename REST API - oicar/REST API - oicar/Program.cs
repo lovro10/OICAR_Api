@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using REST_API___oicar.Models;
+using REST_API___oicar.Security;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -66,6 +67,10 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 });
 
 var secureKey = builder.Configuration["JWT:SecureKey"];
+
+builder.Services.AddScoped<IEncryptionService, AesEncryptionService>();
+builder.Services.AddSingleton<AesEncryptionService>();
+
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(o => {
