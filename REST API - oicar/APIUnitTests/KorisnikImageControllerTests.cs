@@ -1,52 +1,56 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using REST_API___oicar.Controllers;
 using REST_API___oicar.DTOs;
 using REST_API___oicar.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Xunit;
 
 namespace APIUnitTests
 {
-    public class KOrisnikImageControllerTests
+
+
+    public class KorisnikImageControllerTests : IDisposable
     {
-        private CarshareContext CreateInMemoryContext(string dbName)
+        private readonly TestCarshareContext _ctx;
+        private readonly KorisnikImageController _ctrl;
+
+        public KorisnikImageControllerTests()
         {
-            var serviceProvider = new ServiceCollection()
-                .AddEntityFrameworkInMemoryDatabase()
-                .BuildServiceProvider();
-
-            var options = new DbContextOptionsBuilder<CarshareContext>()
-                .UseInMemoryDatabase(databaseName: dbName)
-                .UseInternalServiceProvider(serviceProvider)
+            var opts = new DbContextOptionsBuilder<CarshareContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
+            _ctx = new TestCarshareContext(opts);
+            _ctrl = new KorisnikImageController(_ctx);
+        }
 
-            return new CarshareContext(options);
+        public void Dispose() => _ctx.Dispose();
+
+        [Fact]
+        public void Get_NoParameters_ReturnsOk()
+        {
+            var action = _ctrl.Get();
+            Assert.IsType<OkResult>(action.Result);
         }
 
         [Fact]
-        public void CreateKorisnikImage_Success_AddsRecord()
+        public void Get_WithId_ReturnsValue()
         {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var controller = new KorisnikImageController(context);
+            var result = _ctrl.Get(5);
+            Assert.Equal("value", result);
+        }
 
-            var dto = new KorisnikImageDTO
-            {
-                KorisnikId = 1,
-                ImageId = 2
-            };
+        [Fact]
+        public void CreateKorisnikImage_AddsToContextAndReturnsOk()
+        {
+            var dto = new KorisnikImageDTO { KorisnikId = 7, ImageId = 3 };
+            var action = _ctrl.CreateKorisnikImage(dto);
+            Assert.IsType<OkResult>(action.Result);
 
-            var result = controller.CreateKorisnikImage(dto);
-
-            Assert.IsType<OkResult>(result.Result);
-
-            var saved = context.Korisnikimages.SingleOrDefault(x =>
-                x.Korisnikid == 1 && x.Imageid == 2);
-            Assert.NotNull(saved);
+            var saved = _ctx.Korisnikimages.Single();
+            Assert.Equal(7, saved.Korisnikid);
+            Assert.Equal(3, saved.Imageid);
         }
     }
 }
