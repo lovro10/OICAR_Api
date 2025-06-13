@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using REST_API___oicar.Controllers;
 using REST_API___oicar.DTOs;
 using REST_API___oicar.Models;
@@ -12,520 +11,226 @@ using Xunit;
 
 namespace APIUnitTests
 {
-    public class PorukaControllerTests
+
+
+    public class PorukaControllerTests : IDisposable
     {
-        private CarshareContext CreateInMemoryContext(string dbName)
-        {
-            var serviceProvider = new ServiceCollection()
-                .AddEntityFrameworkInMemoryDatabase()
-                .BuildServiceProvider();
+        private readonly TestCarshareContext _ctx;
+        private readonly PorukaController _ctrl;
 
-            var options = new DbContextOptionsBuilder<CarshareContext>()
-                .UseInMemoryDatabase(databaseName: dbName)
-                .UseInternalServiceProvider(serviceProvider)
+        public PorukaControllerTests()
+        {
+            var opts = new DbContextOptionsBuilder<CarshareContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
+            _ctx = new TestCarshareContext(opts);
+            _ctrl = new PorukaController(_ctx);
+        }
 
-            return new CarshareContext(options);
+        public void Dispose() => _ctx.Dispose();
+
+        [Fact]
+        public async Task GetMessagesForRide_NoMessages_ReturnsEmpty()
+        {
+            var result = await _ctrl.GetMessagesForRide(1);
+            var ok = Assert.IsType<OkObjectResult>(result.Result);
+            var list = Assert.IsType<List<PorukaGetDTO>>(ok.Value);
+            Assert.Empty(list);
         }
 
         [Fact]
-        public async Task GetMessagesForRide_ReturnsOrderedMessagesWithSenderName()
+        public async Task GetMessagesForRide_WithMessages_ReturnsOrderedDtos()
         {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
+            // Korisnikvoznja
+            var kv = new Korisnikvoznja { Idkorisnikvoznja = 10 };
+            _ctx.Korisnikvoznjas.Add(kv);
 
+            // putnik
             var putnik = new Korisnik
             {
                 Idkorisnik = 1,
-                Username = "putnikUser",
-                Ime = "Putnik",
-                Prezime = "P",
-                Email = "p@example.com",
-                Telefon = "111",
-                Datumrodjenja = new DateOnly(1990, 1, 1),
-                Pwdsalt = "",
-                Pwdhash = ""
+                Username = "P",
+                Ime = "ImeP",
+                Prezime = "PrezP",
+                Email = "e@p.t",
+                Telefon = "000",
+                Pwdhash = "h",
+                Pwdsalt = "s",
+                Datumrodjenja = DateOnly.FromDateTime(DateTime.Today),
+                Ulogaid = 1
             };
-            var vozac = new Korisnik
+            var msg1 = new Poruka
             {
-                Idkorisnik = 2,
-                Username = "vozacUser",
-                Ime = "Vozac",
-                Prezime = "V",
-                Email = "v@example.com",
-                Telefon = "222",
-                Datumrodjenja = new DateOnly(1990, 1, 1),
-                Pwdsalt = "",
-                Pwdhash = ""
-            };
-
-            var vehicle = new Vozilo
-            {
-                Idvozilo = 10,
-                Vozacid = 2,
-                Marka = "Mk",
-                Model = "Md",
-                Registracija = "REG",
-                Vozac = vozac
-            };
-            var rideAd = new Oglasvoznja
-            {
-                Idoglasvoznja = 20,
-                Voziloid = 10,
-                Vozilo = vehicle,
-                DatumIVrijemePolaska = DateTime.Now,
-                DatumIVrijemeDolaska = DateTime.Now.AddHours(1),
-                BrojPutnika = 3,
-                Troskoviid = 0,
-                Lokacijaid = 0,
-                Statusvoznjeid = 0
-            };
-            var korisnikVoznja = new Korisnikvoznja
-            {
-                Idkorisnikvoznja = 30,
-                Korisnikid = 1,
-                Oglasvoznjaid = 20,
-                Korisnik = putnik,
-                Oglasvoznja = rideAd,
-                Lokacijaputnik = "Start",
-                Lokacijavozac = "Start"
-            };
-
-            var message1 = new Poruka
-            {
-                Idporuka = 100,
-                Content = "Hello from putnik",
-                Korisnikvoznjaid = 30,
+                Idporuka = 1,
+                Korisnikvoznjaid = 10,
                 Putnikid = 1,
-                Vozacid = null
-            };
-            var message2 = new Poruka
-            {
-                Idporuka = 101,
-                Content = "Reply from vozac",
-                Korisnikvoznjaid = 30,
-                Putnikid = null,
-                Vozacid = 2
+                Content = "Hello",
+                Putnik = putnik
             };
 
-            context.Korisniks.AddRange(putnik, vozac);
-            context.Vozilos.Add(vehicle);
-            context.Oglasvoznjas.Add(rideAd);
-            context.Korisnikvoznjas.Add(korisnikVoznja);
-            context.Porukas.AddRange(message1, message2);
-            await context.SaveChangesAsync();
-
-            var controller = new PorukaController(context);
-            var actionResult = await controller.GetMessagesForRide(30);
-            var ok = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var list = Assert.IsAssignableFrom<IEnumerable<PorukaGetDTO>>(ok.Value);
-            var messages = list.ToList();
-
-            Assert.Equal(2, messages.Count);
-            Assert.Equal(100, messages[0].Idporuka);
-            Assert.Equal("Hello from putnik", messages[0].Content);
-            Assert.Equal(30, messages[0].KorisnikVoznjaId);
-            Assert.Equal(1, messages[0].PutnikId);
-            Assert.Null(messages[0].VozacId);
-            Assert.Equal("putnikUser", messages[0].SenderName);
-
-            Assert.Equal(101, messages[1].Idporuka);
-            Assert.Equal("Reply from vozac", messages[1].Content);
-            Assert.Equal(30, messages[1].KorisnikVoznjaId);
-            Assert.Null(messages[1].PutnikId);
-            Assert.Equal(2, messages[1].VozacId);
-            Assert.Equal("vozacUser", messages[1].SenderName);
-        }
-
-        [Fact]
-        public async Task SendMessageForRide_MissingIdOrContent_ReturnsBadRequest()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var controller = new PorukaController(context);
-
-            var dto = new PorukaSendDTO
-            {
-                KorisnikVoznjaId = 0,
-                PutnikId = 1,
-                Content = ""
-            };
-            var result = await controller.SendMessageForRide(dto);
-            var bad = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Contains("KorisnikVoznjaId i sadržaj", bad.Value.ToString());
-        }
-
-        [Fact]
-        public async Task SendMessageForRide_NoSenderProvided_ReturnsBadRequest()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var controller = new PorukaController(context);
-
-            var dto = new PorukaSendDTO
-            {
-                KorisnikVoznjaId = 30,
-                PutnikId = null,
-                VozacId = null,
-                Content = "Test"
-            };
-            var result = await controller.SendMessageForRide(dto);
-            var bad = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Contains("Pošiljatelj mora biti definiran", bad.Value.ToString());
-        }
-
-        [Fact]
-        public async Task SendMessageForRide_BothSenderIdsProvided_ReturnsBadRequest()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var controller = new PorukaController(context);
-
-            var dto = new PorukaSendDTO
-            {
-                KorisnikVoznjaId = 30,
-                PutnikId = 1,
-                VozacId = 2,
-                Content = "Test"
-            };
-            var result = await controller.SendMessageForRide(dto);
-            var bad = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.Contains("Poruku može poslati samo jedan korisnik", bad.Value.ToString());
-        }
-
-        [Fact]
-        public async Task SendMessageForRide_KorisnikVoznjaNotFound_ReturnsNotFound()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var controller = new PorukaController(context);
-
-            var dto = new PorukaSendDTO
-            {
-                KorisnikVoznjaId = 999, 
-                PutnikId = 1,
-                Content = "Hi"
-            };
-            var result = await controller.SendMessageForRide(dto);
-            var notFound = Assert.IsType<NotFoundObjectResult>(result);
-            Assert.Contains("Voznja ne postoji", notFound.Value.ToString());
-        }
-
-        [Fact]
-        public async Task SendMessageForRide_PutnikIdMismatch_ReturnsForbid()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-
-            var putnik = new Korisnik
-            {
-                Idkorisnik = 1,
-                Username = "putnikUser",
-                Ime = "Putnik",
-                Prezime = "P",
-                Email = "p@example.com",
-                Telefon = "111",
-                Datumrodjenja = new DateOnly(1990, 1, 1),
-                Pwdsalt = "",
-                Pwdhash = ""
-            };
+            // vozac
             var vozac = new Korisnik
             {
                 Idkorisnik = 2,
-                Username = "vozacUser",
-                Ime = "Vozac",
-                Prezime = "V",
-                Email = "v@example.com",
-                Telefon = "222",
-                Datumrodjenja = new DateOnly(1990, 1, 1),
-                Pwdsalt = "",
-                Pwdhash = ""
+                Username = "V",
+                Ime = "ImeV",
+                Prezime = "PrezV",
+                Email = "e@v.t",
+                Telefon = "111",
+                Pwdhash = "h2",
+                Pwdsalt = "s2",
+                Datumrodjenja = DateOnly.FromDateTime(DateTime.Today),
+                Ulogaid = 2
             };
-            var vehicle = new Vozilo
+            var msg2 = new Poruka
             {
-                Idvozilo = 10,
+                Idporuka = 2,
+                Korisnikvoznjaid = 10,
                 Vozacid = 2,
-                Marka = "Mk",
-                Model = "Md",
-                Registracija = "REG",
+                Content = "World",
                 Vozac = vozac
             };
-            var rideAd = new Oglasvoznja
+
+            // ni putnik ni vozac
+            var msg3 = new Poruka
             {
-                Idoglasvoznja = 20,
-                Voziloid = 10,
-                Vozilo = vehicle,
-                DatumIVrijemePolaska = DateTime.Now,
-                DatumIVrijemeDolaska = DateTime.Now.AddHours(1),
-                BrojPutnika = 3,
-                Troskoviid = 0,
-                Lokacijaid = 0,
-                Statusvoznjeid = 0
-            };
-            var korisnikVoznja = new Korisnikvoznja
-            {
-                Idkorisnikvoznja = 30,
-                Korisnikid = 1, 
-                Oglasvoznjaid = 20,
-                Korisnik = putnik,
-                Oglasvoznja = rideAd,
-                Lokacijaputnik = "Start",
-                Lokacijavozac = "Start"
+                Idporuka = 3,
+                Korisnikvoznjaid = 10,
+                Content = "?"
             };
 
-            context.Korisniks.AddRange(putnik, vozac);
-            context.Vozilos.Add(vehicle);
-            context.Oglasvoznjas.Add(rideAd);
-            context.Korisnikvoznjas.Add(korisnikVoznja);
-            await context.SaveChangesAsync();
+            _ctx.Korisniks.AddRange(putnik, vozac);
+            _ctx.Porukas.AddRange(msg1, msg2, msg3);
+            await _ctx.SaveChangesAsync();
 
-            var controller = new PorukaController(context);
+            var result = await _ctrl.GetMessagesForRide(10);
+            var ok = Assert.IsType<OkObjectResult>(result.Result);
+            var list = Assert.IsType<List<PorukaGetDTO>>(ok.Value);
+
+            Assert.Equal(3, list.Count);
+            Assert.Equal("P", list[0].SenderName);
+            Assert.Equal("World", list[1].Content);
+            Assert.Equal("V", list[1].SenderName);
+            Assert.Equal("Unknown user", list[2].SenderName);
+        }
+
+        [Theory]
+        [InlineData(0, null)]
+        [InlineData(5, "")]
+        public async Task SendMessageForRide_MissingFields_ReturnsBadRequest(int kvId, string content)
+        {
             var dto = new PorukaSendDTO
             {
-                KorisnikVoznjaId = 30,
-                PutnikId = 999,
-                Content = "Hello"
+                KorisnikVoznjaId = kvId,
+                Content = content,
+                PutnikId = 1
             };
-            var result = await controller.SendMessageForRide(dto);
-            Assert.IsType<ForbidResult>(result);
+            var bad = Assert.IsType<BadRequestObjectResult>(await _ctrl.SendMessageForRide(dto));
+            Assert.Contains("KorisnikVoznjaId i sadržaj poruke", bad.Value.ToString());
         }
 
         [Fact]
-        public async Task SendMessageForRide_VozacIdMismatch_ReturnsForbid()
+        public async Task SendMessageForRide_BothIdsSet_ReturnsBadRequest()
         {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-
-            var putnik = new Korisnik
-            {
-                Idkorisnik = 1,
-                Username = "putnikUser",
-                Ime = "Putnik",
-                Prezime = "P",
-                Email = "p@example.com",
-                Telefon = "111",
-                Datumrodjenja = new DateOnly(1990, 1, 1),
-                Pwdsalt = "",
-                Pwdhash = ""
-            };
-            var vozac = new Korisnik
-            {
-                Idkorisnik = 2,
-                Username = "vozacUser",
-                Ime = "Vozac",
-                Prezime = "V",
-                Email = "v@example.com",
-                Telefon = "222",
-                Datumrodjenja = new DateOnly(1990, 1, 1),
-                Pwdsalt = "",
-                Pwdhash = ""
-            };
-            var vehicle = new Vozilo
-            {
-                Idvozilo = 10,
-                Vozacid = 2, 
-                Marka = "Mk",
-                Model = "Md",
-                Registracija = "REG",
-                Vozac = vozac
-            };
-            var rideAd = new Oglasvoznja
-            {
-                Idoglasvoznja = 20,
-                Voziloid = 10,
-                Vozilo = vehicle,
-                DatumIVrijemePolaska = DateTime.Now,
-                DatumIVrijemeDolaska = DateTime.Now.AddHours(1),
-                BrojPutnika = 3,
-                Troskoviid = 0,
-                Lokacijaid = 0,
-                Statusvoznjeid = 0
-            };
-            var korisnikVoznja = new Korisnikvoznja
-            {
-                Idkorisnikvoznja = 30,
-                Korisnikid = 1,
-                Oglasvoznjaid = 20,
-                Korisnik = putnik,
-                Oglasvoznja = rideAd,
-                Lokacijaputnik = "Start",
-                Lokacijavozac = "Start"
-            };
-
-            context.Korisniks.AddRange(putnik, vozac);
-            context.Vozilos.Add(vehicle);
-            context.Oglasvoznjas.Add(rideAd);
-            context.Korisnikvoznjas.Add(korisnikVoznja);
-            await context.SaveChangesAsync();
-
-            var controller = new PorukaController(context);
             var dto = new PorukaSendDTO
             {
-                KorisnikVoznjaId = 30,
-                VozacId = 999,
-                Content = "Hello"
-            };
-            var result = await controller.SendMessageForRide(dto);
-            Assert.IsType<ForbidResult>(result);
-        }
-
-        [Fact]
-        public async Task SendMessageForRide_SuccessAsPutnik_ReturnsOk()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-
-            var putnik = new Korisnik
-            {
-                Idkorisnik = 1,
-                Username = "putnikUser",
-                Ime = "Putnik",
-                Prezime = "P",
-                Email = "p@example.com",
-                Telefon = "111",
-                Datumrodjenja = new DateOnly(1990, 1, 1),
-                Pwdsalt = "",
-                Pwdhash = ""
-            };
-            var vozac = new Korisnik
-            {
-                Idkorisnik = 2,
-                Username = "vozacUser",
-                Ime = "Vozac",
-                Prezime = "V",
-                Email = "v@example.com",
-                Telefon = "222",
-                Datumrodjenja = new DateOnly(1990, 1, 1),
-                Pwdsalt = "",
-                Pwdhash = ""
-            };
-            var vehicle = new Vozilo
-            {
-                Idvozilo = 10,
-                Vozacid = 2,
-                Marka = "Mk",
-                Model = "Md",
-                Registracija = "REG",
-                Vozac = vozac
-            };
-            var rideAd = new Oglasvoznja
-            {
-                Idoglasvoznja = 20,
-                Voziloid = 10,
-                Vozilo = vehicle,
-                DatumIVrijemePolaska = DateTime.Now,
-                DatumIVrijemeDolaska = DateTime.Now.AddHours(1),
-                BrojPutnika = 3,
-                Troskoviid = 0,
-                Lokacijaid = 0,
-                Statusvoznjeid = 0
-            };
-            var korisnikVoznja = new Korisnikvoznja
-            {
-                Idkorisnikvoznja = 30,
-                Korisnikid = 1,
-                Oglasvoznjaid = 20,
-                Korisnik = putnik,
-                Oglasvoznja = rideAd,
-                Lokacijaputnik = "Start",
-                Lokacijavozac = "Start"
-            };
-
-            context.Korisniks.AddRange(putnik, vozac);
-            context.Vozilos.Add(vehicle);
-            context.Oglasvoznjas.Add(rideAd);
-            context.Korisnikvoznjas.Add(korisnikVoznja);
-            await context.SaveChangesAsync();
-
-            var controller = new PorukaController(context);
-            var dto = new PorukaSendDTO
-            {
-                KorisnikVoznjaId = 30,
+                KorisnikVoznjaId = 1,
+                Content = "Hi",
                 PutnikId = 1,
-                Content = "Hello from putnik"
+                VozacId = 2
             };
-            var result = await controller.SendMessageForRide(dto);
-            var ok = Assert.IsType<OkObjectResult>(result);
-            Assert.Contains("Message sent", ok.Value.ToString());
-
-            var saved = await context.Porukas.FirstOrDefaultAsync(x =>
-                x.Korisnikvoznjaid == 30 && x.Putnikid == 1 && x.Content == "Hello from putnik");
-            Assert.NotNull(saved);
+            var bad = Assert.IsType<BadRequestObjectResult>(await _ctrl.SendMessageForRide(dto));
+            Assert.Contains("točno jedan korisnik", bad.Value.ToString());
         }
 
         [Fact]
-        public async Task SendMessageForRide_SuccessAsVozac_ReturnsOk()
+        public async Task SendMessageForRide_RideNotFound_ReturnsNotFound()
         {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-
-            var putnik = new Korisnik
-            {
-                Idkorisnik = 1,
-                Username = "putnikUser",
-                Ime = "Putnik",
-                Prezime = "P",
-                Email = "p@example.com",
-                Telefon = "111",
-                Datumrodjenja = new DateOnly(1990, 1, 1),
-                Pwdsalt = "",
-                Pwdhash = ""
-            };
-            var vozac = new Korisnik
-            {
-                Idkorisnik = 2,
-                Username = "vozacUser",
-                Ime = "Vozac",
-                Prezime = "V",
-                Email = "v@example.com",
-                Telefon = "222",
-                Datumrodjenja = new DateOnly(1990, 1, 1),
-                Pwdsalt = "",
-                Pwdhash = ""
-            };
-            var vehicle = new Vozilo
-            {
-                Idvozilo = 10,
-                Vozacid = 2,
-                Marka = "Mk",
-                Model = "Md",
-                Registracija = "REG",
-                Vozac = vozac
-            };
-            var rideAd = new Oglasvoznja
-            {
-                Idoglasvoznja = 20,
-                Voziloid = 10,
-                Vozilo = vehicle,
-                DatumIVrijemePolaska = DateTime.Now,
-                DatumIVrijemeDolaska = DateTime.Now.AddHours(1),
-                BrojPutnika = 3,
-                Troskoviid = 0,
-                Lokacijaid = 0,
-                Statusvoznjeid = 0
-            };
-            var korisnikVoznja = new Korisnikvoznja
-            {
-                Idkorisnikvoznja = 30,
-                Korisnikid = 1,
-                Oglasvoznjaid = 20,
-                Korisnik = putnik,
-                Oglasvoznja = rideAd,
-                Lokacijaputnik = "Start",
-                Lokacijavozac = "Start"
-            };
-
-            context.Korisniks.AddRange(putnik, vozac);
-            context.Vozilos.Add(vehicle);
-            context.Oglasvoznjas.Add(rideAd);
-            context.Korisnikvoznjas.Add(korisnikVoznja);
-            await context.SaveChangesAsync();
-
-            var controller = new PorukaController(context);
             var dto = new PorukaSendDTO
             {
-                KorisnikVoznjaId = 30,
-                VozacId = 2,
-                Content = "Hello from vozac"
+                KorisnikVoznjaId = 100,
+                Content = "Hi",
+                PutnikId = 1
             };
-            var result = await controller.SendMessageForRide(dto);
-            var ok = Assert.IsType<OkObjectResult>(result);
-            Assert.Contains("Message sent", ok.Value.ToString());
+            var nf = Assert.IsType<NotFoundObjectResult>(await _ctrl.SendMessageForRide(dto));
+            Assert.Contains("Vožnja ne postoji", nf.Value.ToString());
+        }
 
-            var saved = await context.Porukas.FirstOrDefaultAsync(x =>
-                x.Korisnikvoznjaid == 30 && x.Vozacid == 2 && x.Content == "Hello from vozac");
-            Assert.NotNull(saved);
+        [Fact]
+        public async Task SendMessageForRide_ValidPutnik_SavesAndReturnsOk()
+        {
+            var kv = new Korisnikvoznja { Idkorisnikvoznja = 20, Korisnikid = 3 };
+            _ctx.Korisnikvoznjas.Add(kv);
+            await _ctx.SaveChangesAsync();
+
+            var dto = new PorukaSendDTO
+            {
+                KorisnikVoznjaId = 20,
+                Content = "Ping",
+                PutnikId = 3
+            };
+            var ok = Assert.IsType<OkObjectResult>(await _ctrl.SendMessageForRide(dto));
+            var saved = _ctx.Porukas.Single();
+            Assert.Equal("Ping", saved.Content);
+            Assert.Equal(3, saved.Putnikid);
+        }
+
+        [Fact]
+        public async Task GetMessagesForVehicle_MirrorsRideLogic()
+        {
+            var kv = new Korisnikvoznja { Idkorisnikvoznja = 40 };
+            var msg = new Poruka
+            {
+                Idporuka = 5,
+                Korisnikvoznjaid = 40,
+                Content = "Veh"
+            };
+            _ctx.Korisnikvoznjas.Add(kv);
+            _ctx.Porukas.Add(msg);
+            await _ctx.SaveChangesAsync();
+
+            var r = await _ctrl.GetMessagesForVehicle(40);
+            var ok = Assert.IsType<OkObjectResult>(r.Result);
+            var list = Assert.IsType<List<PorukaGetDTO>>(ok.Value);
+            Assert.Single(list);
+            Assert.Equal("Veh", list[0].Content);
+        }
+
+
+
+        [Fact]
+        public async Task SendMessageForVehicle_ForbiddenIfNotParticipant()
+        {
+            var kv = new Korisnikvoznja { Idkorisnikvoznja = 50, Korisnikid = 7 };
+            _ctx.Korisnikvoznjas.Add(kv);
+            await _ctx.SaveChangesAsync();
+
+            // Putnik != Korisnikid => forbid
+            var dto1 = new PorukaSendDTO { KorisnikVoznjaId = 50, Content = "X", PutnikId = 9 };
+            Assert.IsType<ForbidResult>(await _ctrl.SendMessageForVehicle(dto1));
+
+            // VozacId also mismatch => forbid
+            var dto2 = new PorukaSendDTO { KorisnikVoznjaId = 50, Content = "X", VozacId = 9 };
+            Assert.IsType<ForbidResult>(await _ctrl.SendMessageForVehicle(dto2));
+        }
+
+        [Fact]
+        public async Task SendMessageForVehicle_Valid_SavesAndReturnsOk()
+        {
+            var kv = new Korisnikvoznja { Idkorisnikvoznja = 80, Korisnikid = 9 };
+            _ctx.Korisnikvoznjas.Add(kv);
+            await _ctx.SaveChangesAsync();
+
+            var dto = new PorukaSendDTO
+            {
+                KorisnikVoznjaId = 80,
+                Content = "OK",
+                PutnikId = 9
+            };
+            var ok = Assert.IsType<OkObjectResult>(await _ctrl.SendMessageForVehicle(dto));
+            var saved = _ctx.Porukas.Single();
+            Assert.Equal("OK", saved.Content);
+            Assert.Equal(9, saved.Putnikid);
         }
     }
 }

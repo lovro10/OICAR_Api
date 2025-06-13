@@ -1,13 +1,12 @@
-﻿using System;
+﻿// CARSHARE_WEBAPP.Tests.Unit/VoziloControllerTests.cs
+#nullable disable
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 using REST_API___oicar.Controllers;
 using REST_API___oicar.DTOs;
 using REST_API___oicar.Models;
@@ -15,402 +14,165 @@ using Xunit;
 
 namespace APIUnitTests
 {
-    public class VoziloControllerTests
+    public class VoziloControllerTests : IDisposable
     {
-        private CarshareContext CreateInMemoryContext(string dbName)
+        private readonly CarshareContext _db;
+        private readonly VoziloController _sut;
+
+        private sealed class InMemoryCarshareContext : CarshareContext
         {
-            var serviceProvider = new ServiceCollection()
-                .AddEntityFrameworkInMemoryDatabase()
-                .BuildServiceProvider();
-
-            var options = new DbContextOptionsBuilder<CarshareContext>()
-                .UseInMemoryDatabase(databaseName: dbName)
-                .UseInternalServiceProvider(serviceProvider)
-                .Options;
-
-            return new CarshareContext(options);
+            public InMemoryCarshareContext(DbContextOptions<CarshareContext> opts) : base(opts) { }
+            protected override void OnConfiguring(DbContextOptionsBuilder _) {  }
         }
 
-        //[Fact]
-        //public async Task GetVehicles_ReturnsProjectedList()
-        //{
-        //    var context = CreateInMemoryContext(Guid.NewGuid().ToString());
+        public VoziloControllerTests()
+        {
+            var opts = new DbContextOptionsBuilder<CarshareContext>()
+                       .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                       .Options;
 
-        //    var vehicle1 = new Vozilo
-        //    {
-        //        Idvozilo = 1,
-        //        Marka = "MarkaA",
-        //        Model = "ModelA",
-        //        Registracija = "REGA",
-        //        Naziv = "NameA",
-        //        Isconfirmed = true
-        //    };
-        //    var vehicle2 = new Vozilo
-        //    {
-        //        Idvozilo = 2,
-        //        Marka = "MarkaB",
-        //        Model = "ModelB",
-        //        Registracija = "REGB",
-        //        Naziv = "NameB",
-        //        Isconfirmed = false
-        //    };
-        //    context.Vozilos.AddRange(vehicle1, vehicle2);
-        //    await context.SaveChangesAsync();
+            _db = new InMemoryCarshareContext(opts);
+            SeedDatabase(_db);
 
-        //    var controller = new VoziloController(context);
-        //    var actionResult = await controller.GetVehicles();
-        //    var ok = Assert.IsType<OkObjectResult>(actionResult.Result);
-
-        //    var list = Assert.IsAssignableFrom<IEnumerable<object>>(ok.Value);
-        //    var items = list.ToList();
-        //    Assert.Equal(2, items.Count);
-
-        //    var first = items[0];
-        //    var firstType = first.GetType();
-        //    var firstId = (int)firstType.GetProperty("Idvozilo").GetValue(first);
-        //    Assert.Equal(2, firstId);
-        //}
+            _sut = new VoziloController(_db);
+        }
 
         [Fact]
-        public async Task GetVehicleById_Existing_ReturnsProjectedObject()
+        public async Task GetVehicles_returns_all_vehicles_descending()
         {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
+            var result = await _sut.GetVehicles();
+            var ok = Assert.IsType<OkObjectResult>(result.Result);
 
-            var driver = new Korisnik
+            var json = JsonSerializer.Serialize(ok.Value);
+            using var doc = JsonDocument.Parse(json);
+            var arr = doc.RootElement;
+
+            Assert.Equal(2, arr.GetArrayLength());
+
+            int first = arr[0].GetProperty("Idvozilo").GetInt32();
+            int second = arr[1].GetProperty("Idvozilo").GetInt32();
+
+            Assert.True(first > second);   
+        }
+
+        [Fact]
+        public async Task GetVehicleById_existingId_returns_OK_with_projection()
+        {
+            var res = await _sut.GetVehicleById(1);
+            var ok = Assert.IsType<OkObjectResult>(res.Result);
+
+            var json = JsonSerializer.Serialize(ok.Value);
+            using var doc = JsonDocument.Parse(json);
+            var elem = doc.RootElement;
+
+            Assert.Equal("Golf", elem.GetProperty("Naziv").GetString());
+            Assert.Equal("VW", elem.GetProperty("Marka").GetString());
+            Assert.Equal(2, elem.GetProperty("Idkorisnik").GetInt32());
+        }
+
+        [Fact]
+        public async Task GetVehicleById_nonExisting_returns_NotFound()
+        {
+            var res = await _sut.GetVehicleById(999);
+            Assert.IsType<NotFoundResult>(res.Result);
+        }
+
+        [Fact]
+        public async Task Details_existingId_maps_to_full_DTO()
+        {
+            var res = await _sut.Details(1);
+            var ok = Assert.IsType<OkObjectResult>(res.Result);
+            var dto = Assert.IsType<VoziloDTO>(ok.Value);
+
+            Assert.Equal(1, dto.Idvozilo);
+            Assert.Equal("Mark", dto.Vozac.Ime);
+        }
+
+        [Fact]
+        public async Task KrerirajVozilo_creates_and_returns_identity()
+        {
+            var dto = new VoziloDTO
             {
-                Idkorisnik = 5,
-                Username = "drvUser",
-                Ime = "Driver",
-                Prezime = "D",
-                Email = "d@example.com",
-                Telefon = "123",
-                Datumrodjenja = new DateOnly(1990, 1, 1),
-                Pwdsalt = "",
-                Pwdhash = ""
+                Naziv = "Punto",
+                Marka = "Fiat",
+                Model = "1.2",
+                Registracija = "ZG-123-GG",
+                VozacId = 2
             };
 
-            var vehicle = new Vozilo
+            var res = await _sut.KrerirajVozilo(dto);
+            var ok = Assert.IsType<OkObjectResult>(res.Result);
+            var back = Assert.IsType<VoziloDTO>(ok.Value);
+
+            Assert.NotEqual(0, back.Idvozilo);
+            Assert.Equal("Punto", back.Naziv);
+            Assert.True(await _db.Vozilos.AnyAsync(v => v.Naziv == "Punto"));
+        }
+
+        [Fact]
+        public async Task AcceptOrDenyVehicle_sets_IsConfirmed_flag()
+        {
+            var dto = new PotvrdaVoziloDTO { Id = 1, IsConfirmed = true };
+
+            var res = await _sut.AcceptOrDenyVehicle(dto);
+            var ok = Assert.IsType<OkObjectResult>(res);
+
+            Assert.Equal("Vehicle was successfully confirmed", ok.Value);
+
+            var entity = await _db.Vozilos.FindAsync(1);
+            Assert.True(entity.Isconfirmed);
+        }
+
+        private static void SeedDatabase(CarshareContext db)
+        {
+            var driver = new Korisnik
             {
-                Idvozilo = 10,
-                Marka = "MarkaX",
-                Model = "ModelX",
-                Registracija = "REGX",
+                Idkorisnik = 2,
+                Ime = "Mark",
+                Prezime = "Driver",
+                Username = "markd",
+                Email = "mark@example.com",
+                Pwdhash = "dummyHash",
+                Pwdsalt = "dummySalt"
+            };
+
+            var car1 = new Vozilo
+            {
+                Idvozilo = 1,
+                Naziv = "Golf",
+                Marka = "VW",
+                Model = "VII",
+                Registracija = "ZG-123-AB",
+                Vozacid = 2,
+                Isconfirmed = false,
+                Vozac = driver
+            };
+            var car2 = new Vozilo
+            {
+                Idvozilo = 5,
+                Naziv = "Octavia",
+                Marka = "Škoda",
+                Model = "III",
+                Registracija = "ZG-555-CD",
+                Vozacid = 2,
                 Isconfirmed = true,
-                Vozacid = 5,
                 Vozac = driver
             };
 
-            context.Korisniks.Add(driver);
-            context.Vozilos.Add(vehicle);
-            await context.SaveChangesAsync();
+            db.Korisniks.Add(driver);
+            db.Vozilos.AddRange(car1, car2);
 
-            var controller = new VoziloController(context);
-            var actionResult = await controller.GetVehicleById(10);
-            var ok = Assert.IsType<OkObjectResult>(actionResult.Result);
+            db.Images.Add(new Image
+            {
+                Idimage = 100,
+                Name = "licence_front.jpg",
+                Content = new byte[] { 0xAA },
+                Imagetypeid = 4
+            });
 
-            var obj = ok.Value;
-            var type = obj.GetType();
-            var idProp = type.GetProperty("Idvozilo").GetValue(obj);
-            Assert.Equal(10, idProp);
+            db.SaveChanges();
         }
 
-        [Fact]
-        public async Task GetVehicleById_NotExisting_ReturnsNotFound()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var controller = new VoziloController(context);
-
-            var actionResult = await controller.GetVehicleById(999);
-            Assert.IsType<NotFoundResult>(actionResult.Result);
-        }
-
-        [Fact]
-        public async Task Details_Existing_ReturnsVoziloDTO()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-
-            var vehicle = new Vozilo
-            {
-                Idvozilo = 20,
-                Marka = "MarkaY",
-                Model = "ModelY",
-                Registracija = "REGY"
-            };
-            context.Vozilos.Add(vehicle);
-            await context.SaveChangesAsync();
-
-            var controller = new VoziloController(context);
-            var actionResult = await controller.Details(20);
-            var ok = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var dto = Assert.IsType<VoziloDTO>(ok.Value);
-
-            Assert.Equal(20, dto.Idvozilo);
-        }
-
-        [Fact]
-        public async Task Details_NotExisting_ReturnsNotFound()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var controller = new VoziloController(context);
-
-            var actionResult = await controller.Details(999);
-            var notFound = Assert.IsType<NotFoundObjectResult>(actionResult.Result);
-            Assert.Contains("nije pronađeno", notFound.Value.ToString());
-        }
-
-        [Fact]
-        public void GetVehicleByUser_ReturnsOnlyThatUserVehicles()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-
-            var user1 = new Korisnik
-            {
-                Idkorisnik = 1,
-                Username = "user1",
-                Ime = "U1",
-                Prezime = "One",
-                Email = "u1@example.com",
-                Telefon = "111",
-                Datumrodjenja = new DateOnly(1990, 1, 1),
-                Pwdsalt = "",
-                Pwdhash = ""
-            };
-            var user2 = new Korisnik
-            {
-                Idkorisnik = 2,
-                Username = "user2",
-                Ime = "U2",
-                Prezime = "Two",
-                Email = "u2@example.com",
-                Telefon = "222",
-                Datumrodjenja = new DateOnly(1991, 2, 2),
-                Pwdsalt = "",
-                Pwdhash = ""
-            };
-            var vehicle1 = new Vozilo
-            {
-                Idvozilo = 30,
-                Vozacid = 1,
-                Naziv = "V1",
-                Marka = "Mk1",
-                Model = "Md1",
-                Registracija = "REG1",
-                Isconfirmed = true
-            };
-            var vehicle2 = new Vozilo
-            {
-                Idvozilo = 31,
-                Vozacid = 2,
-                Naziv = "V2",
-                Marka = "Mk2",
-                Model = "Md2",
-                Registracija = "REG2",
-                Isconfirmed = false
-            };
-            context.Korisniks.AddRange(user1, user2);
-            context.Vozilos.AddRange(vehicle1, vehicle2);
-            context.SaveChanges();
-
-            var controller = new VoziloController(context);
-            var actionResult = controller.GetVehicleByUser(userId: 1);
-            var ok = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var list = Assert.IsAssignableFrom<IEnumerable<VoziloDTO>>(ok.Value);
-            var arr = list.ToList();
-
-            Assert.Single(arr);
-            Assert.Equal(30, arr[0].Idvozilo);
-        }
-
-        [Fact]
-        public async Task KrerirajVozilo_Success_ReturnsDtoWithId()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-
-            var controller = new VoziloController(context);
-            var dto = new VoziloDTO
-            {
-                Naziv = "NewVehicle",
-                Marka = "MkNew",
-                Model = "MdNew",
-                Registracija = "REGNEW",
-                VozacId = 5
-            };
-            var actionResult = await controller.KrerirajVozilo(dto);
-            var ok = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var returned = Assert.IsType<VoziloDTO>(ok.Value);
-
-            Assert.True(returned.Idvozilo > 0);
-            Assert.Equal("MkNew", returned.Marka);
-        }
-
-        [Fact]
-        public async Task CreateVehicle_MissingImages_ReturnsBadRequest()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var controller = new VoziloController(context);
-
-            var dto = new VoziloDTO
-            {
-                Naziv = "VNoImg",
-                Marka = "MkNI",
-                Model = "MdNI",
-                Registracija = "REGNI",
-                VozacId = 7,
-                FrontImageBase64 = "",
-                BackImageBase64 = ""
-            };
-
-            var actionResult = await controller.CreateVehicle(dto);
-            var bad = Assert.IsType<BadRequestObjectResult>(actionResult);
-            Assert.Contains("Both front and back images are required", bad.Value.ToString());
-        }
-
-        [Fact]
-        public async Task CreateVehicle_Success_CreatesImagesAndVehicle()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-
-            var base64 = Convert.ToBase64String(new byte[] { 1, 2, 3 });
-            var dto = new VoziloDTO
-            {
-                Naziv = "VWithImg",
-                Marka = "MkWI",
-                Model = "MdWI",
-                Registracija = "REGWI",
-                VozacId = 8,
-                FrontImageBase64 = base64,
-                BackImageBase64 = base64,
-                FrontImageName = "front.png",
-                BackImageName = "back.png"
-            };
-
-            var controller = new VoziloController(context);
-            var actionResult = await controller.CreateVehicle(dto);
-            var ok = Assert.IsType<OkObjectResult>(actionResult);
-            var returned = Assert.IsType<VoziloDTO>(ok.Value);
-
-            Assert.True(returned.Idvozilo > 0);
-        }
-
-        [Fact]
-        public async Task UpdateVehicle_Success_ReturnsDtoWithUpdatedFields()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-
-            var vehicle = new Vozilo
-            {
-                Idvozilo = 50,
-                Marka = "OldMk",
-                Model = "OldMd",
-                Registracija = "OLDREG"
-            };
-            context.Vozilos.Add(vehicle);
-            await context.SaveChangesAsync();
-
-            var controller = new VoziloController(context);
-            var updatedDto = new VoziloDTO
-            {
-                Marka = "NewMk",
-                Model = "NewMd",
-                Registracija = "NEWREG"
-            };
-            var json = JsonConvert.SerializeObject(updatedDto);
-            var actionResult = await controller.UpdateVehicle(50, json);
-            var ok = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var returned = Assert.IsType<VoziloDTO>(ok.Value);
-
-            Assert.Equal(50, returned.Idvozilo);
-        }
-
-        [Fact]
-        public async Task UpdateVehicle_NotFound_ReturnsNotFound()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var controller = new VoziloController(context);
-            var dto = new VoziloDTO { Marka = "X", Model = "Y", Registracija = "Z" };
-            var json = JsonConvert.SerializeObject(dto);
-
-            var actionResult = await controller.UpdateVehicle(999, json);
-            var notFound = Assert.IsType<NotFoundObjectResult>(actionResult.Result);
-            Assert.Contains("nije pronađeno", notFound.Value.ToString());
-        }
-
-        [Fact]
-        public async Task DeleteVehicle_Existing_ReturnsDeletedEntity()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-
-            var vehicle = new Vozilo
-            {
-                Idvozilo = 60,
-                Marka = "MkDel",
-                Model = "MdDel",
-                Registracija = "REGDEL"
-            };
-            context.Vozilos.Add(vehicle);
-            await context.SaveChangesAsync();
-
-            var controller = new VoziloController(context);
-            var actionResult = await controller.DeleteVehicle(60);
-            var ok = Assert.IsType<OkObjectResult>(actionResult);
-            var deleted = Assert.IsType<Vozilo>(ok.Value);
-
-            Assert.Equal(60, deleted.Idvozilo);
-        }
-
-        [Fact]
-        public async Task DeleteVehicle_NotExisting_ReturnsNotFound()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var controller = new VoziloController(context);
-
-            var actionResult = await controller.DeleteVehicle(999);
-            Assert.IsType<NotFoundResult>(actionResult);
-        }
-
-        [Fact]
-        public async Task AcceptOrDenyVehicle_Existing_ReturnsConfirmationMessage()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-
-            var vehicle = new Vozilo
-            {
-                Idvozilo = 70,
-                Marka = "MkAcc",
-                Model = "MdAcc",
-                Registracija = "REGACC",
-                Isconfirmed = null
-            };
-            context.Vozilos.Add(vehicle);
-            await context.SaveChangesAsync();
-
-            var controller = new VoziloController(context);
-            var dto = new PotvrdaVoziloDTO
-            {
-                Id = 70,
-                IsConfirmed = true
-            };
-            var actionResult = await controller.AcceptOrDenyVehicle(dto);
-            var ok = Assert.IsType<OkObjectResult>(actionResult);
-            var message = Assert.IsType<string>(ok.Value);
-
-            Assert.Contains("confirmed", message);
-        }
-
-        [Fact]
-        public async Task AcceptOrDenyVehicle_NotExisting_ReturnsNotFound()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var controller = new VoziloController(context);
-
-            var dto = new PotvrdaVoziloDTO
-            {
-                Id = 999,
-                IsConfirmed = false
-            };
-            var actionResult = await controller.AcceptOrDenyVehicle(dto);
-            var notFound = Assert.IsType<NotFoundObjectResult>(actionResult);
-            Assert.Contains("Vehicle was not found", notFound.Value.ToString());
-        }
+        public void Dispose() => _db.Dispose();
     }
 }

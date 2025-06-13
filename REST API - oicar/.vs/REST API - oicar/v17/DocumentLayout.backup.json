@@ -1,82 +1,22 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\",
+  "WorkspaceRootPath": "C:\\Users\\Bartol\\Desktop\\OICAR\\Zadnjevaljda\\opetzadnje\\OICAR_Api\\REST API - oicar\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\korisnikcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\controllers\\korisnikcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{18BE3EA5-0BE7-47A8-89B0-3541E6B39E5D}|APIUnitTests\\APIUnitTests.csproj|c:\\users\\bartol\\desktop\\oicar\\zadnjevaljda\\opetzadnje\\oicar_api\\rest api - oicar\\apiunittests\\carbrandcontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{18BE3EA5-0BE7-47A8-89B0-3541E6B39E5D}|APIUnitTests\\APIUnitTests.csproj|solutionrelative:apiunittests\\carbrandcontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\vozilocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\controllers\\vozilocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{18BE3EA5-0BE7-47A8-89B0-3541E6B39E5D}|APIUnitTests\\APIUnitTests.csproj|c:\\users\\bartol\\desktop\\oicar\\zadnjevaljda\\opetzadnje\\oicar_api\\rest api - oicar\\apiunittests\\citysearchcontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{18BE3EA5-0BE7-47A8-89B0-3541E6B39E5D}|APIUnitTests\\APIUnitTests.csproj|solutionrelative:apiunittests\\citysearchcontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\porukacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\controllers\\porukacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\oglasvoznjacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\controllers\\oglasvoznjacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\oglasvozilocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\controllers\\oglasvozilocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\korisnikvoznjacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\controllers\\korisnikvoznjacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\korisnikimagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\controllers\\korisnikimagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\security\\aesencryptionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\security\\aesencryptionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\imagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\controllers\\imagecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\rest api - oicar\\dtos\\oglasvoznjadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\dtos\\oglasvoznjadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{18BE3EA5-0BE7-47A8-89B0-3541E6B39E5D}|APIUnitTests\\APIUnitTests.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\apiunittests\\porukacontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{18BE3EA5-0BE7-47A8-89B0-3541E6B39E5D}|APIUnitTests\\APIUnitTests.csproj|solutionrelative:apiunittests\\porukacontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{18BE3EA5-0BE7-47A8-89B0-3541E6B39E5D}|APIUnitTests\\APIUnitTests.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\apiunittests\\korisnikvoznjacontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{18BE3EA5-0BE7-47A8-89B0-3541E6B39E5D}|APIUnitTests\\APIUnitTests.csproj|solutionrelative:apiunittests\\korisnikvoznjacontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{18BE3EA5-0BE7-47A8-89B0-3541E6B39E5D}|APIUnitTests\\APIUnitTests.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\apiunittests\\oglasvoznjacontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{18BE3EA5-0BE7-47A8-89B0-3541E6B39E5D}|APIUnitTests\\APIUnitTests.csproj|solutionrelative:apiunittests\\oglasvoznjacontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{18BE3EA5-0BE7-47A8-89B0-3541E6B39E5D}|APIUnitTests\\APIUnitTests.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\apiunittests\\vozilocontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{18BE3EA5-0BE7-47A8-89B0-3541E6B39E5D}|APIUnitTests\\APIUnitTests.csproj|c:\\users\\bartol\\desktop\\oicar\\zadnjevaljda\\opetzadnje\\oicar_api\\rest api - oicar\\apiunittests\\vozilocontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{18BE3EA5-0BE7-47A8-89B0-3541E6B39E5D}|APIUnitTests\\APIUnitTests.csproj|solutionrelative:apiunittests\\vozilocontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{18BE3EA5-0BE7-47A8-89B0-3541E6B39E5D}|APIUnitTests\\APIUnitTests.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\apiunittests\\korisnikcontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{18BE3EA5-0BE7-47A8-89B0-3541E6B39E5D}|APIUnitTests\\APIUnitTests.csproj|solutionrelative:apiunittests\\korisnikcontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{18BE3EA5-0BE7-47A8-89B0-3541E6B39E5D}|APIUnitTests\\APIUnitTests.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\apiunittests\\apiunittests.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
-      "RelativeMoniker": "D:0:0:{18BE3EA5-0BE7-47A8-89B0-3541E6B39E5D}|APIUnitTests\\APIUnitTests.csproj|solutionrelative:apiunittests\\apiunittests.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{18BE3EA5-0BE7-47A8-89B0-3541E6B39E5D}|APIUnitTests\\APIUnitTests.csproj|c:\\users\\korisnik\\desktop\\oicar_api\\rest api - oicar\\apiunittests\\oglasvozilocontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{18BE3EA5-0BE7-47A8-89B0-3541E6B39E5D}|APIUnitTests\\APIUnitTests.csproj|solutionrelative:apiunittests\\oglasvozilocontrollertests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|c:\\users\\bartol\\desktop\\oicar\\zadnjevaljda\\opetzadnje\\oicar_api\\rest api - oicar\\rest api - oicar\\controllers\\vozilocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A71E4ECE-F951-4F27-A622-11AC81AB56FB}|REST API - oicar\\REST API - oicar.csproj|solutionrelative:rest api - oicar\\controllers\\vozilocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -86,11 +26,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 12,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+              "Name": "ST:0:0:{de1fc918-f32e-4dd7-a915-1792a051f26b}"
             },
             {
               "$type": "Bookmark",
@@ -98,244 +38,63 @@
             },
             {
               "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
               "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\appsettings.json",
-              "RelativeDocumentMoniker": "REST API - oicar\\appsettings.json",
-              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\appsettings.json",
-              "RelativeToolTip": "REST API - oicar\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-06-12T21:44:12.917Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Program.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\Program.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Program.cs",
-              "RelativeToolTip": "REST API - oicar\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "CitySearchControllerTests.cs",
+              "DocumentMoniker": "C:\\Users\\Bartol\\Desktop\\OICAR\\Zadnjevaljda\\opetzadnje\\OICAR_Api\\REST API - oicar\\APIUnitTests\\CitySearchControllerTests.cs",
+              "RelativeDocumentMoniker": "APIUnitTests\\CitySearchControllerTests.cs",
+              "ToolTip": "C:\\Users\\Bartol\\Desktop\\OICAR\\Zadnjevaljda\\opetzadnje\\OICAR_Api\\REST API - oicar\\APIUnitTests\\CitySearchControllerTests.cs",
+              "RelativeToolTip": "APIUnitTests\\CitySearchControllerTests.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-12T21:41:38.082Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "AesEncryptionService.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Security\\AesEncryptionService.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\Security\\AesEncryptionService.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Security\\AesEncryptionService.cs",
-              "RelativeToolTip": "REST API - oicar\\Security\\AesEncryptionService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-12T21:38:27.112Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "PorukaController.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\PorukaController.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\Controllers\\PorukaController.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\PorukaController.cs",
-              "RelativeToolTip": "REST API - oicar\\Controllers\\PorukaController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T17:35:27.828Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "OglasVoziloController.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\OglasVoziloController.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\Controllers\\OglasVoziloController.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\OglasVoziloController.cs",
-              "RelativeToolTip": "REST API - oicar\\Controllers\\OglasVoziloController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T17:25:51.97Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "KorisnikVoznjaControllerTests.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\APIUnitTests\\KorisnikVoznjaControllerTests.cs",
-              "RelativeDocumentMoniker": "APIUnitTests\\KorisnikVoznjaControllerTests.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\APIUnitTests\\KorisnikVoznjaControllerTests.cs",
-              "RelativeToolTip": "APIUnitTests\\KorisnikVoznjaControllerTests.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T17:20:11.881Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "KorisnikVoznjaController.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\KorisnikVoznjaController.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\Controllers\\KorisnikVoznjaController.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\KorisnikVoznjaController.cs",
-              "RelativeToolTip": "REST API - oicar\\Controllers\\KorisnikVoznjaController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T17:14:47.571Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "OglasVoznjaControllerTests.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\APIUnitTests\\OglasVoznjaControllerTests.cs",
-              "RelativeDocumentMoniker": "APIUnitTests\\OglasVoznjaControllerTests.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\APIUnitTests\\OglasVoznjaControllerTests.cs",
-              "RelativeToolTip": "APIUnitTests\\OglasVoznjaControllerTests.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T13:37:43.06Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "OglasVoznjaController.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\OglasVoznjaController.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\Controllers\\OglasVoznjaController.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\OglasVoznjaController.cs",
-              "RelativeToolTip": "REST API - oicar\\Controllers\\OglasVoznjaController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T13:30:25.551Z",
+              "WhenOpened": "2025-06-13T09:35:44.345Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "KorisnikController.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\KorisnikController.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\Controllers\\KorisnikController.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\KorisnikController.cs",
-              "RelativeToolTip": "REST API - oicar\\Controllers\\KorisnikController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "CarBrandControllerTests.cs",
+              "DocumentMoniker": "C:\\Users\\Bartol\\Desktop\\OICAR\\Zadnjevaljda\\opetzadnje\\OICAR_Api\\REST API - oicar\\APIUnitTests\\CarBrandControllerTests.cs",
+              "RelativeDocumentMoniker": "APIUnitTests\\CarBrandControllerTests.cs",
+              "ToolTip": "C:\\Users\\Bartol\\Desktop\\OICAR\\Zadnjevaljda\\opetzadnje\\OICAR_Api\\REST API - oicar\\APIUnitTests\\CarBrandControllerTests.cs",
+              "RelativeToolTip": "APIUnitTests\\CarBrandControllerTests.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAEgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T13:18:49.277Z",
+              "WhenOpened": "2025-06-13T09:35:41.116Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "KorisnikImageController.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\KorisnikImageController.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\Controllers\\KorisnikImageController.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\KorisnikImageController.cs",
-              "RelativeToolTip": "REST API - oicar\\Controllers\\KorisnikImageController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T17:51:14.018Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "VoziloController.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\VoziloController.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\Controllers\\VoziloController.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\VoziloController.cs",
-              "RelativeToolTip": "REST API - oicar\\Controllers\\VoziloController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T18:41:56.617Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "PorukaControllerTests.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\APIUnitTests\\PorukaControllerTests.cs",
-              "RelativeDocumentMoniker": "APIUnitTests\\PorukaControllerTests.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\APIUnitTests\\PorukaControllerTests.cs",
-              "RelativeToolTip": "APIUnitTests\\PorukaControllerTests.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T17:35:21.166Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "ImageController.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\ImageController.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\Controllers\\ImageController.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\ImageController.cs",
-              "RelativeToolTip": "REST API - oicar\\Controllers\\ImageController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T17:49:19.571Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "OglasVoznjaDTO.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\OglasVoznjaDTO.cs",
-              "RelativeDocumentMoniker": "REST API - oicar\\DTOs\\OglasVoznjaDTO.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\REST API - oicar\\DTOs\\OglasVoznjaDTO.cs",
-              "RelativeToolTip": "REST API - oicar\\DTOs\\OglasVoznjaDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T17:56:59.199Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 2,
               "Title": "VoziloControllerTests.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\APIUnitTests\\VoziloControllerTests.cs",
+              "DocumentMoniker": "C:\\Users\\Bartol\\Desktop\\OICAR\\Zadnjevaljda\\opetzadnje\\OICAR_Api\\REST API - oicar\\APIUnitTests\\VoziloControllerTests.cs",
               "RelativeDocumentMoniker": "APIUnitTests\\VoziloControllerTests.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\APIUnitTests\\VoziloControllerTests.cs",
+              "ToolTip": "C:\\Users\\Bartol\\Desktop\\OICAR\\Zadnjevaljda\\opetzadnje\\OICAR_Api\\REST API - oicar\\APIUnitTests\\VoziloControllerTests.cs",
               "RelativeToolTip": "APIUnitTests\\VoziloControllerTests.cs",
-              "ViewState": "AgIAABcAAAAAAAAAAAAuwEgAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAAKQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T13:47:37.151Z"
+              "WhenOpened": "2025-06-13T09:12:22.915Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "KorisnikControllerTests.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\APIUnitTests\\KorisnikControllerTests.cs",
-              "RelativeDocumentMoniker": "APIUnitTests\\KorisnikControllerTests.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\APIUnitTests\\KorisnikControllerTests.cs",
-              "RelativeToolTip": "APIUnitTests\\KorisnikControllerTests.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "VoziloController.cs",
+              "DocumentMoniker": "C:\\Users\\Bartol\\Desktop\\OICAR\\Zadnjevaljda\\opetzadnje\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\VoziloController.cs",
+              "RelativeDocumentMoniker": "REST API - oicar\\Controllers\\VoziloController.cs",
+              "ToolTip": "C:\\Users\\Bartol\\Desktop\\OICAR\\Zadnjevaljda\\opetzadnje\\OICAR_Api\\REST API - oicar\\REST API - oicar\\Controllers\\VoziloController.cs",
+              "RelativeToolTip": "REST API - oicar\\Controllers\\VoziloController.cs",
+              "ViewState": "AgIAAG0BAAAAAAAAAAAowHoBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T16:24:48.504Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "APIUnitTests",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\APIUnitTests\\APIUnitTests.csproj",
-              "RelativeDocumentMoniker": "APIUnitTests\\APIUnitTests.csproj",
-              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\APIUnitTests\\APIUnitTests.csproj",
-              "RelativeToolTip": "APIUnitTests\\APIUnitTests.csproj",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-06-10T15:30:01.267Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "OglasVoziloControllerTests.cs",
-              "DocumentMoniker": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\APIUnitTests\\OglasVoziloControllerTests.cs",
-              "RelativeDocumentMoniker": "APIUnitTests\\OglasVoziloControllerTests.cs",
-              "ToolTip": "C:\\Users\\Korisnik\\Desktop\\OICAR_Api\\REST API - oicar\\APIUnitTests\\OglasVoziloControllerTests.cs",
-              "RelativeToolTip": "APIUnitTests\\OglasVoziloControllerTests.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T13:43:59.165Z"
+              "WhenOpened": "2025-06-13T09:12:06.444Z",
+              "EditorCaption": ""
             }
           ]
         }

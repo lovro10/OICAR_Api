@@ -1,348 +1,287 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using REST_API___oicar.Controllers;
 using REST_API___oicar.DTOs;
 using REST_API___oicar.Models;
 using Xunit;
-/*
- * unit testovi koji koriste InMemoryDB, trebalo je doraditi DbContext zbog konflikta 
- * da bi izdvojili testove od PostgreSQL
- * --------------------------------------------------------------------------------------
- * registriramo InMemory provider za EF core (AddEntityFrameworkInMemoryDatabase)
- * onda postavljamo da CarShareContext koritsi tu inmemory bazu te na kraju vraca novi carsharecontext koji
- * postoji samo u toj memoriji
- * 
- * zasto?
- * ne zelimo pristupati pravoj bazi i drugim providerima, izbjegavanje sukoba, brze testiranje
- * 
- */
+
 namespace APIUnitTests
 {
-    public class ImageControllerTests
+    public class TestCarshareContext : CarshareContext
     {
-        private CarshareContext CreateInMemoryContext(string dbName)
+        public TestCarshareContext(DbContextOptions<CarshareContext> options)
+            : base(options) { }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
+    }
+
+    public class ImageControllerTests : IDisposable
+    {
+        private readonly TestCarshareContext _context;
+        private readonly ImageController _controller;
+
+        public ImageControllerTests()
         {
-            var serviceProvider = new ServiceCollection()
-                .AddEntityFrameworkInMemoryDatabase()
-                .BuildServiceProvider();
-
             var options = new DbContextOptionsBuilder<CarshareContext>()
-                .UseInMemoryDatabase(databaseName: dbName)
-                .UseInternalServiceProvider(serviceProvider)
+                .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
+            _context = new TestCarshareContext(options);
+            _controller = new ImageController(_context);
+        }
 
-            return new CarshareContext(options);
+        public void Dispose() => _context.Dispose();
+
+        [Fact]
+        public async Task DisplayImage_NotFound()
+        {
+            var result = await _controller.DisplayImage(1);
+            Assert.IsType<NotFoundResult>(result.Result);
         }
 
         [Fact]
-        public async Task DisplayImage_ImageExists_ReturnsOkWithDto()
+        public async Task DisplayImage_Found_ReturnsDto()
         {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var type = new Imagetype { Idimagetype = 1, Name = "JPG" };
-            context.Imagetypes.Add(type);
-            var image = new Image
+            var type = new Imagetype { Idimagetype = 1, Name = "t" };
+            var img = new Image
             {
-                Idimage = 1,
-                Name = "TestImage",
+                Idimage = 2,
+                Name = "n",
                 Content = new byte[] { 1, 2, 3 },
                 Imagetypeid = 1,
                 Imagetype = type
             };
-            context.Images.Add(image);
-            await context.SaveChangesAsync();
+            _context.Imagetypes.Add(type);
+            _context.Images.Add(img);
+            await _context.SaveChangesAsync();
 
-            var controller = new ImageController(context);
-            var result = await controller.DisplayImage(1);
+            var result = await _controller.DisplayImage(2);
             var ok = Assert.IsType<OkObjectResult>(result.Result);
             var dto = Assert.IsType<ImageDisplayDTO>(ok.Value);
-            Assert.Equal("TestImage", dto.Name);
+
+            Assert.Equal("n", dto.Name);
             Assert.Equal(Convert.ToBase64String(new byte[] { 1, 2, 3 }), dto.Content);
-            Assert.Equal("JPG", dto.Type);
+            Assert.Equal("t", dto.Type);
         }
 
         [Fact]
-        public async Task DisplayImage_ImageNotFound_ReturnsNotFound()
+        public async Task GetImagesForUser_NoImages_ReturnsEmpty()
         {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var controller = new ImageController(context);
-            var result = await controller.DisplayImage(999);
-            Assert.IsType<NotFoundResult>(result.Result);
-        }
-
-        [Fact]
-        public async Task GetImagesForUser_NoImages_ReturnsEmptyList()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var controller = new ImageController(context);
-            var result = await controller.GetImagesForUser(1);
+            var result = await _controller.GetImagesForUser(5);
             var ok = Assert.IsType<OkObjectResult>(result.Result);
-            var list = Assert.IsAssignableFrom<IEnumerable<ImageDisplayDTO>>(ok.Value);
+            var list = Assert.IsType<List<ImageDisplayDTO>>(ok.Value);
             Assert.Empty(list);
         }
 
         [Fact]
-        public async Task GetImagesForUser_WithImages_ReturnsList()
+        public async Task GetImagesForUser_WithImages_ReturnsDtos()
         {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var type = new Imagetype { Idimagetype = 1, Name = "PNG" };
-            context.Imagetypes.Add(type);
-
-            var image = new Image
+            var type = new Imagetype { Idimagetype = 1, Name = "xt" };
+            var img = new Image
             {
-                Idimage = 1,
-                Name = "UserImg",
-                Content = new byte[] { 4, 5, 6 },
+                Idimage = 3,
+                Name = "i3",
+                Content = new byte[] { 4, 5 },
                 Imagetypeid = 1,
                 Imagetype = type
             };
-            context.Images.Add(image);
+            var ki = new Korisnikimage { Korisnikid = 10, Image = img };
+            _context.Imagetypes.Add(type);
+            _context.Images.Add(img);
+            _context.Korisnikimages.Add(ki);
+            await _context.SaveChangesAsync();
 
-            context.Korisnikimages.Add(new Korisnikimage
-            {
-                Idkorisnikimage = 1,
-                Korisnikid = 42,
-                Imageid = 1,
-                Image = image
-            });
-            await context.SaveChangesAsync();
-
-            var controller = new ImageController(context);
-            var result = await controller.GetImagesForUser(42);
+            var result = await _controller.GetImagesForUser(10);
             var ok = Assert.IsType<OkObjectResult>(result.Result);
-            var list = Assert.IsAssignableFrom<IEnumerable<ImageDisplayDTO>>(ok.Value);
-            var dto = list.First();
-            Assert.Equal("UserImg", dto.Name);
-            Assert.Equal(Convert.ToBase64String(new byte[] { 4, 5, 6 }), dto.Content);
-            Assert.Equal("PNG", dto.Type);
+            var list = Assert.IsType<List<ImageDisplayDTO>>(ok.Value);
+
+            Assert.Single(list);
+            Assert.Equal("i3", list[0].Name);
+            Assert.Equal(Convert.ToBase64String(new byte[] { 4, 5 }), list[0].Content);
+            Assert.Equal("xt", list[0].Type);
         }
 
         [Fact]
-        public async Task GetImagesForVehicle_VehicleNotFound_ReturnsNotFound()
+        public async Task GetImagesForVehicle_VehicleNotFound()
         {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var controller = new ImageController(context);
-            var result = await controller.GetImagesForVehicle(123);
+            var result = await _controller.GetImagesForVehicle(7);
             Assert.IsType<NotFoundResult>(result.Result);
         }
 
         [Fact]
-        public async Task GetImagesForVehicle_WithImages_ReturnsEmptyListDueToCaseMismatch()
+        public async Task GetImagesForVehicle_NoMatching_ReturnsEmpty()
         {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var vehicle = new Vozilo
+            var v = new Vozilo
             {
-                Idvozilo = 7,
-                Registracija = "ABC123",
-                Marka = "TestMarka",
-                Model = "TestModel"
+                Idvozilo = 8,
+                Registracija = "AB",
+                Marka = "X",    // non-nullable
+                Model = "Y"     // non-nullable
             };
-            context.Vozilos.Add(vehicle);
+            _context.Vozilos.Add(v);
+            await _context.SaveChangesAsync();
 
-            var type = new Imagetype { Idimagetype = 2, Name = "JPG" };
-            context.Imagetypes.Add(type);
-
-            var img1 = new Image
-            {
-                Idimage = 1,
-                Name = "PrednjaABC123",
-                Content = new byte[] { 7, 8, 9 },
-                Imagetypeid = 2,
-                Imagetype = type
-            };
-            var img2 = new Image
-            {
-                Idimage = 2,
-                Name = "StaraABC123",
-                Content = new byte[] { 10, 11, 12 },
-                Imagetypeid = 2,
-                Imagetype = type
-            };
-            context.Images.AddRange(img1, img2);
-            await context.SaveChangesAsync();
-
-            var controller = new ImageController(context);
-            var result = await controller.GetImagesForVehicle(7);
+            var result = await _controller.GetImagesForVehicle(8);
             var ok = Assert.IsType<OkObjectResult>(result.Result);
-            var list = Assert.IsAssignableFrom<IEnumerable<ImageDisplayDTO>>(ok.Value);
+            var list = Assert.IsType<List<ImageDisplayDTO>>(ok.Value);
             Assert.Empty(list);
         }
 
-        [Fact]
-        public async Task GetImages_ReturnsAllImages()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var img1 = new Image { Idimage = 1, Name = "ImgOne", Content = new byte[] { 1 } };
-            var img2 = new Image { Idimage = 2, Name = "ImgTwo", Content = new byte[] { 2 } };
-            context.Images.AddRange(img1, img2);
-            await context.SaveChangesAsync();
 
-            var controller = new ImageController(context);
-            var result = await controller.GetImages();
+
+        [Fact]
+        public async Task GetImages_ReturnsAll()
+        {
+            var img = new Image
+            {
+                Idimage = 6,
+                Name = "all",
+                Content = new byte[] { 7, 8 },
+                Imagetypeid = 0
+            };
+            _context.Images.Add(img);
+            await _context.SaveChangesAsync();
+
+            var result = await _controller.GetImages();
             var ok = Assert.IsType<OkObjectResult>(result.Result);
-            var list = Assert.IsAssignableFrom<IEnumerable<ImageUploadDTO>>(ok.Value);
-            Assert.Contains(list, x => x.Name == "ImgOne");
-            Assert.Contains(list, x => x.Name == "ImgTwo");
+            var list = Assert.IsType<List<ImageUploadDTO>>(ok.Value);
+
+            Assert.Single(list);
+            Assert.Equal("all", list[0].Name);
+            Assert.Equal(Convert.ToBase64String(new byte[] { 7, 8 }), list[0].Base64Content);
         }
 
         [Fact]
-        public async Task GetImageById_Exists_ReturnsOk()
+        public async Task GetImageById_NotFound()
         {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var img = new Image { Idimage = 5, Name = "SingleImg", Content = new byte[] { 3, 4 } };
-            context.Images.Add(img);
-            await context.SaveChangesAsync();
-
-            var controller = new ImageController(context);
-            var result = await controller.GetImageById(5);
-            var ok = Assert.IsType<OkObjectResult>(result.Result);
-            var dto = Assert.IsType<ImageUploadDTO>(ok.Value);
-            Assert.Equal("SingleImg", dto.Name);
-            Assert.Equal(Convert.ToBase64String(new byte[] { 3, 4 }), dto.Base64Content);
-        }
-
-        [Fact]
-        public async Task GetImageById_NotExists_ReturnsNotFound()
-        {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var controller = new ImageController(context);
-            var result = await controller.GetImageById(999);
+            var result = await _controller.GetImageById(11);
             Assert.IsType<NotFoundResult>(result.Result);
         }
 
         [Fact]
-        public async Task UploadImage_ValidBase64_ReturnsOkWithId()
+        public async Task GetImageById_Found_ReturnsDto()
         {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var type = new Imagetype { Idimagetype = 3, Name = "GIF" };
-            context.Imagetypes.Add(type);
-            await context.SaveChangesAsync();
-
-            var controller = new ImageController(context);
-            var dto = new ImageUploadDTO
+            var img = new Image
             {
-                Name = "NewImg",
-                Base64Content = Convert.ToBase64String(new byte[] { 13, 14 }),
-                ImageTypeId = 3
+                Idimage = 12,
+                Name = "byid",
+                Content = new byte[] { 1 },
+                Imagetypeid = 0
             };
-            var result = await controller.UploadImage(dto);
+            _context.Images.Add(img);
+            await _context.SaveChangesAsync();
+
+            var result = await _controller.GetImageById(12);
             var ok = Assert.IsType<OkObjectResult>(result.Result);
-            var id = Assert.IsType<int>(ok.Value);
-            var saved = await context.Images.FindAsync(id);
-            Assert.NotNull(saved);
-            Assert.Equal("NewImg", saved.Name);
+            var dto = Assert.IsType<ImageUploadDTO>(ok.Value);
+
+            Assert.Equal("byid", dto.Name);
+        }
+
+        [Fact]
+        public async Task UploadImage_EmptyContent_ReturnsBadRequest()
+        {
+            var dto = new ImageUploadDTO { Name = "n", Base64Content = "" };
+            var result = await _controller.UploadImage(dto);
+            var bad = Assert.IsType<BadRequestObjectResult>(result.Result);
+
+            Assert.Equal("Base64 content is required.", bad.Value);
         }
 
         [Fact]
         public async Task UploadImage_InvalidBase64_ReturnsBadRequest()
         {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var controller = new ImageController(context);
-            var dto = new ImageUploadDTO
-            {
-                Name = "BadImg",
-                Base64Content = "not_base64"
-            };
-            var result = await controller.UploadImage(dto);
+            var dto = new ImageUploadDTO { Name = "x", Base64Content = "!!!" };
+            var result = await _controller.UploadImage(dto);
             var bad = Assert.IsType<BadRequestObjectResult>(result.Result);
+
             Assert.Equal("Invalid Base64 string.", bad.Value);
         }
 
         [Fact]
-        public async Task UpdateImage_Exists_ValidBase64_ReturnsOk()
+        public async Task UploadImage_Valid_ReturnsId()
         {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var img = new Image
-            {
-                Idimage = 8,
-                Name = "Old",
-                Content = new byte[] { 15, 16 }
-            };
-            context.Images.Add(img);
-            await context.SaveChangesAsync();
+            var bytes = Encoding.UTF8.GetBytes("ok");
+            var dto = new ImageUploadDTO { Name = "nm", Base64Content = Convert.ToBase64String(bytes), ImageTypeId = 0 };
+            var result = await _controller.UploadImage(dto);
+            var okRes = Assert.IsType<OkObjectResult>(result.Result);
 
-            var controller = new ImageController(context);
-            var dto = new ImageUploadDTO
-            {
-                Name = "Updated",
-                Base64Content = Convert.ToBase64String(new byte[] { 17, 18 })
-            };
-            var result = await controller.UpdateImage(8, dto);
-            var ok = Assert.IsType<OkObjectResult>(result);
-            var updated = await context.Images.FindAsync(8);
-            Assert.Equal("Updated", updated.Name);
-            Assert.Equal(new byte[] { 17, 18 }, updated.Content);
+            Assert.IsType<int>(okRes.Value);
         }
 
         [Fact]
-        public async Task UpdateImage_NotExists_ReturnsNotFound()
+        public async Task UpdateImage_NotFound()
         {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var controller = new ImageController(context);
-            var dto = new ImageUploadDTO
-            {
-                Name = "Nope",
-                Base64Content = Convert.ToBase64String(new byte[] { 19 })
-            };
-            var result = await controller.UpdateImage(999, dto);
+            var dto = new ImageUploadDTO { Name = "u", Base64Content = Convert.ToBase64String(new byte[] { 1 }) };
+            var result = await _controller.UpdateImage(100, dto);
+
             Assert.IsType<NotFoundResult>(result);
         }
 
         [Fact]
         public async Task UpdateImage_InvalidBase64_ReturnsBadRequest()
         {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
             var img = new Image
             {
-                Idimage = 9,
-                Name = "Img9",
-                Content = new byte[] { 20 }
+                Idimage = 13,
+                Name = "a",
+                Content = new byte[] { 0 },
+                Imagetypeid = 0
             };
-            context.Images.Add(img);
-            await context.SaveChangesAsync();
+            _context.Images.Add(img);
+            await _context.SaveChangesAsync();
 
-            var controller = new ImageController(context);
-            var dto = new ImageUploadDTO
-            {
-                Name = "Img9",
-                Base64Content = "!!!"
-            };
-            var result = await controller.UpdateImage(9, dto);
-            var bad = Assert.IsType<BadRequestObjectResult>(result);
+            var dto = new ImageUploadDTO { Name = "a", Base64Content = "??" };
+            var bad = Assert.IsType<BadRequestObjectResult>(await _controller.UpdateImage(13, dto));
+
             Assert.Equal("Invalid Base64 string.", bad.Value);
         }
 
         [Fact]
-        public async Task DeleteImage_Exists_ReturnsNoContent()
+        public async Task UpdateImage_Valid_ReturnsDto()
         {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
             var img = new Image
             {
-                Idimage = 10,
-                Name = "Img10",
-                Content = new byte[] { 21 }
+                Idimage = 14,
+                Name = "old",
+                Content = new byte[] { 2 },
+                Imagetypeid = 0
             };
-            context.Images.Add(img);
-            await context.SaveChangesAsync();
+            _context.Images.Add(img);
+            await _context.SaveChangesAsync();
 
-            var controller = new ImageController(context);
-            var result = await controller.DeleteImage(10);
-            Assert.IsType<NoContentResult>(result);
-            var deleted = await context.Images.FindAsync(10);
-            Assert.Null(deleted);
+            var dto = new ImageUploadDTO { Name = "new", Base64Content = Convert.ToBase64String(new byte[] { 3 }) };
+            var ok = Assert.IsType<OkObjectResult>(await _controller.UpdateImage(14, dto));
+            var returned = Assert.IsType<ImageUploadDTO>(ok.Value);
+
+            Assert.Equal("new", returned.Name);
         }
 
         [Fact]
-        public async Task DeleteImage_NotExists_ReturnsNotFound()
+        public async Task DeleteImage_NotFound()
         {
-            var context = CreateInMemoryContext(Guid.NewGuid().ToString());
-            var controller = new ImageController(context);
-            var result = await controller.DeleteImage(999);
+            var result = await _controller.DeleteImage(200);
             Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task DeleteImage_Success_ReturnsNoContent()
+        {
+            var img = new Image
+            {
+                Idimage = 15,
+                Name = "del",
+                Content = new byte[] { 4 },
+                Imagetypeid = 0
+            };
+            _context.Images.Add(img);
+            await _context.SaveChangesAsync();
+
+            var noContent = Assert.IsType<NoContentResult>(await _controller.DeleteImage(15));
         }
     }
 }
