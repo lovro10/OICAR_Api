@@ -22,7 +22,6 @@ namespace REST_API___oicar.Controllers
             var korisnikoveVoznje = await _context.Korisnikvoznjas 
                 .Include(x => x.Korisnik) 
                 .Include(x => x.Oglasvoznja) 
-                .Include(x => x.Porukas) 
                 .Select(x => new KorisnikVoznjaDTO 
                 { 
                     IdKorisnikVoznja = x.Idkorisnikvoznja, 
@@ -64,6 +63,7 @@ namespace REST_API___oicar.Controllers
                 return BadRequest(ModelState);
 
             var voznja = await _context.Oglasvoznjas
+                .Include(o => o.Lokacija)
                 .Include(o => o.Korisnikvoznjas) 
                 .FirstOrDefaultAsync(o => o.Idoglasvoznja == korisnikVoznjaDTO.OglasVoznjaId);
 

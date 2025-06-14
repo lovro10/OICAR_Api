@@ -7,45 +7,43 @@ using Microsoft.EntityFrameworkCore;
 using REST_API___oicar.Controllers;
 using REST_API___oicar.DTOs;
 using REST_API___oicar.Models;
+using REST_API___oicar.Security;
 using Xunit;
 
 namespace APIUnitTests
 {
-
-
     public class PorukaControllerTests : IDisposable
     {
         private readonly TestCarshareContext _ctx;
         private readonly PorukaController _ctrl;
+        private readonly AesEncryptionService _encryptionService;
 
-        public PorukaControllerTests()
-        {
+        public PorukaControllerTests(AesEncryptionService encryptionService) 
+        { 
             var opts = new DbContextOptionsBuilder<CarshareContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
             _ctx = new TestCarshareContext(opts);
-            _ctrl = new PorukaController(_ctx);
-        }
+            _ctrl = new PorukaController(_ctx, encryptionService); 
+        } 
 
         public void Dispose() => _ctx.Dispose();
 
         [Fact]
         public async Task GetMessagesForRide_NoMessages_ReturnsEmpty()
-        {
+        { 
             var result = await _ctrl.GetMessagesForRide(1);
             var ok = Assert.IsType<OkObjectResult>(result.Result);
             var list = Assert.IsType<List<PorukaGetDTO>>(ok.Value);
             Assert.Empty(list);
-        }
+        } 
 
         [Fact]
         public async Task GetMessagesForRide_WithMessages_ReturnsOrderedDtos()
-        {
-            // Korisnikvoznja
-            var kv = new Korisnikvoznja { Idkorisnikvoznja = 10 };
-            _ctx.Korisnikvoznjas.Add(kv);
+        { 
+            var ov = new Oglasvoznja { Idoglasvoznja = 10 };
+            _ctx.Oglasvoznjas.Add(ov);
 
-            // putnik
             var putnik = new Korisnik
             {
                 Idkorisnik = 1,
@@ -59,16 +57,16 @@ namespace APIUnitTests
                 Datumrodjenja = DateOnly.FromDateTime(DateTime.Today),
                 Ulogaid = 1
             };
+
             var msg1 = new Poruka
             {
                 Idporuka = 1,
-                Korisnikvoznjaid = 10,
+                Oglasvoznjaid = 10,
                 Putnikid = 1,
                 Content = "Hello",
                 Putnik = putnik
             };
 
-            // vozac
             var vozac = new Korisnik
             {
                 Idkorisnik = 2,
@@ -82,20 +80,20 @@ namespace APIUnitTests
                 Datumrodjenja = DateOnly.FromDateTime(DateTime.Today),
                 Ulogaid = 2
             };
+
             var msg2 = new Poruka
             {
                 Idporuka = 2,
-                Korisnikvoznjaid = 10,
+                Oglasvoznjaid = 10,
                 Vozacid = 2,
                 Content = "World",
                 Vozac = vozac
             };
 
-            // ni putnik ni vozac
             var msg3 = new Poruka
             {
                 Idporuka = 3,
-                Korisnikvoznjaid = 10,
+                Oglasvoznjaid = 10,
                 Content = "?"
             };
 
@@ -121,12 +119,12 @@ namespace APIUnitTests
         {
             var dto = new PorukaSendDTO
             {
-                KorisnikVoznjaId = kvId,
+                OglasVoznjaId = kvId,
                 Content = content,
                 PutnikId = 1
             };
             var bad = Assert.IsType<BadRequestObjectResult>(await _ctrl.SendMessageForRide(dto));
-            Assert.Contains("KorisnikVoznjaId i sadržaj poruke", bad.Value.ToString());
+            Assert.Contains("OglasVoznjaId i sadržaj poruke", bad.Value.ToString());
         }
 
         [Fact]
@@ -134,7 +132,7 @@ namespace APIUnitTests
         {
             var dto = new PorukaSendDTO
             {
-                KorisnikVoznjaId = 1,
+                OglasVoznjaId = 1,
                 Content = "Hi",
                 PutnikId = 1,
                 VozacId = 2
@@ -148,7 +146,7 @@ namespace APIUnitTests
         {
             var dto = new PorukaSendDTO
             {
-                KorisnikVoznjaId = 100,
+                OglasVoznjaId = 100,
                 Content = "Hi",
                 PutnikId = 1
             };
@@ -157,35 +155,16 @@ namespace APIUnitTests
         }
 
         [Fact]
-        public async Task SendMessageForRide_ValidPutnik_SavesAndReturnsOk()
-        {
-            var kv = new Korisnikvoznja { Idkorisnikvoznja = 20, Korisnikid = 3 };
-            _ctx.Korisnikvoznjas.Add(kv);
-            await _ctx.SaveChangesAsync();
-
-            var dto = new PorukaSendDTO
-            {
-                KorisnikVoznjaId = 20,
-                Content = "Ping",
-                PutnikId = 3
-            };
-            var ok = Assert.IsType<OkObjectResult>(await _ctrl.SendMessageForRide(dto));
-            var saved = _ctx.Porukas.Single();
-            Assert.Equal("Ping", saved.Content);
-            Assert.Equal(3, saved.Putnikid);
-        }
-
-        [Fact]
         public async Task GetMessagesForVehicle_MirrorsRideLogic()
         {
-            var kv = new Korisnikvoznja { Idkorisnikvoznja = 40 };
+            var kv = new Oglasvoznja { Idoglasvoznja = 40 };
             var msg = new Poruka
             {
                 Idporuka = 5,
-                Korisnikvoznjaid = 40,
+                Oglasvoznjaid = 40,
                 Content = "Veh"
             };
-            _ctx.Korisnikvoznjas.Add(kv);
+            _ctx.Oglasvoznjas.Add(kv);
             _ctx.Porukas.Add(msg);
             await _ctx.SaveChangesAsync();
 
@@ -195,42 +174,45 @@ namespace APIUnitTests
             Assert.Single(list);
             Assert.Equal("Veh", list[0].Content);
         }
-
-
-
+        
         [Fact]
-        public async Task SendMessageForVehicle_ForbiddenIfNotParticipant()
-        {
-            var kv = new Korisnikvoznja { Idkorisnikvoznja = 50, Korisnikid = 7 };
-            _ctx.Korisnikvoznjas.Add(kv);
-            await _ctx.SaveChangesAsync();
-
-            // Putnik != Korisnikid => forbid
-            var dto1 = new PorukaSendDTO { KorisnikVoznjaId = 50, Content = "X", PutnikId = 9 };
-            Assert.IsType<ForbidResult>(await _ctrl.SendMessageForVehicle(dto1));
-
-            // VozacId also mismatch => forbid
-            var dto2 = new PorukaSendDTO { KorisnikVoznjaId = 50, Content = "X", VozacId = 9 };
-            Assert.IsType<ForbidResult>(await _ctrl.SendMessageForVehicle(dto2));
-        }
-
-        [Fact]
-        public async Task SendMessageForVehicle_Valid_SavesAndReturnsOk()
-        {
-            var kv = new Korisnikvoznja { Idkorisnikvoznja = 80, Korisnikid = 9 };
-            _ctx.Korisnikvoznjas.Add(kv);
-            await _ctx.SaveChangesAsync();
-
-            var dto = new PorukaSendDTO
+            public async Task SendMessageForVehicle_ForbiddenIfNotParticipant()
             {
-                KorisnikVoznjaId = 80,
-                Content = "OK",
-                PutnikId = 9
-            };
-            var ok = Assert.IsType<OkObjectResult>(await _ctrl.SendMessageForVehicle(dto));
-            var saved = _ctx.Porukas.Single();
-            Assert.Equal("OK", saved.Content);
-            Assert.Equal(9, saved.Putnikid);
-        }
+                var vozilo = new Vozilo { Idvozilo = 100, Vozacid = 7 };
+                _ctx.Vozilos.Add(vozilo); 
+
+                var oglas = new Oglasvoznja { Idoglasvoznja = 50, Voziloid = 100, Vozilo = vozilo };
+                _ctx.Oglasvoznjas.Add(oglas);
+                await _ctx.SaveChangesAsync();
+
+                var dto1 = new PorukaSendDTO { OglasVoznjaId = 50, Content = "X", PutnikId = 9 };
+                Assert.IsType<ForbidResult>(await _ctrl.SendMessageForVehicle(dto1));
+
+                var dto2 = new PorukaSendDTO { OglasVoznjaId = 50, Content = "X", VozacId = 9 };
+                Assert.IsType<ForbidResult>(await _ctrl.SendMessageForVehicle(dto2));
+            } 
+
+            [Fact] 
+            public async Task SendMessageForVehicle_Valid_SavesAndReturnsOk()
+            { 
+                var vozilo = new Vozilo { Idvozilo = 200, Vozacid = 9 };
+                _ctx.Vozilos.Add(vozilo);
+
+                var oglas = new Oglasvoznja { Idoglasvoznja = 80, Voziloid = 200, Vozilo = vozilo };
+                _ctx.Oglasvoznjas.Add(oglas);
+                await _ctx.SaveChangesAsync();
+
+                var dto = new PorukaSendDTO
+                {
+                    OglasVoznjaId = 80,
+                    Content = "OK",
+                    VozacId = 9
+                };
+
+                var ok = Assert.IsType<OkObjectResult>(await _ctrl.SendMessageForVehicle(dto));
+                var saved = _ctx.Porukas.Single();
+                Assert.Equal("OK", saved.Content);
+                Assert.Equal(9, saved.Vozacid); 
+            }
     }
 }

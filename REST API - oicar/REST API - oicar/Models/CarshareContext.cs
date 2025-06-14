@@ -283,12 +283,12 @@ public partial class CarshareContext : DbContext
 
             entity.Property(e => e.Idporuka).HasColumnName("idporuka");
             entity.Property(e => e.Content).HasColumnName("content");
-            entity.Property(e => e.Korisnikvoznjaid).HasColumnName("korisnikvoznjaid");
-            entity.Property(e => e.Putnikid).HasColumnName("putnikid");
-            entity.Property(e => e.Vozacid).HasColumnName("vozacid");
+            entity.Property(e => e.Oglasvoznjaid).HasColumnName("oglasvoznjaid"); 
+            entity.Property(e => e.Putnikid).HasColumnName("putnikid"); 
+            entity.Property(e => e.Vozacid).HasColumnName("vozacid"); 
 
-            entity.HasOne(d => d.Korisnikvoznja).WithMany(p => p.Porukas)
-                .HasForeignKey(d => d.Korisnikvoznjaid)
+            entity.HasOne(d => d.Oglasvoznja).WithMany(p => p.Porukas)
+                .HasForeignKey(d => d.Oglasvoznjaid)
                 .HasConstraintName("poruka_korisnikvoznjaid_fkey");
 
             entity.HasOne(d => d.Putnik).WithMany(p => p.PorukaPutniks)

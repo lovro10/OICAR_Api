@@ -7,7 +7,7 @@ public partial class Poruka
 {
     public int Idporuka { get; set; }
 
-    public int? Korisnikvoznjaid { get; set; }
+    public int? Oglasvoznjaid { get; set; }
 
     public int? Putnikid { get; set; }
 
@@ -15,7 +15,7 @@ public partial class Poruka
 
     public string Content { get; set; } = null!;
 
-    public virtual Korisnikvoznja? Korisnikvoznja { get; set; }
+    public virtual Oglasvoznja? Oglasvoznja { get; set; }
 
     public virtual Korisnik? Putnik { get; set; }
 

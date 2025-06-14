@@ -20,7 +20,7 @@ namespace REST_API___oicar.Controllers
             _context = context;
             _configuration = configuration;
             _encryptionService = encryptionService;
-        }
+        } 
 
         [HttpPut("{id}")]
         public async Task<ActionResult<KorisnikUpdateDTO>> Update(int id, [FromBody] KorisnikUpdateDTO korisnikDto)
@@ -32,10 +32,10 @@ namespace REST_API___oicar.Controllers
                 if (korisnik == null)
                     return NotFound($"Korisnik sa ID-jem {id} nije pronađen.");
 
-                korisnik.Ime = korisnikDto.Ime;
-                korisnik.Prezime = korisnikDto.Prezime;
-                korisnik.Email = korisnikDto.Email;
-                korisnik.Telefon = korisnikDto.Telefon;
+                korisnik.Ime = _encryptionService.Encrypt(korisnikDto.Ime);
+                korisnik.Prezime = _encryptionService.Encrypt(korisnikDto.Prezime);
+                korisnik.Email = _encryptionService.Encrypt(korisnikDto.Email);
+                korisnik.Telefon = _encryptionService.Encrypt(korisnikDto.Telefon);
 
                 _context.Korisniks.Update(korisnik);
                 await _context.SaveChangesAsync();
@@ -58,14 +58,13 @@ namespace REST_API___oicar.Controllers
                 if (korisnik == null)
                     return NotFound($"Korisnik with ID {id} not found");
 
-                korisnik.Username = $"Anonymous_username_{id}";
-                korisnik.Ime = $"Anonymous_name_{id}";
-                korisnik.Prezime = $"Anonymous_surname_{id}";
-                korisnik.Email = $"Anonymous_email_{id}";
-                korisnik.Telefon = $"Anonymous_number_{id}";
-                korisnik.Datumrodjenja = default;
-                korisnik.Pwdhash = $"Anonymous_pwdhash_{id}";
-                korisnik.Pwdsalt = $"Anonymous_pwdsalt_{id}";
+                korisnik.Username = _encryptionService.Encrypt($"Anonymous_username_{id}");
+                korisnik.Ime = _encryptionService.Encrypt($"Anonymous_name_{id}");
+                korisnik.Prezime = _encryptionService.Encrypt($"Anonymous_surname_{id}");
+                korisnik.Email = _encryptionService.Encrypt($"Anonymous_email_{id}");
+                korisnik.Telefon = _encryptionService.Encrypt($"Anonymous_number_{id}"); 
+                korisnik.Pwdhash = _encryptionService.Encrypt($"Anonymous_pwdhash_{id}");
+                korisnik.Pwdsalt = _encryptionService.Encrypt($"Anonymous_pwdsalt_{id}");
                 korisnik.Isconfirmed = null;
                 korisnik.Ulogaid = 4;
 
@@ -90,7 +89,7 @@ namespace REST_API___oicar.Controllers
                 if (korisnik == null)
                     return NotFound($"Korisnik with ID {id} not found");
 
-                korisnik.Telefon = "Request to clear data";
+                korisnik.Ulogaid = 5;
 
                 _context.Korisniks.Update(korisnik);
                 await _context.SaveChangesAsync();
@@ -107,7 +106,7 @@ namespace REST_API___oicar.Controllers
         public async Task<ActionResult<IEnumerable<KorisnikDTO>>> GetAll()
         {
             return await _context.Korisniks
-                .Where(x => x.Datumrodjenja != default && x.Telefon != "Request to clear data")
+                .Where(x => x.Ulogaid != 4 && x.Ulogaid != 5)
                 .Include(x => x.Uloga)
                 .Select(k => new KorisnikDTO
                 {
@@ -129,9 +128,9 @@ namespace REST_API___oicar.Controllers
 
         [HttpGet("[action]")]
         public async Task<ActionResult<IEnumerable<KorisnikDTO>>> GetAllRequestClear()
-        {
-            return await _context.Korisniks
-                .Where(x => x.Ulogaid == 4 || x.Telefon == "Request to clear data" || x.Username == "")
+        { 
+            return await _context.Korisniks 
+                .Where(x => x.Ulogaid == 4 || x.Ulogaid == 5)
                 .Include(x => x.Uloga)
                 .Select(k => new KorisnikDTO
                 {

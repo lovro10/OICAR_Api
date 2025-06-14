@@ -8,7 +8,7 @@
 
         public int? VozacId { get; set; }
 
-        public int KorisnikVoznjaId { get; set; }
+        public int OglasVoznjaId { get; set; }
 
         public string? SenderName { get; set; } 
 

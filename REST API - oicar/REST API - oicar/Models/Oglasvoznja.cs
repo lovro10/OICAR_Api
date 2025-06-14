@@ -30,4 +30,6 @@ public partial class Oglasvoznja
     public virtual Troskovi? Troskovi { get; set; }
 
     public virtual Vozilo? Vozilo { get; set; }
+
+    public virtual ICollection<Poruka> Porukas { get; set; } = new List<Poruka>();
 }

@@ -1,6 +1,4 @@
-﻿// CARSHARE_WEBAPP.Tests.Unit/VoziloControllerTests.cs
-#nullable disable
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -10,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using REST_API___oicar.Controllers;
 using REST_API___oicar.DTOs;
 using REST_API___oicar.Models;
+using REST_API___oicar.Security;
 using Xunit;
 
 namespace APIUnitTests
@@ -18,6 +17,7 @@ namespace APIUnitTests
     {
         private readonly CarshareContext _db;
         private readonly VoziloController _sut;
+        private readonly AesEncryptionService _encryptionService;
 
         private sealed class InMemoryCarshareContext : CarshareContext
         {
@@ -25,16 +25,18 @@ namespace APIUnitTests
             protected override void OnConfiguring(DbContextOptionsBuilder _) {  }
         }
 
-        public VoziloControllerTests()
-        {
+        public VoziloControllerTests(AesEncryptionService encryptionService)  
+        {  
+            _encryptionService = encryptionService; 
+            
             var opts = new DbContextOptionsBuilder<CarshareContext>()
                        .UseInMemoryDatabase(Guid.NewGuid().ToString())
                        .Options;
 
-            _db = new InMemoryCarshareContext(opts);
-            SeedDatabase(_db);
+            _db = new InMemoryCarshareContext(opts); 
+            SeedDatabase(_db); 
 
-            _sut = new VoziloController(_db);
+            _sut = new VoziloController(_db, encryptionService);
         }
 
         [Fact]

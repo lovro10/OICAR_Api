@@ -4,6 +4,7 @@ using REST_API___oicar.DTOs;
 using REST_API___oicar.Models;
 using Newtonsoft.Json;
 using System.Text.Json;
+using REST_API___oicar.Security;
 
 namespace REST_API___oicar.Controllers
 {
@@ -13,19 +14,22 @@ namespace REST_API___oicar.Controllers
     {
         private readonly CarshareContext _context;
 
-        public VoziloController(CarshareContext context)
+        private readonly AesEncryptionService _encryptionService;
+
+        public VoziloController(CarshareContext context, AesEncryptionService encryptionService)
         {
             _context = context;
+            _encryptionService = encryptionService;
         }
 
         [HttpGet("[action]")]
         public async Task<ActionResult<IEnumerable<Vozilo>>> GetVehicles()
-        { 
+        {
             var vozila = await _context.Vozilos
                 .Include(v => v.Imageprometna)
                 .OrderByDescending(o => o.Idvozilo)
-                .Select(v => new 
-                { 
+                .Select(v => new
+                {
                     v.Idvozilo,
                     v.Naziv,
                     v.Marka,
@@ -33,9 +37,9 @@ namespace REST_API___oicar.Controllers
                     v.Registracija,
                     v.Isconfirmed,
                     v.Vozac.Idkorisnik,
-                    v.Vozac.Ime,
-                    v.Vozac.Prezime,
-                    v.Vozac.Username
+                    Ime = _encryptionService.Decrypt(v.Vozac.Ime),
+                    Prezime = _encryptionService.Decrypt(v.Vozac.Prezime),
+                    Username = _encryptionService.Decrypt(v.Vozac.Username)
                 })
                 .ToListAsync();
 
@@ -47,8 +51,8 @@ namespace REST_API___oicar.Controllers
         {
             var vozilo = await _context.Vozilos
                 .Where(v => v.Idvozilo == id)
-                .Select(v => new 
-                { 
+                .Select(v => new
+                {
                     v.Idvozilo,
                     v.Naziv,
                     v.Marka,
@@ -56,10 +60,10 @@ namespace REST_API___oicar.Controllers
                     v.Registracija,
                     v.Isconfirmed,
                     v.Vozac.Idkorisnik,
-                    v.Vozac.Ime,
-                    v.Vozac.Prezime,
-                    v.Vozac.Username
-                }) 
+                    Ime = _encryptionService.Decrypt(v.Vozac.Ime),
+                    Prezime = _encryptionService.Decrypt(v.Vozac.Prezime),
+                    Username = _encryptionService.Decrypt(v.Vozac.Username)
+                })
                 .FirstOrDefaultAsync();
 
             if (vozilo == null)
@@ -107,9 +111,9 @@ namespace REST_API___oicar.Controllers
                     Vozac = new VozacDTO
                     {
                         Idkorisnik = vozilo.Vozac?.Idkorisnik ?? 0,
-                        Ime = vozilo.Vozac?.Ime,
-                        Prezime = vozilo.Vozac?.Prezime,
-                        Username = vozilo.Vozac?.Username,
+                        Ime = _encryptionService.Decrypt(vozilo.Vozac?.Ime),
+                        Prezime = _encryptionService.Decrypt(vozilo.Vozac?.Prezime),
+                        Username = _encryptionService.Decrypt(vozilo.Vozac?.Username) 
                     }
                 };
 
@@ -166,9 +170,9 @@ namespace REST_API___oicar.Controllers
                     Vozac = new VozacDTO
                     {
                         Idkorisnik = vozilo.Vozac?.Idkorisnik ?? 0,
-                        Ime = vozilo.Vozac?.Ime,
-                        Prezime = vozilo.Vozac?.Prezime,
-                        Username = vozilo.Vozac?.Username 
+                        Ime = _encryptionService.Decrypt(vozilo.Vozac?.Ime),
+                        Prezime = _encryptionService.Decrypt(vozilo.Vozac?.Prezime),
+                        Username = _encryptionService.Decrypt(vozilo.Vozac?.Username) 
                     }
                 };
 
