@@ -87,6 +87,7 @@ builder.Services.AddDbContext<CarshareContext>(options => {
     options.UseNpgsql("Name=ConnectionStrings:CarshareConnStr"); 
 });
 
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -100,5 +101,10 @@ app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapGet("/", context =>
+{
+    context.Response.Redirect("/swagger/index.html");
+    return Task.CompletedTask;
+});
 
 app.Run();
